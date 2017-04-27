@@ -28,7 +28,7 @@ public class User {
 	private String email;
 	@Column(name = "LOGIN", nullable = true, length = 20)
 	private String login;
-	@Column(name = "PASSWORD", nullable = true, length = 20)
+	@Column(name = "PASSWORD", nullable = true, length = 400)
 	private String password;
 	@Column(name = "DATE_OF_BIRTH", nullable = true)
 	private Date dateOfBirth = new java.sql.Date(Calendar.getInstance().getTime().getTime());
