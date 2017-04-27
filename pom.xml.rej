@@ -1,0 +1,10 @@
+diff a/pom.xml b/pom.xml	(rejected hunks)
+@@ -10,6 +10,8 @@
+ 	<name>PIK Maven Webapp</name>
+ 	<url>http://maven.apache.org</url>
+ 
++
++
+ 	<!-- PROPERTIES SA -->
+ 	<properties>
+ 		<project.java.version>1.8</project.java.version>
