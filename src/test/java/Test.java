@@ -30,11 +30,19 @@ public class Test extends TestCase {
 	public void setUserService(UserService userService) {
 		this.userService = userService;
 	}
+	
+	@org.junit.Before
+	@Transactional
+	public void testAddUser() {
+		User user = new User();
+		user.setName("TEST");
+		userService.saveOrUpdate(user);
+	}
 		
 	@org.junit.Test
 	public void testGetUser() {
-		User user = userService.getUser(11);
-		assertEquals(user.getUserId().intValue(),11); 
+		User user = userService.getUser(1);
+		assertEquals(user.getUserId().intValue(),1); 
 	}
 	
 }

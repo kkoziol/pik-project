@@ -49,7 +49,7 @@
 				<b:prop key="hibernate.current_session_context_class">thread</b:prop>
 				<b:prop key="hibernate.show_sql">true</b:prop>
 				<!-- CREATE DATABASE -->
-				<b:prop key="hibernate.hbm2ddl.auto">create</b:prop>
+				<!-- <b:prop key="hibernate.hbm2ddl.auto">create</b:prop>  -->
 			</b:props>
 		</b:property>
 	</b:bean>
