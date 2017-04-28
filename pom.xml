@@ -73,7 +73,6 @@
 		</dependency>
 		
 		<!-- Postgres -->
-		<!-- https://mvnrepository.com/artifact/postgresql/postgresql -->
 		<dependency>
 		    <groupId>org.postgresql</groupId>
 		    <artifactId>postgresql</artifactId>
@@ -99,8 +98,6 @@
 			<artifactId>commons-dbcp</artifactId>
 			<version>1.4</version>
 		</dependency>
-
-		<!-- MYSQL -->
 
 		<!-- HIBERNATE -->
 		<dependency>
