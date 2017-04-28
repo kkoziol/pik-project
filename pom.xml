@@ -9,8 +9,7 @@
 	<version>1.0.1-SNAPSHOT</version>
 	<name>PIK Maven Webapp</name>
 	<url>http://maven.apache.org</url>
-	<!--  eh -->
-	<!-- PROPERTIES asfeafeanazwa-->
+	<!-- PROPERTIES -->
 	<properties>
 		<project.java.version>1.8</project.java.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -74,7 +73,6 @@
 		</dependency>
 		
 		<!-- Postgres -->
-		<!-- https://mvnrepository.com/artifact/postgresql/postgresql -->
 		<dependency>
 		    <groupId>org.postgresql</groupId>
 		    <artifactId>postgresql</artifactId>
@@ -100,8 +98,6 @@
 			<artifactId>commons-dbcp</artifactId>
 			<version>1.4</version>
 		</dependency>
-
-		<!-- MYSQL -->
 
 		<!-- HIBERNATE -->
 		<dependency>
