@@ -1,7 +1,3 @@
-
-
-
-
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
@@ -20,7 +16,7 @@ import junit.framework.TestCase;
 (
 		locations ={
    "file:src/main/webapp/WEB-INF/spring/application/application-context.xml",
-   "file:src/main/webapp/WEB-INF/spring/security-context.xml",
+   "file:src/main/webapp/WEB-INF/spring/root-context.xml",
   }
 )
 public class Test extends TestCase {
