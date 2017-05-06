@@ -1,13 +1,17 @@
-package com.model;
+package com.models.entities;
 
 import java.sql.Date;
 import java.util.Calendar;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.Fetch;
@@ -20,15 +24,13 @@ public class User {
 	@Column(name = "USER_ID", nullable = false, unique = true, length = 11)
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer userId;
-	@Column(name = "NAME", nullable = true, length = 40)
+	@Column(name = "NAME", nullable = true, length = 35)
 	private String name;
-	@Column(name = "SURNAME", nullable = true, length = 40)
+	@Column(name = "SURNAME", nullable = true, length = 35)
 	private String surname;
-	@Column(name = "EMAIL", nullable = true, length = 50)
-	private String email;
 	@Column(name = "LOGIN", nullable = true, length = 20)
 	private String login;
-	@Column(name = "PASSWORD", nullable = true, length = 400)
+	@Column(name = "PASSWORD", nullable = true, length = 60)
 	private String password;
 	@Column(name = "DATE_OF_BIRTH", nullable = true)
 	private Date dateOfBirth = new java.sql.Date(Calendar.getInstance().getTime().getTime());
@@ -38,6 +40,27 @@ public class User {
 	private String sex;
 	@Column(name = "AUTHORITIES", nullable = true, length = 20)
 	private String authorities = "ROLE_USER";
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
+	private Set<Email> emails = new HashSet<>();
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
+	private Set<Order> orders = new HashSet<>();
+	
+	
+	public Set<Email> getEmails() {
+		return emails;
+	}
+
+	public void setEmails(Set<Email> emails) {
+		this.emails = emails;
+	}
+
+	public Set<Order> getOrders() {
+		return orders;
+	}
+
+	public void setOrders(Set<Order> orders) {
+		this.orders = orders;
+	}
 
 	public String getName() {
 		return name;
@@ -53,14 +76,6 @@ public class User {
 
 	public void setSurname(String surname) {
 		this.surname = surname;
-	}
-
-	public String getEmail() {
-		return email;
-	}
-
-	public void setEmail(String email) {
-		this.email = email;
 	}
 
 	public String getPassword() {
@@ -122,11 +137,8 @@ public class User {
 
 	@Override
 	public String toString() {
-		return "User [user_id=" + userId + ", name=" + name + ", surname=" + surname + ", email=" + email + ", login="
+		return "User [user_id=" + userId + ", name=" + name + ", surname=" + surname + ", login="
 				+ login + ", password=" + password + ", dateOfBirth=" + dateOfBirth + ", dateOfRegistration="
 				+ dateOfRegistration + ", sex=" + sex + ", authorities=" + authorities + "]";
 	}
-
-	
-	
 }

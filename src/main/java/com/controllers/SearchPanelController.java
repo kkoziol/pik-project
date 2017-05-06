@@ -16,7 +16,7 @@ import com.ebay.services.finding.FindItemsByKeywordsResponse;
 import com.ebay.services.finding.FindingServicePortType;
 import com.ebay.services.finding.PaginationInput;
 import com.ebay.services.finding.SearchItem;
-import com.model.UsersQuery;
+import com.models.UsersQuery;
 
 
 @Controller

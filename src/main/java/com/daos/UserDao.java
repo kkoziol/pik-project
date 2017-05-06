@@ -2,7 +2,7 @@ package com.daos;
 
 import java.util.List;
 
-import com.model.User;
+import com.models.entities.User;
 
 public interface UserDao {
 	public boolean saveOrUpdate(User user);

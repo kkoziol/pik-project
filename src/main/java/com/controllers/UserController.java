@@ -3,7 +3,9 @@ package com.controllers;
 import java.sql.Date;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import javax.validation.Valid;
@@ -22,8 +24,9 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import com.model.User;
-import com.model.UserDTO;
+import com.models.UserDTO;
+import com.models.entities.Email;
+import com.models.entities.User;
 import com.services.UserService;
 
 @Controller
@@ -58,17 +61,17 @@ public class UserController {
 			result.rejectValue("login", "error.user", "An account already exists for this login.");
 			return REGISTER_JSP;
 		}
-		if (users.stream().map(User::getEmail).collect(Collectors.toList()).contains(userDTO.getEmail())) {
-			result.rejectValue("email", "error.user", "An account already exists for this email.");
-			return REGISTER_JSP;
-		}
 		if (result.hasErrors()) {
 			return REGISTER_JSP;
 		} else {
 			User user = new User();
 			user.setName(userDTO.getName());
 			user.setSurname(userDTO.getSurname());
-			user.setEmail(userDTO.getEmail());
+			Email email = new Email();
+			email.setValue(userDTO.getEmail());
+			Set<Email> set = new HashSet<>();
+			set.add(email);
+			user.setEmails(set);
 			user.setLogin(userDTO.getLogin());
 			PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 			user.setPassword(passwordEncoder.encode(userDTO.getPassword()));

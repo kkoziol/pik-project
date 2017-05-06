@@ -5,13 +5,12 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.model.User;
+import com.models.entities.User;
 import com.services.UserService;
 
 import junit.framework.TestCase;
 @WebAppConfiguration
 @RunWith(SpringJUnit4ClassRunner.class)
-@Transactional
 @ContextConfiguration
 (
 		locations ={

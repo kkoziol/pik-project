@@ -3,8 +3,7 @@ package com.services;
 import java.util.List;
 
 import com.daos.UserDao;
-
-import com.model.User;
+import com.models.entities.User;
 
 public interface UserService {
 	public boolean saveOrUpdate(User user);
