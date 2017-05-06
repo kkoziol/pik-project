@@ -17,6 +17,11 @@ import org.springframework.web.bind.annotation.RequestMethod;
 public class LoginController {
 	/* pull request made by a random intern */
 	
+	@RequestMapping(value = "/index", method = RequestMethod.GET) 
+	public String getIndexPage() { 
+	return "static/index.html"; 
+
+	} 
 	
 	@RequestMapping(value = "/welcome", method = RequestMethod.GET)
 	public String getPostList(ModelMap model, Principal principal) {
@@ -38,10 +43,7 @@ public class LoginController {
 		return "login";
 	}
 	
-	@RequestMapping(value="/index", method = RequestMethod.GET)
-	public String index() {
-		return "redirect:/index.jsp";
-	}
+	
 	
 	@RequestMapping(value="/logout", method = RequestMethod.GET)
 	public String logout(HttpServletRequest request, HttpServletResponse response) {
