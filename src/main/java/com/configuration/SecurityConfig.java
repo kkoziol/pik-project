@@ -20,7 +20,7 @@ import org.springframework.security.web.csrf.CsrfFilter;
 import org.springframework.security.web.csrf.CsrfTokenRepository;
 import org.springframework.security.web.csrf.HttpSessionCsrfTokenRepository;
 
-import filters.CsrfHeaderFilter;
+import com.filters.CsrfHeaderFilter;
 
 
 

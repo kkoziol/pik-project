@@ -19,7 +19,7 @@ public class LoginController {
 	
 	@RequestMapping(value = "/index", method = RequestMethod.GET) 
 	public String getIndexPage() { 
-	return "static/index.html"; 
+	return "redirect:/static/index.html"; 
 
 	} 
 	
@@ -38,25 +38,25 @@ public class LoginController {
 	        return "admin";
 	    }
 	
-	@RequestMapping(value="/login", method = RequestMethod.GET)
-	public String login() {
-		return "login";
-	}
+//	@RequestMapping(value="/login", method = RequestMethod.GET)
+//	public String login() {
+//		return "login";
+//	}
 	
 	
 	
-	@RequestMapping(value="/logout", method = RequestMethod.GET)
-	public String logout(HttpServletRequest request, HttpServletResponse response) {
-		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-	    if (auth != null){    
-	        new SecurityContextLogoutHandler().logout(request, response, auth);
-	    }
-		return "redirect:/login?logout";
-	}
+//	@RequestMapping(value="/logout", method = RequestMethod.GET)
+//	public String logout(HttpServletRequest request, HttpServletResponse response) {
+//		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+//	    if (auth != null){    
+//	        new SecurityContextLogoutHandler().logout(request, response, auth);
+//	    }
+//		return "redirect:/login?logout";
+//	}
 	
-	@RequestMapping(value="/loginfailed", method = RequestMethod.GET)
-	public String loginError(ModelMap model) {
-		model.addAttribute("error","true");
-		return "redirect:/login?error";
-	}
+//	@RequestMapping(value="/loginfailed", method = RequestMethod.GET)
+//	public String loginError(ModelMap model) {
+//		model.addAttribute("error","true");
+//		return "redirect:/login?error";
+//	}
 }

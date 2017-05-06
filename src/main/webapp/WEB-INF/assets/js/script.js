@@ -5,17 +5,21 @@ app.config(function($routeProvider, $httpProvider) {
             templateUrl : "home.html",
             controller : "homeCtrl"
         })
-        .when("/devices", {
-            templateUrl : "devices.html",
-            controller : "devicesCtrl"
+        .when("/orders", {
+            templateUrl : "orders.html",
+            controller : "ordersCtrl"
         })
-        .when("/contact", {
-            templateUrl : "contact.html",
-            controller : "contactCtrl"
+        .when("/eBay", {
+            templateUrl : "eBay.html",
+            controller : "eBayCtrl"
         })
-        .when("/parentalControl", {
-            templateUrl : "parentalControl.html",
-            controller : "parentalCtrl"
+        .when("/history", {
+            templateUrl : "history.html",
+            controller : "historyCtrl"
+        })
+        .when("/settings", {
+            templateUrl : "settings.html",
+            controller : "settingsCtrl"
         })
         .when("/login",{
         	templateUrl : "login.html",
@@ -27,28 +31,24 @@ app.config(function($routeProvider, $httpProvider) {
 
 app.controller("homeCtrl", function ($http) {
 	var self = this;
-	$http.get('/resource/').success(function(data) {
-		self.a = data;
+	$http.get('/PIK/test/').success(function(data) {
+		self.test = data;
 	});
+});
+
+app.controller("ordersCtrl", function ($http) {
 	
 });
 
-app.controller("devicesCtrl", function ($scope,$http) {
-
-	var self = this;
-	$http.get('/resources/').success(function(data) {
-		$scope.resources = data;
-	}).error(function(data) {
-	      $scope.error = true;
-	    });
-	
-});
-
-app.controller("contactCtrl", function ($scope, $http) {
+app.controller("eBayCtrl", function ($scope,$http) {
 
 });
 
-app.controller("parentalCtrl", function ($scope, $http) {
+app.controller("historyCtrl", function ($scope, $http) {
+
+});
+
+app.controller("settingsCtrl", function ($scope, $http) {
 
 });
 

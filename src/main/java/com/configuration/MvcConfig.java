@@ -20,10 +20,10 @@ import com.services.UserServiceImpl;
 public class MvcConfig extends WebMvcConfigurerAdapter {
 	@Override
 	public void addResourceHandlers(final ResourceHandlerRegistry registry) {
-		registry.addResourceHandler("/static/**").addResourceLocations("/WEB-INF/static/");
+		registry.addResourceHandler("/static/**").addResourceLocations("/WEB-INF/static/html/");
 //		registry.addResourceHandler("/resources/**").addResourceLocations("/resources/");
-//		registry.addResourceHandler("/css/**").addResourceLocations("/WEB-INF/assets/css/");
-//		registry.addResourceHandler("/js/**").addResourceLocations("/WEB-INF/assets/js/");
+		registry.addResourceHandler("/css/**").addResourceLocations("/WEB-INF/assets/css/");
+		registry.addResourceHandler("/js/**").addResourceLocations("/WEB-INF/assets/js/");
 	}
 // 
 //	@Override

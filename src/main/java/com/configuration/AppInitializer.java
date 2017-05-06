@@ -4,7 +4,7 @@ import javax.servlet.Filter;
 
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
 
-import filters.CORSFilter;
+import com.filters.CORSFilter;
 
 public class AppInitializer extends AbstractAnnotationConfigDispatcherServletInitializer {
 	 

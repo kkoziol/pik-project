@@ -165,6 +165,18 @@
 			<artifactId>spring-security-core</artifactId>
 			<version>${org.springframework.security-version}</version>
 		</dependency>
+		
+		<!-- REST -->
+		 <dependency>
+			<groupId>org.codehaus.jackson</groupId>
+			<artifactId>jackson-mapper-asl</artifactId>
+			<version>1.9.13</version>
+		</dependency>
+		<dependency>
+		<groupId>com.fasterxml.jackson.core</groupId>
+		<artifactId>jackson-databind</artifactId>
+		<version>2.5.3</version>
+	</dependency>
 	</dependencies>
 
 	<!-- ARTIFACTS FROM NEXUS REPOSITORY -->
