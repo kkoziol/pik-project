@@ -17,6 +17,11 @@ import org.springframework.web.bind.annotation.RequestMethod;
 public class LoginController {
 	/* pull request made by a random intern */
 	
+	@RequestMapping(value = "/index", method = RequestMethod.GET) 
+	public String getIndexPage() { 
+	return "redirect:/static/index.html"; 
+
+	} 
 	
 	@RequestMapping(value = "/welcome", method = RequestMethod.GET)
 	public String getPostList(ModelMap model, Principal principal) {
@@ -33,28 +38,25 @@ public class LoginController {
 	        return "admin";
 	    }
 	
-	@RequestMapping(value="/login", method = RequestMethod.GET)
-	public String login() {
-		return "login";
-	}
+//	@RequestMapping(value="/login", method = RequestMethod.GET)
+//	public String login() {
+//		return "login";
+//	}
 	
-	@RequestMapping(value="/index", method = RequestMethod.GET)
-	public String index() {
-		return "redirect:/index.jsp";
-	}
 	
-	@RequestMapping(value="/logout", method = RequestMethod.GET)
-	public String logout(HttpServletRequest request, HttpServletResponse response) {
-		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-	    if (auth != null){    
-	        new SecurityContextLogoutHandler().logout(request, response, auth);
-	    }
-		return "redirect:/login?logout";
-	}
 	
-	@RequestMapping(value="/loginfailed", method = RequestMethod.GET)
-	public String loginError(ModelMap model) {
-		model.addAttribute("error","true");
-		return "redirect:/login?error";
-	}
+//	@RequestMapping(value="/logout", method = RequestMethod.GET)
+//	public String logout(HttpServletRequest request, HttpServletResponse response) {
+//		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+//	    if (auth != null){    
+//	        new SecurityContextLogoutHandler().logout(request, response, auth);
+//	    }
+//		return "redirect:/login?logout";
+//	}
+	
+//	@RequestMapping(value="/loginfailed", method = RequestMethod.GET)
+//	public String loginError(ModelMap model) {
+//		model.addAttribute("error","true");
+//		return "redirect:/login?error";
+//	}
 }

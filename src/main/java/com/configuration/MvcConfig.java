@@ -19,37 +19,38 @@ import com.services.UserServiceImpl;
 @ComponentScan(basePackages = { "com" })
 public class MvcConfig extends WebMvcConfigurerAdapter {
 	@Override
-	public void addResourceHandlers(ResourceHandlerRegistry registry) {
-		registry.addResourceHandler("/resources/**").addResourceLocations("/resources/");
+	public void addResourceHandlers(final ResourceHandlerRegistry registry) {
+		registry.addResourceHandler("/static/**").addResourceLocations("/WEB-INF/static/html/");
+//		registry.addResourceHandler("/resources/**").addResourceLocations("/resources/");
 		registry.addResourceHandler("/css/**").addResourceLocations("/WEB-INF/assets/css/");
 		registry.addResourceHandler("/js/**").addResourceLocations("/WEB-INF/assets/js/");
 	}
- 
-	@Override
-	public void configureDefaultServletHandling(DefaultServletHandlerConfigurer configurer) {
-		configurer.enable();
-	}
- 
-	@Bean
-	public InternalResourceViewResolver jspViewResolver() {
-		InternalResourceViewResolver bean = new InternalResourceViewResolver();
-		bean.setPrefix("/WEB-INF/views/");
-		bean.setSuffix(".jsp");
-		return bean;
-	}
+// 
+//	@Override
+//	public void configureDefaultServletHandling(DefaultServletHandlerConfigurer configurer) {
+//		configurer.enable();
+//	}
+// 
+//	@Bean
+//	public InternalResourceViewResolver jspViewResolver() {
+//		InternalResourceViewResolver bean = new InternalResourceViewResolver();
+//		bean.setPrefix("/WEB-INF/public/");
+//		bean.setSuffix(".html");
+//		return bean;
+//	}
  
 //	@Bean(name = "multipartResolver")
 //	public CommonsMultipartResolver getMultipartResolver() {
 //		return new CommonsMultipartResolver();
 //	}
  
-	@Bean(name = "messageSource")
-	public ReloadableResourceBundleMessageSource getMessageSource() {
-		ReloadableResourceBundleMessageSource resource = new ReloadableResourceBundleMessageSource();
-		resource.setBasename("classpath:messages");
-		resource.setDefaultEncoding("UTF-8");
-		return resource;
-	}
+//	@Bean(name = "messageSource")
+//	public ReloadableResourceBundleMessageSource getMessageSource() {
+//		ReloadableResourceBundleMessageSource resource = new ReloadableResourceBundleMessageSource();
+//		resource.setBasename("classpath:messages");
+//		resource.setDefaultEncoding("UTF-8");
+//		return resource;
+//	}
 	
 	@Bean
 	public UserDaoImpl userDao() {

@@ -1,12 +1,17 @@
 package com.configuration;
 
+import javax.servlet.Filter;
+
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
+
+import com.filters.CORSFilter;
 
 public class AppInitializer extends AbstractAnnotationConfigDispatcherServletInitializer {
 	 
     @Override
     protected Class<?>[] getRootConfigClasses() {
         return new Class[] { MvcConfig.class, HibernateConfig.class, SecurityConfig.class };
+        
     }
   
     @Override
@@ -19,4 +24,10 @@ public class AppInitializer extends AbstractAnnotationConfigDispatcherServletIni
         return new String[] { "/" };
     }
  
+    @Override
+    protected Filter[] getServletFilters() {
+        Filter [] singleton = { new CORSFilter() };
+        return singleton;
+    }
+    
 }
