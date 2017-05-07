@@ -40,15 +40,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
-		http.httpBasic().and().authorizeRequests()
-				.antMatchers("resources","/login-post","/user","/index.html", "/home.html", "/")
+		http.authorizeRequests()
+				.antMatchers("/js/**","/css/**","/static/login-post","/static/user","/static/index.html", "/static/home.html", "/static/","/static/login.html")
 				.permitAll().anyRequest().authenticated()
-				//.and().formLogin().loginPage("/login.html")
-				//.defaultSuccessUrl("/index.html").permitAll()
+				.and().formLogin().loginPage("/static/index.html#/login").permitAll()
+				//.defaultSuccessUrl("/home.html").permitAll()
 				.and()
 				.addFilterAfter(new CsrfHeaderFilter(), CsrfFilter.class)
 				.csrf().csrfTokenRepository(csrfTokenRepository())
-				.and().logout().logoutSuccessUrl("/login.html").deleteCookies("XSRF-TOKEN");
+				.and().logout().logoutSuccessUrl("/login").deleteCookies("XSRF-TOKEN");
 
 	}
 	

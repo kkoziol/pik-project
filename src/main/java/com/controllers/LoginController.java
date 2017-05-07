@@ -23,6 +23,7 @@ public class LoginController {
 
 	} 
 	
+	
 	@RequestMapping(value = "/welcome", method = RequestMethod.GET)
 	public String getPostList(ModelMap model, Principal principal) {
 		String name = principal.getName();

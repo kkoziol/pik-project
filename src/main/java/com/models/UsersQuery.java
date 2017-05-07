@@ -1,4 +1,4 @@
-package com.model;
+package com.models;
 
 public class UsersQuery {
 	private String query;
