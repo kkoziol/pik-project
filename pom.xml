@@ -4,7 +4,7 @@
 
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.project</groupId>
-	<artifactId>PIK</artifactId>
+	<artifactId>ROOT</artifactId>
 	<packaging>war</packaging>
 	<version>1.0.1-SNAPSHOT</version>
 	<name>PIK Maven Webapp</name>
@@ -19,30 +19,42 @@
 	</properties>
 
 	<dependencies>
+		<dependency>
+			<groupId>com.ebay</groupId>
+			<artifactId>ebay_develop</artifactId>
+			<version>981</version>
+		</dependency>
+		<dependency>
+			<groupId>com.ebay</groupId>
+			<artifactId>finding</artifactId>
+			<version>2</version>
+		</dependency>
+		<dependency>
+			<groupId>com.ebay</groupId>
+			<artifactId>finding</artifactId>
+			<version>1.0.0</version>
+		</dependency>
 
+		<!-- Not used -->
 		<dependency>
 			<groupId>com.ebay</groupId>
 			<artifactId>ebaycalls</artifactId>
 			<version>1.0.0</version>
 		</dependency>
-
+		<!-- Not used -->
 		<dependency>
 			<groupId>com.ebay</groupId>
 			<artifactId>ebaysdkcore</artifactId>
 			<version>1.0.0</version>
 		</dependency>
-
+		<!-- Not used -->
 		<dependency>
 			<groupId>com.ebay</groupId>
 			<artifactId>helper</artifactId>
 			<version>1.0.0</version>
 		</dependency>
 
-		<dependency>
-			<groupId>com.ebay</groupId>
-			<artifactId>finding</artifactId>
-			<version>1.0.0</version>
-		</dependency>
+
 
 		<dependency>
 			<groupId>log4j</groupId>
@@ -165,18 +177,18 @@
 			<artifactId>spring-security-core</artifactId>
 			<version>${org.springframework.security-version}</version>
 		</dependency>
-		
+
 		<!-- REST -->
-		 <dependency>
+		<dependency>
 			<groupId>org.codehaus.jackson</groupId>
 			<artifactId>jackson-mapper-asl</artifactId>
 			<version>1.9.13</version>
 		</dependency>
 		<dependency>
-		<groupId>com.fasterxml.jackson.core</groupId>
-		<artifactId>jackson-databind</artifactId>
-		<version>2.5.3</version>
-	</dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-databind</artifactId>
+			<version>2.5.3</version>
+		</dependency>
 	</dependencies>
 
 	<!-- ARTIFACTS FROM NEXUS REPOSITORY -->
@@ -266,7 +278,7 @@
 				</executions>
 			</plugin>
 		</plugins>
-		<finalName>PIK</finalName>
+		<finalName>ROOT</finalName>
 	</build>
 
 </project>

@@ -3,15 +3,12 @@ package com.configuration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.support.ReloadableResourceBundleMessageSource;
-import org.springframework.web.multipart.commons.CommonsMultipartResolver;
-import org.springframework.web.servlet.config.annotation.DefaultServletHandlerConfigurer;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
-import org.springframework.web.servlet.view.InternalResourceViewResolver;
 
 import com.daos.UserDaoImpl;
+import com.services.EbayServiceImpl;
 import com.services.UserServiceImpl;
 
 @EnableWebMvc
@@ -21,7 +18,7 @@ public class MvcConfig extends WebMvcConfigurerAdapter {
 	@Override
 	public void addResourceHandlers(final ResourceHandlerRegistry registry) {
 		registry.addResourceHandler("/static/**").addResourceLocations("/WEB-INF/static/html/");
-//		registry.addResourceHandler("/resources/**").addResourceLocations("/resources/");
+		registry.addResourceHandler("/resources/**").addResourceLocations("/resources/");
 		registry.addResourceHandler("/css/**").addResourceLocations("/WEB-INF/assets/css/");
 		registry.addResourceHandler("/js/**").addResourceLocations("/WEB-INF/assets/js/");
 	}
@@ -61,5 +58,10 @@ public class MvcConfig extends WebMvcConfigurerAdapter {
 	@Bean
 	public UserServiceImpl userService() {
 		return new UserServiceImpl();
+	}
+	
+	@Bean
+	public EbayServiceImpl ebayService() {
+		return new EbayServiceImpl();
 	}
 }

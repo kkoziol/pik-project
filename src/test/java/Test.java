@@ -5,6 +5,9 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.configuration.HibernateConfig;
+import com.configuration.MvcConfig;
+import com.configuration.SecurityConfig;
 import com.models.entities.User;
 import com.services.UserService;
 
@@ -13,9 +16,8 @@ import junit.framework.TestCase;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration
 (
-		locations ={
-   "file:src/main/webapp/WEB-INF/spring/application/application-context.xml",
-   "file:src/main/webapp/WEB-INF/spring/root-context.xml",
+		classes ={
+   MvcConfig.class, HibernateConfig.class, SecurityConfig.class 
   }
 )
 public class Test extends TestCase {
