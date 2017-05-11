@@ -4,7 +4,7 @@
 
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.project</groupId>
-	<artifactId>ROOT</artifactId>
+	<artifactId>PIK</artifactId>
 	<packaging>war</packaging>
 	<version>1.0.1-SNAPSHOT</version>
 	<name>PIK Maven Webapp</name>
@@ -278,7 +278,7 @@
 				</executions>
 			</plugin>
 		</plugins>
-		<finalName>ROOT</finalName>
+		<finalName>PIK</finalName>
 	</build>
 
 </project>

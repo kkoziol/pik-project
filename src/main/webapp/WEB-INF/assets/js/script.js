@@ -31,7 +31,7 @@ app.config(function($routeProvider, $httpProvider) {
 
 app.controller("homeCtrl", function ($http) {
 	var self = this;
-	$http.get('/test/').success(function(data) {
+	$http.get('/PIK/test/').success(function(data) {
 		self.test = data;
 	});
 });
