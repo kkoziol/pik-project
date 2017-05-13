@@ -141,9 +141,6 @@
 		</dependency>
 	</dependencies>
 
-	<scm>
-		<url>http://localhost:2000/scm/pik/web-search-engine.git</url>
-	</scm>
 
 	<build>
 		<plugins>
