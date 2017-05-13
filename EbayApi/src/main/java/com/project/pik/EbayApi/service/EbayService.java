@@ -8,7 +8,9 @@ import com.ebay.soap.eBLBaseComponents.CategoryType;
 
 public interface EbayService {
 	public Calendar getEbayTime();
+	
 	public List<SearchItem> getItemsByKeywordCategoryAndPrice(String keyword, String categoryId, int minPrice, int maxPrice);
+	public SearchItem getBestMatchItem(String keyword);
 	public SearchItem getCheapestItemByKeywordAndCategory(String keyword, String categoryId);
 	public List<CategoryType> getMainCategories();	
 	public List<CategoryType> getSubCategories(String parentCategoryId);

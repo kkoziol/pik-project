@@ -180,6 +180,32 @@ public class EbayServiceImpl implements EbayService {
 
 		return items;
 	}
+	
+	@Override
+	public SearchItem getBestMatchItem(String keyword) {
+		FindingServicePortType serviceClient = FindingServiceClientFactory.getServiceClient(clientConfig);
+		PaginationInput pi = new PaginationInput();
+		/** 100 is max */
+		pi.setEntriesPerPage(100);
+		/** 100 is max */
+		pi.setPageNumber(100);
+
+		FindItemsAdvancedRequest fiAdvRequest = new FindItemsAdvancedRequest();
+		// set request parameters
+		fiAdvRequest.setKeywords(keyword);
+		fiAdvRequest.setPaginationInput(pi);
+		fiAdvRequest.setSortOrder(SortOrderType.BEST_MATCH);
+
+		/** Call service */
+		FindItemsAdvancedResponse fiAdvResponse = serviceClient.findItemsAdvanced(fiAdvRequest);
+		/** Handle response */
+
+		if (fiAdvResponse != null && fiAdvResponse.getSearchResult() != null
+				&& !fiAdvResponse.getSearchResult().getItem().isEmpty())
+			return fiAdvResponse.getSearchResult().getItem().get(0);
+
+		return new SearchItem();
+	}
 
 	@Override
 	public SearchItem getCheapestItemByKeywordAndCategory(String keyword, String categoryId) {
