@@ -159,11 +159,12 @@ public class EbayServiceImpl implements EbayService {
 				&& !fiAdvResponse.getSearchResult().getItem().isEmpty())
 			items.addAll(fiAdvResponse.getSearchResult().getItem());
 
-		int pageNumber = 1;
+		int pageNumber = 2;
 		if (returnedPageNumber > 1) {
 			while (pageNumber < returnedPageNumber) {
 				PaginationInput pages = new PaginationInput();
 				pages.setPageNumber(pageNumber);
+				fiAdvRequest.setPaginationInput(pages);
 				fiAdvResponse = serviceClient.findItemsAdvanced(fiAdvRequest);
 				if (fiAdvResponse != null && fiAdvResponse.getSearchResult() != null
 						&& !fiAdvResponse.getSearchResult().getItem().isEmpty())
@@ -191,7 +192,9 @@ public class EbayServiceImpl implements EbayService {
 		// set request parameters
 		fiAdvRequest.setKeywords(keyword);
 		fiAdvRequest.setSortOrder(SortOrderType.BEST_MATCH);
-
+		PaginationInput pages = new PaginationInput();
+		pages.setPageNumber(1);
+		fiAdvRequest.setPaginationInput(pages);
 		/** Call service */
 		FindItemsAdvancedResponse fiAdvResponse = serviceClient.findItemsAdvanced(fiAdvRequest);
 		/** Handle response */
@@ -211,7 +214,9 @@ public class EbayServiceImpl implements EbayService {
 		// set request parameters
 		fiAdvRequest.setKeywords(keyword);
 		fiAdvRequest.setSortOrder(SortOrderType.PRICE_PLUS_SHIPPING_LOWEST);
-
+		PaginationInput pages = new PaginationInput();
+		pages.setPageNumber(1);
+		fiAdvRequest.setPaginationInput(pages);
 		/** Call service */
 		FindItemsAdvancedResponse fiAdvResponse = serviceClient.findItemsAdvanced(fiAdvRequest);
 		/** Handle response */
