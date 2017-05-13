@@ -77,7 +77,7 @@ public class EbayServiceImpl implements EbayService {
 		return config;
 	}
 
-	private CategoryType getCategoryById(String categoryId) {
+	public CategoryType getCategoryById(String categoryId) {
 		GetCategoriesCall categoriesCall = new GetCategoriesCall(context);
 		categoriesCall.setCategorySiteID(SITE_CODING);
 		categoriesCall.addDetailLevel(DetailLevelCodeType.RETURN_ALL);
@@ -124,76 +124,72 @@ public class EbayServiceImpl implements EbayService {
 	public List<SearchItem> getItemsByKeywordCategoryAndPrice(String keyword, String categoryId, int minPrice,
 			int maxPrice) {
 		FindingServicePortType serviceClient = FindingServiceClientFactory.getServiceClient(clientConfig);
-		PaginationInput pi = new PaginationInput();
-		/** 100 is max */
-		pi.setEntriesPerPage(100);
-		/** 100 is max */
-		pi.setPageNumber(100);
-
 		FindItemsAdvancedRequest fiAdvRequest = new FindItemsAdvancedRequest();
 		// set request parameters
 		fiAdvRequest.setKeywords(keyword);
-		fiAdvRequest.getCategoryId().add(categoryId);
-		fiAdvRequest.setPaginationInput(pi);
 		fiAdvRequest.setSortOrder(SortOrderType.BEST_MATCH);
+		fiAdvRequest.setDescriptionSearch(false);
+		/** ADD CATEGORY */
+		if (categoryId != null)
+			fiAdvRequest.getCategoryId().add(categoryId);
 
 		/** ADD FILTERS */
-		ItemFilter filterMin = new ItemFilter();
-		filterMin.setName(ItemFilterType.MIN_PRICE);
-		filterMin.setParamName("Currency");
-		filterMin.setParamValue(SEARCHING_CURRENCY);
-		filterMin.getValue().add(String.valueOf(minPrice));
+		if (minPrice > 0) {
+			ItemFilter filterMin = new ItemFilter();
+			filterMin.setName(ItemFilterType.MIN_PRICE);
+			filterMin.setParamName("Currency");
+			filterMin.setParamValue(SEARCHING_CURRENCY);
+			filterMin.getValue().add(String.valueOf(minPrice));
+			fiAdvRequest.getItemFilter().add(filterMin);
+		}
 
-		ItemFilter filterMax = new ItemFilter();
-		filterMax.setName(ItemFilterType.MAX_PRICE);
-		filterMax.setParamName("Currency");
-		filterMax.setParamValue(SEARCHING_CURRENCY);
-		filterMax.getValue().add(String.valueOf(maxPrice));
+		if (maxPrice > 0) {
+			ItemFilter filterMax = new ItemFilter();
+			filterMax.setName(ItemFilterType.MAX_PRICE);
+			filterMax.setParamName("Currency");
+			filterMax.setParamValue(SEARCHING_CURRENCY);
+			filterMax.getValue().add(String.valueOf(maxPrice));
+			fiAdvRequest.getItemFilter().add(filterMax);
+		}
 
-		fiAdvRequest.getItemFilter().add(filterMin);
-		fiAdvRequest.getItemFilter().add(filterMax);
-
-		/** Call service */
 		FindItemsAdvancedResponse fiAdvResponse = serviceClient.findItemsAdvanced(fiAdvRequest);
-		/** Handle response */
-
+		int returnedPageNumber = fiAdvResponse.getPaginationOutput().getTotalPages();
 		List<SearchItem> items = new ArrayList<>();
+		if (fiAdvResponse != null && fiAdvResponse.getSearchResult() != null
+				&& !fiAdvResponse.getSearchResult().getItem().isEmpty())
+			items.addAll(fiAdvResponse.getSearchResult().getItem());
 
-		if (fiAdvResponse != null) {
-			PaginationOutput po = new PaginationOutput();
-			po.setEntriesPerPage(100);
-			int pageNumber = 1;
-			boolean stillSearching = true;
-			do {
-				po.setPageNumber(pageNumber);
-				fiAdvResponse.setPaginationOutput(po);
-
-				if (fiAdvResponse.getSearchResult() != null)
+		int pageNumber = 1;
+		if (returnedPageNumber > 1) {
+			while (pageNumber < returnedPageNumber) {
+				PaginationInput pages = new PaginationInput();
+				pages.setPageNumber(pageNumber);
+				fiAdvResponse = serviceClient.findItemsAdvanced(fiAdvRequest);
+				if (fiAdvResponse != null && fiAdvResponse.getSearchResult() != null
+						&& !fiAdvResponse.getSearchResult().getItem().isEmpty())
 					items.addAll(fiAdvResponse.getSearchResult().getItem());
-				else
-					stillSearching = false;
 				pageNumber++;
-				if(pageNumber > 10)
-					stillSearching = false;
-			} while (stillSearching);
+			}
 		}
 
 		return items;
 	}
-	
+
+	public List<SearchItem> getItemsByKeywordCategory(String keyword, String categoryId) {
+		return this.getItemsByKeywordCategoryAndPrice(keyword, categoryId, -1, -1);
+	}
+
+	public List<SearchItem> getItemsByKeyword(String keyword) {
+		return this.getItemsByKeywordCategoryAndPrice(keyword, null, -1, -1);
+	}
+
 	@Override
 	public SearchItem getBestMatchItem(String keyword) {
 		FindingServicePortType serviceClient = FindingServiceClientFactory.getServiceClient(clientConfig);
-		PaginationInput pi = new PaginationInput();
-		/** 100 is max */
-		pi.setEntriesPerPage(100);
-		/** 100 is max */
-		pi.setPageNumber(100);
 
 		FindItemsAdvancedRequest fiAdvRequest = new FindItemsAdvancedRequest();
 		// set request parameters
 		fiAdvRequest.setKeywords(keyword);
-		fiAdvRequest.setPaginationInput(pi);
 		fiAdvRequest.setSortOrder(SortOrderType.BEST_MATCH);
 
 		/** Call service */
@@ -210,17 +206,10 @@ public class EbayServiceImpl implements EbayService {
 	@Override
 	public SearchItem getCheapestItemByKeywordAndCategory(String keyword, String categoryId) {
 		FindingServicePortType serviceClient = FindingServiceClientFactory.getServiceClient(clientConfig);
-		PaginationInput pi = new PaginationInput();
-		/** 100 is max */
-		pi.setEntriesPerPage(100);
-		/** 100 is max */
-		pi.setPageNumber(100);
 
 		FindItemsAdvancedRequest fiAdvRequest = new FindItemsAdvancedRequest();
 		// set request parameters
 		fiAdvRequest.setKeywords(keyword);
-		fiAdvRequest.getCategoryId().add(categoryId);
-		fiAdvRequest.setPaginationInput(pi);
 		fiAdvRequest.setSortOrder(SortOrderType.PRICE_PLUS_SHIPPING_LOWEST);
 
 		/** Call service */
