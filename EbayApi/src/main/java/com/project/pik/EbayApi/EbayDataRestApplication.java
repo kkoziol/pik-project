@@ -23,6 +23,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 
+import com.project.pik.EbayApi.daemon.SearchEbayOffersDaemon;
 import com.project.pik.EbayApi.service.EbayService;
 import com.project.pik.EbayApi.service.EbayServiceImpl;
 
@@ -33,17 +34,6 @@ public class EbayDataRestApplication {
 
 	public static void main(String[] args) throws Exception {
 		SpringApplication.run(EbayDataRestApplication.class, args);
+		SearchEbayOffersDaemon.runInstance();
 	}
-	
-	
-	@Bean EbayService getEbayService() {
-		return new EbayServiceImpl();
-	}
-	
-	@Bean
-    public EmbeddedServletContainerCustomizer containerCustomizer() {
-        return (container -> {
-            container.setPort(8090);
-        });
-    }
 }

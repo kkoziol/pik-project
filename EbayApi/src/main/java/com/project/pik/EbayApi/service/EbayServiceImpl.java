@@ -5,16 +5,20 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.Properties;
 
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import com.ebay.sdk.ApiContext;
 import com.ebay.sdk.ApiCredential;
 import com.ebay.sdk.SdkException;
 import com.ebay.sdk.call.GetCategoriesCall;
+import com.ebay.sdk.call.GetCategorySpecificsCall;
 import com.ebay.sdk.call.GeteBayOfficialTimeCall;
 import com.ebay.services.client.ClientConfig;
 import com.ebay.services.client.FindingServiceClientFactory;
@@ -24,61 +28,53 @@ import com.ebay.services.finding.FindingServicePortType;
 import com.ebay.services.finding.ItemFilter;
 import com.ebay.services.finding.ItemFilterType;
 import com.ebay.services.finding.PaginationInput;
-import com.ebay.services.finding.PaginationOutput;
 import com.ebay.services.finding.SearchItem;
 import com.ebay.services.finding.SortOrderType;
 import com.ebay.soap.eBLBaseComponents.CategoryType;
 import com.ebay.soap.eBLBaseComponents.DetailLevelCodeType;
+import com.ebay.soap.eBLBaseComponents.NameRecommendationType;
+import com.ebay.soap.eBLBaseComponents.RecommendationsType;
 import com.ebay.soap.eBLBaseComponents.SiteCodeType;
+import com.ebay.soap.eBLBaseComponents.ValueRecommendationType;
 
 public class EbayServiceImpl implements EbayService {
 
-	private ApiContext context = getApiContext();
-	private ClientConfig clientConfig = getClientConfig();
+	@Autowired
+	private ApiContext eBaySoapApi;
+	
+	@Autowired
+	private ClientConfig eBayClientConfig;
+	
 	private static final Logger logger = Logger.getLogger(EbayServiceImpl.class);
 	/** CONSTS */
 	private static final SiteCodeType SITE_CODING = SiteCodeType.US;
 	private static final String SEARCHING_CURRENCY = "EUR";
-	private static final String PROPERTIES_FILE_NAME = "/ebay.properties";
 
-	private static ApiContext getApiContext() {
-		Properties keys = new Properties();
+
+	public Map<String, List<String>> getCategorySpecificsByCategoryId(String categoryId){
+		Map<String, List<String>> toReturn = new HashMap<>();
+		GetCategorySpecificsCall call = new GetCategorySpecificsCall();
+		call.setApiContext(eBaySoapApi);
+		call.setCategoryID(new String[]{categoryId});
+		RecommendationsType[] categorySpecifics = null;
 		try {
-			InputStream in = EbayServiceImpl.class.getResourceAsStream(PROPERTIES_FILE_NAME);
-			keys.load(in);
-		} catch (IOException e) {
-			logger.error("Could not load ebay properties file");
-			logger.error(e.getMessage());
+			categorySpecifics = call.getCategorySpecifics();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}		
+		NameRecommendationType[] nameRecommendation = categorySpecifics[0].getNameRecommendation();
+		for(NameRecommendationType nrt : nameRecommendation){
+			List<String> val = new ArrayList<>();
+			for(ValueRecommendationType vrt : nrt.getValueRecommendation()){
+				val.add(vrt.getValue());
+			}
+			toReturn.put(nrt.getName(), val);
 		}
-		/** Set ApiAccount and token in ApiCredential */
-		ApiCredential credential = new ApiCredential();
-		credential.seteBayToken(keys.getProperty("token"));
-
-		ApiContext context = new ApiContext();
-		context.setApiCredential(credential);
-		context.setApiServerUrl("https://api.ebay.com/wsapi"); // production
-
-		return context;
+		return toReturn;		
 	}
-
-	private static ClientConfig getClientConfig() {
-		Properties keys = new Properties();
-		try {
-			InputStream in = EbayServiceImpl.class.getResourceAsStream(PROPERTIES_FILE_NAME);
-			keys.load(in);
-		} catch (IOException e) {
-			logger.error("Could not load ebay properties file");
-			logger.error(e.getMessage());
-		}
-		/** Set ClientConfig for finding API */
-		ClientConfig config = new ClientConfig();
-		config.setApplicationId(keys.getProperty("appId"));
-
-		return config;
-	}
-
+	
 	public CategoryType getCategoryById(String categoryId) {
-		GetCategoriesCall categoriesCall = new GetCategoriesCall(context);
+		GetCategoriesCall categoriesCall = new GetCategoriesCall(eBaySoapApi);
 		categoriesCall.setCategorySiteID(SITE_CODING);
 		categoriesCall.addDetailLevel(DetailLevelCodeType.RETURN_ALL);
 
@@ -101,7 +97,7 @@ public class EbayServiceImpl implements EbayService {
 
 	@Override
 	public Calendar getEbayTime() {
-		GeteBayOfficialTimeCall apiCall = new GeteBayOfficialTimeCall(context);
+		GeteBayOfficialTimeCall apiCall = new GeteBayOfficialTimeCall(eBaySoapApi);
 		Calendar cal = null;
 
 		try {
@@ -123,7 +119,7 @@ public class EbayServiceImpl implements EbayService {
 	@Override
 	public List<SearchItem> getItemsByKeywordCategoryAndPrice(String keyword, String categoryId, int minPrice,
 			int maxPrice) {
-		FindingServicePortType serviceClient = FindingServiceClientFactory.getServiceClient(clientConfig);
+		FindingServicePortType serviceClient = FindingServiceClientFactory.getServiceClient(eBayClientConfig);
 		FindItemsAdvancedRequest fiAdvRequest = new FindItemsAdvancedRequest();
 		// set request parameters
 		fiAdvRequest.setKeywords(keyword);
@@ -186,7 +182,7 @@ public class EbayServiceImpl implements EbayService {
 
 	@Override
 	public SearchItem getBestMatchItem(String keyword) {
-		FindingServicePortType serviceClient = FindingServiceClientFactory.getServiceClient(clientConfig);
+		FindingServicePortType serviceClient = FindingServiceClientFactory.getServiceClient(eBayClientConfig);
 
 		FindItemsAdvancedRequest fiAdvRequest = new FindItemsAdvancedRequest();
 		// set request parameters
@@ -208,7 +204,7 @@ public class EbayServiceImpl implements EbayService {
 
 	@Override
 	public SearchItem getCheapestItemByKeywordAndCategory(String keyword, String categoryId) {
-		FindingServicePortType serviceClient = FindingServiceClientFactory.getServiceClient(clientConfig);
+		FindingServicePortType serviceClient = FindingServiceClientFactory.getServiceClient(eBayClientConfig);
 
 		FindItemsAdvancedRequest fiAdvRequest = new FindItemsAdvancedRequest();
 		// set request parameters
@@ -230,7 +226,7 @@ public class EbayServiceImpl implements EbayService {
 
 	@Override
 	public List<CategoryType> getMainCategories() {
-		GetCategoriesCall categoriesCall = new GetCategoriesCall(context);
+		GetCategoriesCall categoriesCall = new GetCategoriesCall(eBaySoapApi);
 		categoriesCall.setCategorySiteID(SITE_CODING);
 		categoriesCall.addDetailLevel(DetailLevelCodeType.RETURN_ALL);
 		categoriesCall.setLevelLimit(1);
@@ -249,7 +245,7 @@ public class EbayServiceImpl implements EbayService {
 
 	@Override
 	public List<CategoryType> getSubCategories(String parentCategoryId) {
-		GetCategoriesCall categoriesCall = new GetCategoriesCall(context);
+		GetCategoriesCall categoriesCall = new GetCategoriesCall(eBaySoapApi);
 		CategoryType parentCategory = getCategoryById(parentCategoryId);
 		if (parentCategory == null) {
 			System.out.println("No such category");
