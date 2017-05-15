@@ -3,15 +3,13 @@ package com.project.pik.EbayApi.daemon;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Set;
 
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.ebay.sdk.ApiContext;
 import com.ebay.services.client.ClientConfig;
 import com.ebay.services.client.FindingServiceClientFactory;
 import com.ebay.services.finding.AspectFilter;
@@ -31,48 +29,41 @@ import com.project.pik.EbayApi.service.OrderService;
 
 class SearchThread implements Runnable {
 	protected static final String SEARCHING_CURRENCY = "EUR";
-	
+
 	ApplicationConfig appConfig = new ApplicationConfig();
-	
+
 	@Autowired
 	private OrderService orderService;
-	
+
 	@Autowired
-	private ApiContext eBaySoapApi = appConfig.eBaySoapApi();
+	private ClientConfig eBayClientConfig;
 	
-	@Autowired
-	private ClientConfig eBayClientConfig = appConfig.eBayClientConfig();
-	
+	/** LOGGER */
+	private static final Logger logger = Logger.getLogger(SearchThread.class);
+
 	@Override
 	public void run() {
-		System.out.println("Running search");
+		logger.debug("Running search");
 		Map<Order, UserPreference> preferences = preparePreferences();
 		searchForPreferences(preferences);
 	}
-	
+
 	void searchForPreferences(Map<Order, UserPreference> preferences) {
-		// TODO Optimize it, optimize it, optimize it and optimize it
-		Iterator it = preferences.entrySet().iterator();
-		while(it.hasNext()){
-			Map.Entry pair = (Map.Entry)it.next();
-			UserPreference preference = (UserPreference) pair.getValue();
-			Order order = (Order) pair.getKey();
-			List<String> urls = searchForSinglePreference(preference);
-			if(! urls.isEmpty()){
-				consumeFoundUrls(order, urls);
-			}
-		}
+		preferences.forEach((o, p) -> consumeFoundUrls(o, searchForSinglePreference(p)));
 	}
 
 	void consumeFoundUrls(Order order, List<String> urls) {
+		if (urls.isEmpty())
+			return;
 		order.getUser();
 	}
 
 	List<String> searchForSinglePreference(UserPreference preference) {
+
 		List<String> urlsToReturn = new ArrayList<>();
 		FindItemsAdvancedRequest fiAdvRequest = new FindItemsAdvancedRequest();
 		FindingServicePortType serviceClient = FindingServiceClientFactory.getServiceClient(eBayClientConfig);
-		if(preference.getPrizeMin() != null){
+		if (preference.getPrizeMin() != null) {
 			ItemFilter filter = new ItemFilter();
 			filter.setName(ItemFilterType.MIN_PRICE);
 			filter.setParamName("Currency");
@@ -80,8 +71,8 @@ class SearchThread implements Runnable {
 			filter.getValue().add(String.valueOf(preference.getPrizeMin()));
 			fiAdvRequest.getItemFilter().add(filter);
 		}
-		
-		if(preference.getPrizeMax() != null){
+
+		if (preference.getPrizeMax() != null) {
 			ItemFilter filter = new ItemFilter();
 			filter.setName(ItemFilterType.MAX_PRICE);
 			filter.setParamName("Currency");
@@ -89,82 +80,80 @@ class SearchThread implements Runnable {
 			filter.getValue().add(String.valueOf(preference.getPrizeMax()));
 			fiAdvRequest.getItemFilter().add(filter);
 		}
-		
-		if(preference.getCondition() != null){
+
+		if (preference.getCondition() != null) {
 			// TODO - zmienic condition na conditionsList
 			ItemFilter filter = new ItemFilter();
 			filter.setName(ItemFilterType.CONDITION);
 			filter.setParamValue(mapMnemonicToCode(preference.getCondition()));
 			fiAdvRequest.getItemFilter().add(filter);
 		}
-		
-		if(preference.getCategoryId() != null){
+
+		if (preference.getCategoryId() != null) {
 			fiAdvRequest.getCategoryId().add(preference.getCategoryId());
 		}
 
 		Map<String, Set<String>> refinments = preference.getRefinmentsAsSet();
-		Iterator it = refinments.entrySet().iterator();
-		while(it.hasNext()){
-			Map.Entry<String, Set<String>> pair = (Entry) it.next();
+		refinments.forEach((n, v) -> {
 			AspectFilter aspectFilter = new AspectFilter();
-			aspectFilter.setAspectName(pair.getKey());
-			aspectFilter.getAspectValueName().addAll(pair.getValue());
+			aspectFilter.setAspectName(n);
+			aspectFilter.getAspectValueName().addAll(v);
 			fiAdvRequest.getAspectFilter().add(aspectFilter);
-		}
+		});
 		FindItemsAdvancedResponse response = serviceClient.findItemsAdvanced(fiAdvRequest);
 		SearchResult searchResult = response.getSearchResult();
 		List<SearchItem> items = searchResult.getItem();
-		for(SearchItem item : items){
+		for (SearchItem item : items)
 			urlsToReturn.add(item.getViewItemURL());
-		}
+
 		return urlsToReturn;
 	}
 
-	private String mapMnemonicToCode(String mnemonic){
-		// https://developer.ebay.com/devzone/finding/callref/types/ItemFilterType.html section: Condition
-		if(mnemonic.compareToIgnoreCase("New") == 0){
+	private String mapMnemonicToCode(String mnemonic) {
+		// https://developer.ebay.com/devzone/finding/callref/types/ItemFilterType.html
+		// section: Condition
+		if (mnemonic.compareToIgnoreCase("New") == 0) {
 			return "1000";
-		} else if(mnemonic.compareToIgnoreCase("New other (see details)") == 0){
+		} else if (mnemonic.compareToIgnoreCase("New other (see details)") == 0) {
 			return "1500";
-		} else if(mnemonic.compareToIgnoreCase("New with defects") == 0){
+		} else if (mnemonic.compareToIgnoreCase("New with defects") == 0) {
 			return "1750";
-		} else if(mnemonic.compareToIgnoreCase("Manufacturer refurbished") == 0){
+		} else if (mnemonic.compareToIgnoreCase("Manufacturer refurbished") == 0) {
 			return "2000";
-		} else if(mnemonic.compareToIgnoreCase("Seller refurbished") == 0){
+		} else if (mnemonic.compareToIgnoreCase("Seller refurbished") == 0) {
 			return "2500";
-		} else if(mnemonic.compareToIgnoreCase("Used") == 0){
+		} else if (mnemonic.compareToIgnoreCase("Used") == 0) {
 			return "3000";
-		} else if(mnemonic.compareToIgnoreCase("Very Good") == 0){
+		} else if (mnemonic.compareToIgnoreCase("Very Good") == 0) {
 			return "4000";
-		} else if(mnemonic.compareToIgnoreCase("Good") == 0){
+		} else if (mnemonic.compareToIgnoreCase("Good") == 0) {
 			return "5000";
-		} else if(mnemonic.compareToIgnoreCase("Acceptable") == 0){
+		} else if (mnemonic.compareToIgnoreCase("Acceptable") == 0) {
 			return "6000";
-		} else if(mnemonic.compareToIgnoreCase("For parts or not working") == 0){
+		} else if (mnemonic.compareToIgnoreCase("For parts or not working") == 0) {
 			return "7000";
-		} else{
+		} else {
 			throw new IllegalStateException("Mnemonic: '" + mnemonic + "'could not be mapped to code");
 		}
 	}
-	
-	Map<Order, UserPreference> preparePreferences(){
+
+	Map<Order, UserPreference> preparePreferences() {
 		Map<Order, UserPreference> toReturn = new HashMap<>();
 		ObjectMapper jsonMapper = new ObjectMapper();
 		List<Order> ordersToSearchFor = orderService.listActiveOrders();
-		for(Order order : ordersToSearchFor){
+		for (Order order : ordersToSearchFor) {
 			String preferenceAsJson = order.getPreferencesAsJson();
 			UserPreference preference = null;
 			try {
 				preference = jsonMapper.readValue(preferenceAsJson, UserPreference.class);
 			} catch (JsonParseException | JsonMappingException e) {
-				// TODO some notification, etc
-				e.printStackTrace();
+				logger.error(e.getMessage());
 			} catch (IOException e) {
-				e.printStackTrace();
+				logger.error(e.getMessage());
 			}
 			toReturn.put(order, preference);
 		}
-		
+
 		return toReturn;
 	}
 

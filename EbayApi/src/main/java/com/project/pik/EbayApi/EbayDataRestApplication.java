@@ -18,22 +18,20 @@ package com.project.pik.EbayApi;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
-import org.springframework.boot.context.embedded.EmbeddedServletContainerCustomizer;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 
 import com.project.pik.EbayApi.daemon.SearchEbayOffersDaemon;
-import com.project.pik.EbayApi.service.EbayService;
-import com.project.pik.EbayApi.service.EbayServiceImpl;
 
 @Configuration
 @ComponentScan("com.project.pik")
 @EnableAutoConfiguration
 public class EbayDataRestApplication {
-
+	
 	public static void main(String[] args) throws Exception {
 		SpringApplication.run(EbayDataRestApplication.class, args);
 		SearchEbayOffersDaemon.runInstance();
 	}
+
+
 }

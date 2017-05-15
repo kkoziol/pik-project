@@ -1,5 +1,7 @@
 package com.project.pik.EbayApi;
 
+import static com.project.pik.EbayApi.consts.ApiConsts.PROPERTIES_FILE_NAME;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
@@ -13,32 +15,27 @@ import org.springframework.context.annotation.Lazy;
 import com.ebay.sdk.ApiContext;
 import com.ebay.sdk.ApiCredential;
 import com.ebay.services.client.ClientConfig;
-import com.ebay.soap.eBLBaseComponents.SiteCodeType;
 import com.project.pik.EbayApi.service.EbayService;
 import com.project.pik.EbayApi.service.EbayServiceImpl;
 
 @Configuration
 public class ApplicationConfig {
-	private static final Logger logger = Logger.getLogger(ApplicationConfig.class);
-	private static final String PROPERTIES_FILE_NAME = "/ebay.properties";
-	
-	@Bean EbayService getEbayService() {
+
+	private static final Logger logger = Logger.getLogger(EbayDataRestApplication.class);
+
+	@Bean
+	EbayService getEbayService() {
 		return new EbayServiceImpl();
 	}
-	
+
 	@Bean
-    public EmbeddedServletContainerCustomizer containerCustomizer() {
-        return (container -> {
-            container.setPort(8090);
-        });
-    }
-	
-	@Bean @Lazy
-	public ApiContext eBaySoapApi(){
-		// TODO SEARCHNIG_CURRENCY not autowired, etc
-		final SiteCodeType SITE_CODING = SiteCodeType.US;
-		final String SEARCHING_CURRENCY = "EUR";
-		
+	public EmbeddedServletContainerCustomizer containerCustomizer() {
+		return (container -> container.setPort(8090));
+	}
+
+	@Bean
+	@Lazy
+	public ApiContext eBaySoapApi() {
 		Properties keys = new Properties();
 		try {
 			InputStream in = EbayServiceImpl.class.getResourceAsStream(PROPERTIES_FILE_NAME);
@@ -57,9 +54,10 @@ public class ApplicationConfig {
 
 		return context;
 	}
-	
+
 	@Bean
-	public ClientConfig eBayClientConfig(){
+	@Lazy
+	public ClientConfig eBayClientConfig() {
 		Properties keys = new Properties();
 		try {
 			InputStream in = EbayServiceImpl.class.getResourceAsStream(PROPERTIES_FILE_NAME);
@@ -74,4 +72,5 @@ public class ApplicationConfig {
 
 		return config;
 	}
+
 }

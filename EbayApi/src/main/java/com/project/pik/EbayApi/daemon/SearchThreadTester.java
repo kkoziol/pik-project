@@ -1,12 +1,12 @@
 package com.project.pik.EbayApi.daemon;
 
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.apache.log4j.Logger;
 import org.junit.Test;
 
 public class SearchThreadTester {
@@ -15,6 +15,9 @@ public class SearchThreadTester {
 	 * Category: Computers/Tablets & NetworkingDesktops & All-In-One ComputersApple Desktops & All-In-One Computers
 	 */
 	String desktopAndAllInOneComputersCategorieId = "111418";
+	
+	/** LOGGER */
+	private static final Logger logger = Logger.getLogger(SearchThreadTester.class);
 	
 	@Test
 	public void searchForSinglePreferenceTest1(){
@@ -28,8 +31,8 @@ public class SearchThreadTester {
 		for(String s : searchForSinglePreference){
 			builder.append(s + "\n");
 		}
-		System.out.println("Found urls: ");
-		System.out.println(builder.toString());
+		
+		logger.debug("Found urls: " + builder.toString());
 	}
 	
 	private Map<String, Set<String>> createRefinments(){

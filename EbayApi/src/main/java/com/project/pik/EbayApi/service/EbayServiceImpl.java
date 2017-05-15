@@ -1,7 +1,8 @@
 package com.project.pik.EbayApi.service;
 
-import java.io.IOException;
-import java.io.InputStream;
+import static com.project.pik.EbayApi.consts.ApiConsts.SEARCHING_CURRENCY;
+import static com.project.pik.EbayApi.consts.ApiConsts.SITE_CODING;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
@@ -9,19 +10,18 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.Properties;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.ebay.sdk.ApiContext;
-import com.ebay.sdk.ApiCredential;
 import com.ebay.sdk.SdkException;
 import com.ebay.sdk.call.GetCategoriesCall;
 import com.ebay.sdk.call.GetCategorySpecificsCall;
 import com.ebay.sdk.call.GeteBayOfficialTimeCall;
 import com.ebay.services.client.ClientConfig;
 import com.ebay.services.client.FindingServiceClientFactory;
+import com.ebay.services.finding.Category;
 import com.ebay.services.finding.FindItemsAdvancedRequest;
 import com.ebay.services.finding.FindItemsAdvancedResponse;
 import com.ebay.services.finding.FindingServicePortType;
@@ -34,45 +34,119 @@ import com.ebay.soap.eBLBaseComponents.CategoryType;
 import com.ebay.soap.eBLBaseComponents.DetailLevelCodeType;
 import com.ebay.soap.eBLBaseComponents.NameRecommendationType;
 import com.ebay.soap.eBLBaseComponents.RecommendationsType;
-import com.ebay.soap.eBLBaseComponents.SiteCodeType;
 import com.ebay.soap.eBLBaseComponents.ValueRecommendationType;
 
 public class EbayServiceImpl implements EbayService {
 
 	@Autowired
 	private ApiContext eBaySoapApi;
-	
+
 	@Autowired
 	private ClientConfig eBayClientConfig;
-	
+
+	/** LOGGER */
 	private static final Logger logger = Logger.getLogger(EbayServiceImpl.class);
-	/** CONSTS */
-	private static final SiteCodeType SITE_CODING = SiteCodeType.US;
-	private static final String SEARCHING_CURRENCY = "EUR";
 
+	@Override
+	public Calendar getEbayTime() {
+		GeteBayOfficialTimeCall apiCall = new GeteBayOfficialTimeCall(eBaySoapApi);
+		Calendar cal = null;
 
-	public Map<String, List<String>> getCategorySpecificsByCategoryId(String categoryId){
+		try {
+			cal = apiCall.geteBayOfficialTime();
+		} catch (SdkException e) {
+			logger.error(e.getMessage());
+		} catch (Exception e) {
+			logger.error(e.getMessage());
+		}
+
+		if (cal == null) {
+			logger.error("Couldnot get ebay time");
+			return null;
+		}
+
+		return cal;
+	}
+
+	@Override
+	public List<CategoryType> getMainCategories() {
+		GetCategoriesCall categoriesCall = new GetCategoriesCall(eBaySoapApi);
+		categoriesCall.setCategorySiteID(SITE_CODING);
+		categoriesCall.addDetailLevel(DetailLevelCodeType.RETURN_ALL);
+		categoriesCall.setLevelLimit(1);
+
+		CategoryType[] categories = null;
+		try {
+			categories = categoriesCall.getCategories();
+		} catch (SdkException e) {
+			logger.error(e.getMessage());
+		} catch (Exception e) {
+			logger.error(e.getMessage());
+		}
+
+		return Arrays.asList(categories);
+	}
+
+	@Override
+	public List<CategoryType> getSubCategories(String parentCategoryId) {
+		GetCategoriesCall categoriesCall = new GetCategoriesCall(eBaySoapApi);
+		CategoryType parentCategory = getCategoryById(parentCategoryId);
+		if (parentCategory == null) {
+			logger.error("No such category");
+			return new ArrayList<>();
+		}
+
+		categoriesCall.setCategorySiteID(SITE_CODING);
+		categoriesCall.addDetailLevel(DetailLevelCodeType.RETURN_ALL);
+		categoriesCall.setLevelLimit(parentCategory.getCategoryLevel() + 1);
+		categoriesCall.setParentCategory(new String[] { parentCategory.getCategoryID() });
+
+		CategoryType[] categories = null;
+		try {
+			categories = categoriesCall.getCategories();
+		} catch (SdkException e) {
+			logger.error(e.getMessage());
+		} catch (Exception e) {
+			logger.error(e.getMessage());
+		}
+
+		return Arrays.asList(categories);
+	}
+
+	@Override
+	public Map<String, List<String>> getCategorySpecificsByCategoryId(String categoryId) {
 		Map<String, List<String>> toReturn = new HashMap<>();
 		GetCategorySpecificsCall call = new GetCategorySpecificsCall();
 		call.setApiContext(eBaySoapApi);
-		call.setCategoryID(new String[]{categoryId});
+		call.setCategoryID(new String[] { categoryId });
 		RecommendationsType[] categorySpecifics = null;
 		try {
 			categorySpecifics = call.getCategorySpecifics();
+		} catch (SdkException e) {
+			logger.error(e.getMessage());
 		} catch (Exception e) {
-			e.printStackTrace();
-		}		
+			logger.error(e.getMessage());
+		}
+		if (categorySpecifics == null || categorySpecifics.length == 0)
+			return toReturn;
+
 		NameRecommendationType[] nameRecommendation = categorySpecifics[0].getNameRecommendation();
-		for(NameRecommendationType nrt : nameRecommendation){
+		for (NameRecommendationType nrt : nameRecommendation) {
 			List<String> val = new ArrayList<>();
-			for(ValueRecommendationType vrt : nrt.getValueRecommendation()){
+			for (ValueRecommendationType vrt : nrt.getValueRecommendation()) {
 				val.add(vrt.getValue());
 			}
 			toReturn.put(nrt.getName(), val);
 		}
-		return toReturn;		
+		return toReturn;
 	}
-	
+
+	@Override
+	public Category getBestMatchCategory(String keyword) {
+		return this.getBestMatchItem(keyword).getPrimaryCategory();
+	}
+
+	@Override
 	public CategoryType getCategoryById(String categoryId) {
 		GetCategoriesCall categoriesCall = new GetCategoriesCall(eBaySoapApi);
 		categoriesCall.setCategorySiteID(SITE_CODING);
@@ -96,24 +170,13 @@ public class EbayServiceImpl implements EbayService {
 	}
 
 	@Override
-	public Calendar getEbayTime() {
-		GeteBayOfficialTimeCall apiCall = new GeteBayOfficialTimeCall(eBaySoapApi);
-		Calendar cal = null;
+	public List<SearchItem> getItemsByKeyword(String keyword) {
+		return this.getItemsByKeywordCategoryAndPrice(keyword, null, -1, -1);
+	}
 
-		try {
-			cal = apiCall.geteBayOfficialTime();
-		} catch (SdkException e) {
-			logger.error(e.getMessage());
-		} catch (Exception e) {
-			logger.error(e.getMessage());
-		}
-
-		if (cal == null) {
-			logger.error("Couldnot get ebay time");
-			return null;
-		}
-
-		return cal;
+	@Override
+	public List<SearchItem> getItemsByKeywordCategory(String keyword, String categoryId) {
+		return this.getItemsByKeywordCategoryAndPrice(keyword, categoryId, -1, -1);
 	}
 
 	@Override
@@ -172,14 +235,6 @@ public class EbayServiceImpl implements EbayService {
 		return items;
 	}
 
-	public List<SearchItem> getItemsByKeywordCategory(String keyword, String categoryId) {
-		return this.getItemsByKeywordCategoryAndPrice(keyword, categoryId, -1, -1);
-	}
-
-	public List<SearchItem> getItemsByKeyword(String keyword) {
-		return this.getItemsByKeywordCategoryAndPrice(keyword, null, -1, -1);
-	}
-
 	@Override
 	public SearchItem getBestMatchItem(String keyword) {
 		FindingServicePortType serviceClient = FindingServiceClientFactory.getServiceClient(eBayClientConfig);
@@ -222,50 +277,5 @@ public class EbayServiceImpl implements EbayService {
 			return fiAdvResponse.getSearchResult().getItem().get(0);
 
 		return new SearchItem();
-	}
-
-	@Override
-	public List<CategoryType> getMainCategories() {
-		GetCategoriesCall categoriesCall = new GetCategoriesCall(eBaySoapApi);
-		categoriesCall.setCategorySiteID(SITE_CODING);
-		categoriesCall.addDetailLevel(DetailLevelCodeType.RETURN_ALL);
-		categoriesCall.setLevelLimit(1);
-
-		CategoryType[] categories = null;
-		try {
-			categories = categoriesCall.getCategories();
-		} catch (SdkException e) {
-			logger.error(e.getMessage());
-		} catch (Exception e) {
-			logger.error(e.getMessage());
-		}
-
-		return Arrays.asList(categories);
-	}
-
-	@Override
-	public List<CategoryType> getSubCategories(String parentCategoryId) {
-		GetCategoriesCall categoriesCall = new GetCategoriesCall(eBaySoapApi);
-		CategoryType parentCategory = getCategoryById(parentCategoryId);
-		if (parentCategory == null) {
-			System.out.println("No such category");
-			return new ArrayList<>();
-		}
-
-		categoriesCall.setCategorySiteID(SITE_CODING);
-		categoriesCall.addDetailLevel(DetailLevelCodeType.RETURN_ALL);
-		categoriesCall.setLevelLimit(parentCategory.getCategoryLevel() + 1);
-		categoriesCall.setParentCategory(new String[] { parentCategory.getCategoryID() });
-
-		CategoryType[] categories = null;
-		try {
-			categories = categoriesCall.getCategories();
-		} catch (SdkException e) {
-			logger.error(e.getMessage());
-		} catch (Exception e) {
-			logger.error(e.getMessage());
-		}
-
-		return Arrays.asList(categories);
 	}
 }
