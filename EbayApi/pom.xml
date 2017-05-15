@@ -47,20 +47,25 @@
 			<artifactId>xalan</artifactId>
 			<version>2.7.2</version>
 		</dependency>
-		<!-- Spring Security OAuth2-->
-        <dependency>
-            <groupId>org.springframework.security.oauth</groupId>
-            <artifactId>spring-security-oauth2</artifactId>
-            <version>${springsecurityoauth2.version}</version>
- 		</dependency>
- 
+		<!-- Spring Security OAuth2 -->
+		<dependency>
+			<groupId>org.springframework.security.oauth</groupId>
+			<artifactId>spring-security-oauth2</artifactId>
+			<version>${springsecurityoauth2.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-jwt</artifactId>
+		</dependency>
+
 		<!-- FOR DEVELOPING -->
 		<dependency>
-				<groupId>org.springframework.boot</groupId>
-				<artifactId>spring-boot-devtools</artifactId>
-				<scope>runtime</scope>
-			</dependency>
-		</dependencies>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-devtools</artifactId>
+			<scope>runtime</scope>
+		</dependency>
+	</dependencies>
 
 	<scm>
 		<url>http://localhost:2000/scm/pik/web-search-engine.git</url>
