@@ -38,7 +38,8 @@ public class OAuth2SecurityConfiguration extends WebSecurityConfigurerAdapter{
 	    public void configure(AuthenticationManagerBuilder auth) throws Exception {
 	        auth.inMemoryAuthentication()
 	        .withUser("admin").password("admin").roles("ADMIN").and()
-	        .withUser("test").password("test").roles("USER");
+	        .withUser("test").password("test").roles("USER").and()
+	        .withUser("pik-webapp-client").password("secret").roles("USER");
 	    }
 	    
 	    

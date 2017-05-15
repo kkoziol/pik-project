@@ -18,7 +18,6 @@ import org.springframework.security.oauth2.provider.approval.TokenStoreUserAppro
 import org.springframework.security.oauth2.provider.error.OAuth2AccessDeniedHandler;
 import org.springframework.security.oauth2.provider.token.DefaultTokenServices;
 import org.springframework.security.oauth2.provider.token.TokenStore;
-import org.springframework.security.oauth2.provider.token.store.InMemoryTokenStore;
 
 @Configuration
 public class OAuth2ServerConfiguration {
@@ -40,7 +39,7 @@ public class OAuth2ServerConfiguration {
 		@Override
 		public void configure(HttpSecurity http) throws Exception {
 			http.requestMatchers().antMatchers("/api/**").and().authorizeRequests().antMatchers("/api/**")
-					.access("hasRole('ROLE_USER')").and().exceptionHandling()
+					.access("hasRole('USER')").and().exceptionHandling()
 					.accessDeniedHandler(new OAuth2AccessDeniedHandler());
 
 			// http
