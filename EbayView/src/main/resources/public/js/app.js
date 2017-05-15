@@ -79,6 +79,7 @@ app.service("AuthenticationService", function($http, $cookies, $httpParamSeriali
     			 $cookies.put("access_token", data['access_token']);
     			 // add jwt token to auth header for all requests made by the $http service
                  $http.defaults.headers.common.Authorization = 'Bearer ' + data['access_token'];
+                 $http.defaults.headers.common.Authorization =  "Basic "+ btoa(username + ":" + password);
 
                  // execute callback with true to indicate successful login
                  callback(true);
@@ -120,7 +121,7 @@ app.service("AuthenticationService", function($http, $cookies, $httpParamSeriali
 
 app.controller("homeCtrl", function ($http) {
 	var self = this;
-	$http.get('http://localhost:8090/api/test/').success(function(data) {
+	$http.get('http://localhost:8090/api/test').success(function(data) {
 		self.test = data;
 	});
 });

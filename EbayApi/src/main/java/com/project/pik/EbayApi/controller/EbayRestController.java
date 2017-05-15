@@ -26,9 +26,7 @@ public class EbayRestController {
 	@Autowired
 	EbayService ebayService;
 
-	//FOR TESTING
-	//@PreAuthorize("#oauth2.hasScope('read')")
-	//@Secured("ROLE_USER")
+
 	@RequestMapping(value = "/api/test", method = RequestMethod.GET, produces = "application/json")
 	  public Map<String,Object> home() {
 	    Map<String,Object> model = new HashMap<String,Object>();
@@ -36,7 +34,7 @@ public class EbayRestController {
 	    model.put("content", "Authenticated, but stil in progress 3===o");
 	    return model;
 	  }
-	///////
+
 	
 	@RequestMapping(value = "/api/maincat", method = RequestMethod.GET)
 	public ResponseEntity<List<CategoryType>> listMainCategories() {

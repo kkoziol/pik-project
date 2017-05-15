@@ -19,7 +19,6 @@
 
 	<properties>
 		<main.basedir>${basedir}/../..</main.basedir>
-		<springsecurityoauth2.version>2.1.0.RELEASE</springsecurityoauth2.version>
 	</properties>
 
 	<dependencies>

@@ -41,11 +41,6 @@ public class OAuth2ServerConfiguration {
 			http.requestMatchers().antMatchers("/api/**").and().authorizeRequests().antMatchers("/api/**")
 					.access("hasRole('USER')").and().exceptionHandling()
 					.accessDeniedHandler(new OAuth2AccessDeniedHandler());
-
-			// http
-			// .csrf().disable()
-			// .authorizeRequests()
-			// .antMatchers("/user/**").authenticated();
 		}
 
 	}
