@@ -14,6 +14,7 @@ import org.springframework.security.oauth2.config.annotation.web.configuration.E
 import org.springframework.security.oauth2.config.annotation.web.configuration.ResourceServerConfigurerAdapter;
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerEndpointsConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configurers.ResourceServerSecurityConfigurer;
+import org.springframework.security.oauth2.provider.approval.TokenStoreUserApprovalHandler;
 import org.springframework.security.oauth2.provider.error.OAuth2AccessDeniedHandler;
 import org.springframework.security.oauth2.provider.token.DefaultTokenServices;
 import org.springframework.security.oauth2.provider.token.TokenStore;
@@ -29,11 +30,11 @@ public class OAuth2ServerConfiguration {
 
 	@Configuration
 	@EnableResourceServer
-	protected  class ResourceServerConfiguration extends ResourceServerConfigurerAdapter {
+	protected class ResourceServerConfiguration extends ResourceServerConfigurerAdapter {
 
 		@Override
 		public void configure(ResourceServerSecurityConfigurer resources) throws Exception {
-			resources.tokenStore(tokenStore).resourceId(RESOURCE_ID);
+			resources.tokenStore(tokenStore).resourceId(RESOURCE_ID).stateless(false);
 		}
 
 		@Override
@@ -52,8 +53,11 @@ public class OAuth2ServerConfiguration {
 
 	@Configuration
 	@EnableAuthorizationServer
-	protected  class AuthorizationServerConfiguration extends AuthorizationServerConfigurerAdapter {
+	protected class AuthorizationServerConfiguration extends AuthorizationServerConfigurerAdapter {
 
+		@Autowired
+		@Qualifier("userApprovalHandler")
+		TokenStoreUserApprovalHandler userApprovalHandler;
 
 		@Autowired
 		@Qualifier("authenticationManagerBean")
@@ -62,19 +66,29 @@ public class OAuth2ServerConfiguration {
 		@Override
 		public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
 
-			clients.inMemory() // we have one client so for developing it could be enaugh
+			clients.inMemory() // we have one client so for developing it could
+								// be enaugh
 					.withClient("pik-webapp-client")
 					.authorizedGrantTypes("password", "authorization_code", "refresh_token", "implicit")
 					.authorities("ROLE_CLIENT", "ROLE_TRUSTED_CLIENT").scopes("read", "write", "trust")
-					.resourceIds(RESOURCE_ID).secret("secret").accessTokenValiditySeconds(60 * 60) //1h
-					.refreshTokenValiditySeconds(60 * 90); //1.5h
-			}
+					.resourceIds(RESOURCE_ID).secret("secret").accessTokenValiditySeconds(60 * 60) // 1h
+					.refreshTokenValiditySeconds(60 * 90); // 1.5h
+		}
 
 		@Override
 		public void configure(AuthorizationServerEndpointsConfigurer endpoints) throws Exception {
-			endpoints.tokenStore(tokenStore)// .userApprovalHandler(userApprovalHandler)
+			endpoints.tokenStore(tokenStore).userApprovalHandler(userApprovalHandler)
 					.authenticationManager(authenticationManager);
 		}
 
-}
+		@Bean
+		@Primary
+		public DefaultTokenServices tokenServices() {
+			DefaultTokenServices tokenServices = new DefaultTokenServices();
+			tokenServices.setSupportRefreshToken(true);
+			tokenServices.setTokenStore(tokenStore);
+			return tokenServices;
+		}
+
+	}
 }

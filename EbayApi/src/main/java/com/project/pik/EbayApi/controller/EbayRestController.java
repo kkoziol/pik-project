@@ -28,7 +28,7 @@ public class EbayRestController {
 
 	//FOR TESTING
 	//@PreAuthorize("#oauth2.hasScope('read')")
-	@Secured("ROLE_USER")
+	//@Secured("ROLE_USER")
 	@RequestMapping(value = "/api/test", method = RequestMethod.GET, produces = "application/json")
 	  public Map<String,Object> home() {
 	    Map<String,Object> model = new HashMap<String,Object>();

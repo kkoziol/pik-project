@@ -12,6 +12,7 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.method.configuration.GlobalMethodSecurityConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.oauth2.provider.ClientDetailsService;
@@ -24,15 +25,17 @@ import org.springframework.security.oauth2.provider.token.store.InMemoryTokenSto
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 @Configuration
-@EnableWebMvc
+@EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class OAuth2SecurityConfiguration extends WebSecurityConfigurerAdapter{
 	
 		@Autowired
 	    private ClientDetailsService clientDetailsService;
-	     
-	    @Autowired
-	    public void configureGlobalSecurity(AuthenticationManagerBuilder auth) throws Exception {
+	    
+		
+		
+		@Override
+	    public void configure(AuthenticationManagerBuilder auth) throws Exception {
 	        auth.inMemoryAuthentication()
 	        .withUser("admin").password("admin").roles("ADMIN").and()
 	        .withUser("test").password("test").roles("USER");
@@ -48,6 +51,7 @@ public class OAuth2SecurityConfiguration extends WebSecurityConfigurerAdapter{
 	        .authorizeRequests()
 	        .antMatchers("/oauth/token").permitAll()
 	        .anyRequest().access("hasRole('USER')")
+	        .and().httpBasic()
 	        ;
 	    
 	    }
