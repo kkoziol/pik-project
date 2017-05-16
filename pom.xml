@@ -115,8 +115,8 @@
 				<artifactId>jacoco-maven-plugin</artifactId>
 				<version>0.7.9</version>
 				<configuration>
-					<destFile>${basedir}/target/coverage-reports/jacoco-unit.exec</destFile>
-					<dataFile>${basedir}/target/coverage-reports/jacoco-unit.exec</dataFile>
+					<destFile>${basedir}/target/jacoco-unit.exec</destFile>
+					<dataFile>${basedir}/target/jacoco-unit.exec</dataFile>
 					<excludes>
 						<exclude>**/*Test*.*</exclude>
 						<exclude>**/*test*.*</exclude>
@@ -139,6 +139,11 @@
 						</goals>
 					</execution>
 				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.sonarsource.scanner.maven</groupId>
+				<artifactId>sonar-maven-plugin</artifactId>
+				<version>3.0.1</version>
 			</plugin>
 		</plugins>
 	</build>
