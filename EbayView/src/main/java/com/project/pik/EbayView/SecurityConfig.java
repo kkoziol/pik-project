@@ -1,6 +1,8 @@
 package com.project.pik.EbayView;
 
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
@@ -21,26 +23,29 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 //    @Autowired
 //    DataSource dataSource;
 
-	@Override
-    protected void configure(AuthenticationManagerBuilder builder) throws Exception {
-        builder.inMemoryAuthentication().withUser("test").password("test").roles("USER").and().withUser("admin")
-                .password("admin").roles("ADMIN");
-    }
+//	@Override
+//    protected void configure(AuthenticationManagerBuilder builder) throws Exception {
+//        builder.inMemoryAuthentication().withUser("test").password("test").roles("USER").and().withUser("admin")
+//                .password("admin").roles("ADMIN");
+//    }
 	
 	
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
-		http.httpBasic().and().authorizeRequests()
-				.antMatchers("/js/**","/css/**","/login-post","/user","/index.html", "/home.html", "/","/login.html")
-				.permitAll().anyRequest().authenticated()
+		http.authorizeRequests()
+				.anyRequest().permitAll()
 				.and().formLogin().loginPage("/index.html#/login").permitAll()
-				//.defaultSuccessUrl("/home.html").permitAll()
 				.and()
 				.addFilterAfter(new CsrfHeaderFilter(), CsrfFilter.class)
-				.csrf().csrfTokenRepository(csrfTokenRepository())
-				.and().logout().logoutSuccessUrl("/login").deleteCookies("XSRF-TOKEN");
+				.csrf().csrfTokenRepository(csrfTokenRepository());
 
 	}
+	
+//	@Override
+//    @Bean
+//    public AuthenticationManager authenticationManagerBean() throws Exception {
+//        return super.authenticationManagerBean();
+//    }
 	
 	/*
 	 * tell Spring Security to expect Angular CSRF token format - XSRF-TOKEN

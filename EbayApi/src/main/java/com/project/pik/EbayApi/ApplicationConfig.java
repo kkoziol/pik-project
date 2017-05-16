@@ -28,10 +28,10 @@ public class ApplicationConfig {
 		return new EbayServiceImpl();
 	}
 
-	@Bean
-	public EmbeddedServletContainerCustomizer containerCustomizer() {
-		return (container -> container.setPort(8090));
-	}
+//	@Bean
+//	public EmbeddedServletContainerCustomizer containerCustomizer() {
+//		return (container -> container.setPort(8090));
+//	}
 
 	@Bean
 	@Lazy
