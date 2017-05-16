@@ -64,7 +64,7 @@ app.service("AuthenticationService", function($http, $cookies, $httpParamSeriali
     	    var encoded = btoa("pik-webapp-client:secret");
     	
     	    	
-    	$http.post("http://localhost:8090/oauth/token",$httpParamSerializer(data), {
+    	$http.post("https://localhost:8443/oauth/token",$httpParamSerializer(data), {
 	      headers : {
 	        'Accept': 'application/json',
 	        "Authorization": "Basic " + encoded,
@@ -77,7 +77,7 @@ app.service("AuthenticationService", function($http, $cookies, $httpParamSeriali
     		if(data['access_token']){
     			 console.log("Access token:  "+data['access_token']);
     			 $cookies.put("access_token", data['access_token']);
-    			 // add jwt token to auth header for all requests made by the $http service
+    			 // add oAuth2 token to auth header for all requests made by the $http service
                  $http.defaults.headers.common.Authorization = 'Bearer ' + data['access_token'];
 
                  // execute callback with true to indicate successful login
@@ -91,36 +91,20 @@ app.service("AuthenticationService", function($http, $cookies, $httpParamSeriali
     		callback(false);
     	});
         
-//    	$http.post('/api/authenticate', { username: username, password: password })
-//            .success(function (response) {
-//                // login successful if there's a token in the response
-//                if (response.token) {
-//                    // store username and token in local storage to keep user logged in between page refreshes
-//                    $localStorage.currentUser = { username: username, token: response.token };
-//
-//                    // add jwt token to auth header for all requests made by the $http service
-//                    $http.defaults.headers.common.Authorization = 'Bearer ' + response.token;
-//
-//                    // execute callback with true to indicate successful login
-//                    callback(true);
-//                } else {
-//                    // execute callback with false to indicate failed login
-//                    callback(false);
-//                }
-//            });
     }
 
     function Logout() {
         // remove user from local storage and clear http auth header
         $cookies.remove("access_token");
         $http.defaults.headers.common.Authorization = '';
+        $http.post('logout', {});
         
     }
 });
 
 app.controller("homeCtrl", function ($http) {
 	var self = this;
-	$http.get('http://localhost:8090/api/test').success(function(data) {
+	$http.get('https://localhost:8443/api/test').success(function(data) {
 		self.test = data;
 	});
 });

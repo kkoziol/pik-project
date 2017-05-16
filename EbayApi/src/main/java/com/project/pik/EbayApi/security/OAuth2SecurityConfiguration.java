@@ -1,28 +1,25 @@
 package com.project.pik.EbayApi.security;
 
+
+import javax.sql.DataSource;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.security.SecurityProperties;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
-import org.springframework.security.access.expression.method.MethodSecurityExpressionHandler;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
-import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
-import org.springframework.security.config.annotation.method.configuration.GlobalMethodSecurityConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.builders.WebSecurity;
-import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.provider.ClientDetailsService;
-import org.springframework.security.oauth2.provider.approval.ApprovalStore;
-import org.springframework.security.oauth2.provider.approval.TokenApprovalStore;
-import org.springframework.security.oauth2.provider.approval.TokenStoreUserApprovalHandler;
-import org.springframework.security.oauth2.provider.request.DefaultOAuth2RequestFactory;
 import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.security.oauth2.provider.token.store.InMemoryTokenStore;
-import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+import org.springframework.security.web.csrf.CsrfTokenRepository;
+import org.springframework.security.web.csrf.HttpSessionCsrfTokenRepository;
+
 
 @Configuration
 //@EnableWebSecurity
@@ -30,17 +27,18 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 @Order(SecurityProperties.ACCESS_OVERRIDE_ORDER)
 public class OAuth2SecurityConfiguration extends WebSecurityConfigurerAdapter{
 	
-		@Autowired
-	    private ClientDetailsService clientDetailsService;
+
 	    
-		
+		  @Autowired
+		  DataSource dataSource;
 		
 		@Autowired
 	    public void globalUserDetails(final AuthenticationManagerBuilder auth) throws Exception {
-	        auth.inMemoryAuthentication()
-	        .withUser("admin").password("admin").roles("ADMIN").and()
-	        .withUser("test").password("test").roles("USER").and()
-	        .withUser("pik-webapp-client").password("secret").roles("USER");
+
+	        auth.jdbcAuthentication().dataSource(dataSource)
+	               // .passwordEncoder(passwordEncoder())
+	                .usersByUsernameQuery("SELECT LOGIN, PASSWORD, 1 FROM Users WHERE LOGIN = ?")
+	                .authoritiesByUsernameQuery("SELECT LOGIN, AUTHORITIES FROM Users WHERE LOGIN = ?  ");
 	    }
 	    
 	    
@@ -52,9 +50,7 @@ public class OAuth2SecurityConfiguration extends WebSecurityConfigurerAdapter{
 	        .anonymous().disable()
 	        .authorizeRequests()
 	        .antMatchers("/oauth/token").permitAll()
-	        .anyRequest().authenticated()
-	        //.and().httpBasic()
-	        ;
+	        .anyRequest().authenticated();
 	    
 	    }
 	 
@@ -70,6 +66,12 @@ public class OAuth2SecurityConfiguration extends WebSecurityConfigurerAdapter{
 	        return new InMemoryTokenStore();
 	    }
 	 
+	    
+//	    @Bean
+//	    public PasswordEncoder passwordEncoder() {
+//	        return new BCryptPasswordEncoder();
+//	    }
+	    
 //	    @Bean
 //	    @Autowired
 //	    public TokenStoreUserApprovalHandler userApprovalHandler(TokenStore tokenStore){
