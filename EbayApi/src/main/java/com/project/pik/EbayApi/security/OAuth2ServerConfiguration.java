@@ -43,8 +43,10 @@ public class OAuth2ServerConfiguration {
 //					.access("hasRole('USER')").and().exceptionHandling()
 //					.accessDeniedHandler(new OAuth2AccessDeniedHandler());
 			
-			http.authorizeRequests().antMatchers("/api/**")
-			.access("hasRole('USER')");
+			http.authorizeRequests().antMatchers("/categories/**")
+			.access("hasRole('USER')").antMatchers("/items/**")
+			.access("hasRoler('USER')").antMatchers("/api/**")
+			.access("hasRoler('USER')");
 		}
 
 	}
