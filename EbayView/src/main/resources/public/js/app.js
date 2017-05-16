@@ -79,7 +79,6 @@ app.service("AuthenticationService", function($http, $cookies, $httpParamSeriali
     			 $cookies.put("access_token", data['access_token']);
     			 // add jwt token to auth header for all requests made by the $http service
                  $http.defaults.headers.common.Authorization = 'Bearer ' + data['access_token'];
-                 $http.defaults.headers.common.Authorization =  "Basic "+ btoa(username + ":" + password);
 
                  // execute callback with true to indicate successful login
                  callback(true);
