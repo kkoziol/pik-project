@@ -59,8 +59,7 @@ public class EbayApplicationTests {
 
 	@Test
 	public void testMainCategories() throws Exception {
-
-		this.mvc.perform(get("/maincat")).andExpect(status().isOk())
+		this.mvc.perform(get("/categories/maincategories")).andExpect(status().isOk())
 				.andExpect(content().string(containsString("categoryID")));
 	}
 }
