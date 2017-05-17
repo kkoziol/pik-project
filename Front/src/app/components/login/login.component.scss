@@ -1,0 +1,24 @@
+.loginContainer {
+  display: table-caption;
+  background: red;
+  padding: 5rem 9rem;
+  border-radius: 3%;
+
+  .labelInputRow {
+    margin: 1rem;
+
+    .inputLabel {
+      font-size: 1rem;
+    }
+
+    .inputField {
+      padding: 0.4rem 0.4rem 0.4rem 0.4rem;
+      width: 15rem;
+      border-radius: 3%;
+    }
+  }
+
+  .buttonRow {
+    text-align: center;
+  }
+}

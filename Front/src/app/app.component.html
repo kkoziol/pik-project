@@ -1,0 +1,8 @@
+<h1>{{title}}</h1>
+<nav *ngIf="logged.active">
+  <a routerLink="/eBay" routerLinkActive="active">EBay</a>
+  <a routerLink="/history" routerLinkActive="active">History</a>
+  <a routerLink="/orders" routerLinkActive="active">Orders</a>
+  <a routerLink="/settings" routerLinkActive="active">Orders</a>
+</nav>
+<router-outlet></router-outlet>
