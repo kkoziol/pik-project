@@ -1,6 +1,10 @@
-# Untitled3
+# Fron
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 1.0.3.
+
+## Before start
+
+Project use sass - you need install it 'npm install node-sass'
 
 ## Development server
 
