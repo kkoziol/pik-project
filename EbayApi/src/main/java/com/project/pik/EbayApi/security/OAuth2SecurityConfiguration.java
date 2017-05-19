@@ -34,7 +34,6 @@ public class OAuth2SecurityConfiguration extends WebSecurityConfigurerAdapter{
 		
 		@Autowired
 	    public void globalUserDetails(final AuthenticationManagerBuilder auth) throws Exception {
-
 	        auth.jdbcAuthentication().dataSource(dataSource)
 	               // .passwordEncoder(passwordEncoder())
 	                .usersByUsernameQuery("SELECT LOGIN, PASSWORD, 1 FROM Users WHERE LOGIN = ?")
