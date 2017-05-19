@@ -1,6 +1,6 @@
 <div class="loginContainer">
   <div class="labelInputRow">
-    <label class="inputLabel">E-mail</label>
+    <label class="inputLabel" on>E-mail</label>
     <input class="inputField" type="text" placeholder="Your email address">
   </div>
   <div class="labelInputRow">
@@ -8,6 +8,7 @@
     <input class="inputField" type="password" placeholder="Your password">
   </div>
   <div class="labelInputRow buttonRow">
-    <button>Zaloguj</button>
+    <button (click)="changeActive()">Zaloguj</button>
   </div>
+  <my-autocomplete></my-autocomplete>
 </div>
