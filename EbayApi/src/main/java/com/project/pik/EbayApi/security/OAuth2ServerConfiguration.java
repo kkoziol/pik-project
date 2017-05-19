@@ -45,8 +45,8 @@ public class OAuth2ServerConfiguration {
 			
 			http.authorizeRequests().antMatchers("/categories/**")
 			.access("hasRole('USER')").antMatchers("/items/**")
-			.access("hasRoler('USER')").antMatchers("/api/**")
-			.access("hasRoler('USER')");
+			.access("hasRole('USER')").antMatchers("/api/**")
+			.access("hasRole('USER')");
 		}
 
 	}
