@@ -4,17 +4,18 @@ import {Http, Headers} from '@angular/http';
 @Injectable()
 export class AuthorizationHttp {
 
+  applicationUrl : string = 'https://192.168.1.72:8800/';
+
   constructor(private http: Http) {}
 
   createAuthorizationHeader(headers: Headers) {
-    headers.append('Authorization', 'Basic ' +
-      btoa('username:password'));
+    //TODO automatyczna autoryzacji
   }
 
   get(url) {
     let headers = new Headers();
     this.createAuthorizationHeader(headers);
-    return this.http.get(url, {
+    return this.http.get(this.applicationUrl + url, {
       headers: headers
     });
   }
@@ -22,7 +23,7 @@ export class AuthorizationHttp {
   post(url, data) {
     let headers = new Headers();
     this.createAuthorizationHeader(headers);
-    return this.http.post(url, data, {
+    return this.http.post(this.applicationUrl + url, data, {
       headers: headers
     });
   }
