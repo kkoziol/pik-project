@@ -1,15 +1,16 @@
 import {Injectable} from '@angular/core';
 import {Http, Headers} from '@angular/http';
+import {AuthorizationService} from "../authorization/authorization.service";
 
 @Injectable()
 export class AuthorizationHttp {
 
-  applicationUrl : string = 'https://192.168.1.72:8800/';
+  applicationUrl : string = 'https://192.168.1.72:8800';
 
-  constructor(private http: Http) {}
+  constructor(private http: Http, private authotrizationService: AuthorizationService) {}
 
   createAuthorizationHeader(headers: Headers) {
-    //TODO automatyczna autoryzacji
+    headers.append('Authorization', this.authotrizationService.token)
   }
 
   get(url) {

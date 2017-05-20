@@ -26,7 +26,7 @@ export class EBayComponent implements OnInit {
   categoryList: Category[];
   selectedCategory: Category;
 
-  constructor(private wikipediaService: EBayService) {
+  constructor(private ebayService: EBayService) {
     this.categoryList = [
       new Category('Wybierz kategorie', 353),
       new Category('Antyki i Sztuka', 353),
@@ -78,6 +78,7 @@ export class EBayComponent implements OnInit {
     if(this.selectedCategory.value !== 0){}
     else if(this.selectedCategory.value !== 0 && this.minCost && this.maxCost){}
     else {}
+    console.log(this.ebayService.getMainCategories().subscribe());
   }
 
   chooseCategory = (category: Category) => {

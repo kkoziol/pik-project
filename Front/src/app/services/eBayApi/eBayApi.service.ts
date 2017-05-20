@@ -2,24 +2,50 @@ import {Injectable} from "@angular/core";
 import {Jsonp} from "@angular/http";
 
 import 'rxjs/add/operator/map';
+import {AuthorizationHttp} from "../authorizationHttp/authorizationHttp";
 
 @Injectable()
 export class EBayService {
-  constructor(private jsonp: Jsonp) {}
+  constructor(private authorizationHttp: AuthorizationHttp) {
+  }
 
-  search (term: string) {
+  getMainCategories() {
+    return this.authorizationHttp.get("/categories/maincategories");
+  }
 
-    let wikiUrl = 'https://192.168.1.72:8800/categories/maincategories';
+  getSbsCategoriesByParentId(parentId: number) {
+    return this.authorizationHttp.get("/categories/subcategories/" + parentId);
+  }
 
-    let params = new URLSearchParams();
-    // params.set('search', term); // the user's search value
-    // params.set('action', 'opensearch');
-    // params.set('format', 'json');
-    // params.set('callback', 'JSONP_CALLBACK');
+  getSpecificsCategoriesById(categoryId: number) {
+    return this.authorizationHttp.get("/categories/categoryspecifics/" + categoryId);
+  }
 
-    // TODO: Add error handling
-    return this.jsonp
-      .get(wikiUrl, { search: params })
-      .map(response => <string[]> response.json()[1]);
+  getBestMatchCategory(keyword: string) {
+    return this.authorizationHttp.get("/categories/bestmach/" + keyword);
+  }
+
+  getCategoryNameById(categoryId: number) {
+    return this.authorizationHttp.get("/categories/categoryname/" + categoryId);
+  }
+
+  getItemsByKeyWord(keyword: string) {
+    return this.authorizationHttp.get("/items/search/" + keyword);
+  }
+
+  getItemsByKeyWordAndCategory(keyword: string, categoryId: number) {
+    return this.authorizationHttp.get("/items/search/" + keyword + "/" + categoryId);
+  }
+
+  getItemsByKeyWordAndCategoryAndMinMaxPrice(keyword: string, categoryId: number, minPrice: number, maxPrice: number) {
+    return this.authorizationHttp.get("/items/search/" + keyword + "/" + categoryId + "/" + minPrice + "/" + maxPrice);
+  }
+
+  getBestItemByKeyWord(keyword: string) {
+    return this.authorizationHttp.get("/items/bestmach/item/" + keyword);
+  }
+
+  getCheapestItemByKeyWordInCategory(keyword: string, categoryId: number) {
+    return this.authorizationHttp.get("/items/cheapest/item/" + keyword + "/" + categoryId);
   }
 }

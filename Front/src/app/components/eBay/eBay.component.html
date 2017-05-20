@@ -2,43 +2,47 @@
   <tbody>
   <tr>
     <td class="">
-        <table class="">
-          <tbody>
-          <tr>
-            <td class="">
+      <table class="">
+        <tbody>
+        <tr>
+          <td class="">
+            <div>
               <div>
-                <div><label class="">Wpisz szukane słowa</label><input type="text"
-                                                                       class=""
-                                                                       size="50"
-                                                                       maxlength="300"
-                                                                       placeholder="Wyszukaj..."
-                                                                       [(ngModel)]=query>
-                </div>
+                <label class="">Wpisz szukane słowa</label>
+                <input type="text"
+                       class=""
+                       size="50"
+                       maxlength="300"
+                       placeholder="Wyszukaj..."
+                       [(ngModel)]=query>
               </div>
-              <input type="text"
-                     class=""
-                     size="50"
-                     maxlength="300"
-                     placeholder="Cena Max"
-                     [(ngModel)]=maxCost>
-              <input type="text"
-                     class=""
-                     size="50"
-                     maxlength="300"
-                     placeholder="Cena Min"
-                     [(ngModel)]=minCost>
-            </td>
-            <td class="">
-              <div>
-                <select class=""  (change)="chooseCategory(value)">
-                  <option *ngFor="let category of categoryList" [value]="category">{{category.name}}</option>
-                </select>
-               </div>
-            </td>
-            <td class=""><input type="submit" class="" value="Wyszukaj"></td>
-          </tr>
-          </tbody>
-        </table>
+            </div>
+            <input type="text"
+                   class=""
+                   size="50"
+                   maxlength="300"
+                   placeholder="Cena Max"
+                   [(ngModel)]=maxCost>
+            <input type="text"
+                   class=""
+                   size="50"
+                   maxlength="300"
+                   placeholder="Cena Min"
+                   [(ngModel)]=minCost>
+          </td>
+          <td class="">
+            <div>
+              <select class="" (change)="chooseCategory(value)">
+                <option *ngFor="let category of categoryList" [value]="category">{{category.name}}</option>
+              </select>
+            </div>
+          </td>
+          <td class="">
+            <input type="submit" class="" value="Wyszukaj" (click)="submit()">
+          </td>
+        </tr>
+        </tbody>
+      </table>
     </td>
   </tr>
   </tbody>
