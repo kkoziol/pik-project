@@ -7,7 +7,7 @@ import {AuthorizationService} from "../../services/authorization/authorization.s
   templateUrl: './login.component.html',
   styleUrls: [ './login.component.scss' ]
 })
-export class LoginComponent implements OnInit{
+export class LoginComponent implements OnInit {
 
   constructor(private heroService: AuthorizationService) {
   }
@@ -15,7 +15,7 @@ export class LoginComponent implements OnInit{
   ngOnInit(): void {
   }
 
-  changeActive(){
+  changeActive() {
     this.heroService.login();
   }
 

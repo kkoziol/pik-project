@@ -10,7 +10,7 @@ public class IndexController {
 
 	@RequestMapping(method = RequestMethod.GET)
 	public String getIndexPage() {
-		return "redirect:/index.html";
+		return "redirect:/pik_webapp/index.html";
 	}
 
 }
