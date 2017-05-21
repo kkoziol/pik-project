@@ -1,49 +1,48 @@
 <table class="gh-tbl">
-  <tbody>
-  <tr>
-    <td class="">
-      <table class="">
-        <tbody>
-        <tr>
-          <td class="">
-            <div>
-              <div>
-                <label class="">Wpisz szukane słowa</label>
-                <input type="text"
-                       class=""
-                       size="50"
-                       maxlength="300"
-                       placeholder="Wyszukaj..."
-                       [(ngModel)]=query>
-              </div>
-            </div>
-            <input type="text"
-                   class=""
-                   size="50"
-                   maxlength="300"
-                   placeholder="Cena Max"
-                   [(ngModel)]=maxCost>
-            <input type="text"
-                   class=""
-                   size="50"
-                   maxlength="300"
-                   placeholder="Cena Min"
-                   [(ngModel)]=minCost>
-          </td>
-          <td class="">
-            <div>
-              <select class="" (change)="chooseCategory(value)">
-                <option *ngFor="let category of categoryList" [value]="category">{{category.categoryName}}</option>
-              </select>
-            </div>
-          </td>
-          <td class="">
-            <input type="submit" class="" value="Wyszukaj" (click)="submit()">
-          </td>
-        </tr>
-        </tbody>
-      </table>
-    </td>
-  </tr>
-  </tbody>
+	<tbody>
+		<tr>
+			<td class="">
+				<table class="">
+					<tbody>
+						<tr>
+							<td class="">
+								<div>
+									<div>
+										<label class="">Wpisz szukane słowa</label> <input type="text"
+											class="" size="50" maxlength="300" placeholder="Wyszukaj..."
+											[(ngModel)]=query>
+									</div>
+								</div> <input type="text" class="" size="50" maxlength="300"
+								placeholder="Cena Max" [(ngModel)]=maxCost> <input
+								type="text" class="" size="50" maxlength="300"
+								placeholder="Cena Min" [(ngModel)]=minCost>
+							</td>
+							<td class="">
+								<div>
+									<select class="" (change)="chooseCategory(value)">
+										<option *ngFor="let category of categoryList"
+											[value]="category">{{category.categoryName}}</option>
+									</select>
+								</div>
+							</td>
+							<td class=""><input type="submit" class="" value="Wyszukaj"
+								(click)="submit()"></td>
+						</tr>
+					</tbody>
+				</table>
+			</td>
+		</tr>
+	</tbody>
+</table>
+<table class="gh-tbl">
+<thead>
+		<th></th>
+        <th>Title</th>
+        <th>Item URL</th>
+    </thead>
+    <tr *ngFor="let item of itemList">
+    <td><img src="{{item.galleryURL}}"  style="width:128px;height:128px;"></td>
+    <td>{{item.title}}</td>
+    <td><a href="{{item.viewItemURL}}">{{item.viewItemURL}}</a></td>
+    </tr>
 </table>
