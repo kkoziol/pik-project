@@ -13,7 +13,7 @@ export class AuthorizationService {
     this.authorize = {active : true};
     const currentUser = JSON.parse(localStorage.getItem('currentUser'));
 
-    if(!isNullOrUndefined(currentUser))
+    if(currentUser)
       this.token = currentUser.token;
   }
 
