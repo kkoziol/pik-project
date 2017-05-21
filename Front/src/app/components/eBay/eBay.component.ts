@@ -7,7 +7,7 @@ import {Subject} from 'rxjs/Subject';
 import 'rxjs/add/operator/debounceTime';
 import 'rxjs/add/operator/distinctUntilChanged';
 import 'rxjs/add/operator/switchMap';
-import {CategoryType, Item} from './eBay.model';
+import {CategoryType} from './eBay.model';
 import {until} from 'selenium-webdriver';
 import elementIsNotSelected = until.elementIsNotSelected;
 
@@ -24,11 +24,10 @@ export class EBayComponent implements OnInit {
   minCost: number;
   maxCost: number;
   categoryList: CategoryType[];
-  selectedCategory: CategoryType;
-  itemList: Item[];
+  selectedCategories: CategoryType[];
 
   constructor(private ebayService: EBayService) {
-
+    this.selectedCategories = [];
   }
 
   private searchTermStream = new Subject<string>();
@@ -40,35 +39,62 @@ export class EBayComponent implements OnInit {
   ngOnInit() {
 
     this.ebayService.getMainCategories()
-      .subscribe(data => this.categoryList = data,
-        error2 => console.log('ERROR'));
+      .subscribe(data => this.categoryList = data.map(elem => CategoryType.copy(elem)),
+        error2 => console.log("Zly request"));
   }
 
   submit() {
-//    if (this.selectedCategory.categoryId !== 0 && this.query !== '') {
-//      this.ebayService.getItemsByKeyWordAndCategory(this.query, this.selectedCategory.categoryId)
-//      .map(res =>  res.json())
-//      .subscribe(data => this.itemList = data,
-//        error2 => console.log('ERROR'));
-//    }else if (this.selectedCategory.categoryId !== 0 && this.query !== '' && (this.minCost <= this.maxCost) && this.minCost != null && this.maxCost != null) {
-//      this.ebayService.getItemsByKeyWordAndCategoryAndMinMaxPrice(this.query, this.selectedCategory.categoryId, this.minCost, this.maxCost)
-//      .map(res =>  res.json())
-//      .subscribe(data => this.itemList = data,
-//        error2 => console.log('ERROR'));
-//    }else 
-    if (this.query !== '') {
-      this.ebayService.getItemsByKeyWord(this.query)
-      .map(res =>  res.json())
-      .subscribe(data => this.itemList = data,
-        error2 => console.log('ERROR'));
-    }
-    else {
-      console.log('WRONG QUERY PARAMETERS');
-    }
+    // if(this.selectedCategory.value !== 0){}
+    // else if(this.selectedCategory.value !== 0 && this.minCost && this.maxCost){}
+    // else {}
+
+    let selectedCategory = this.categoryList;
+
+    console.log("in");
+    const find = selectedCategory.find(categoryList => categoryList.childrenCategories.length > 0);
+    // selectedCategory = selectedCategory.find(categoryList => categoryList.childrenCategories.length > 0) .childrenCategories;
+    console.log(find);
+
   }
 
-  chooseCategory = (category: CategoryType) => {
-    this.selectedCategory = category;
+  chooseCategory = (categoryName: string) => {
+    //TODO Refactor shity kod ale w przy takim czasie odopowiedzzi z serwera nie ma sensu przyspieszyc
+    let newSelected;
+    if (this.selectedCategories.length > 0) {
+      newSelected = this.selectedCategories.find(category =>
+      category.childrenCategories.find(categoryChild => categoryChild.categoryName === categoryName) !== null)
+        .childrenCategories.find(category => category.categoryName === categoryName);
+    } else {
+      newSelected = this.categoryList.find(category => category.categoryName === categoryName);
+    }
+
+    if (newSelected) {
+
+      const lastIndex = this.selectedCategories.length;
+
+      console.log(this.selectedCategories);
+
+      const tmp = this.selectedCategories.find(cat => {
+        console.log(cat.categoryID === newSelected.categoryParentID[0]);
+        return cat.categoryID === newSelected.categoryParentID[0];
+      });
+
+      console.log(this.selectedCategories.indexOf(tmp));
+
+      this.selectedCategories = this.selectedCategories.slice(
+        0, this.selectedCategories.indexOf(tmp)+1);
+
+      console.log(this.selectedCategories);
+      this.selectedCategories.push(newSelected);
+
+      console.log(categoryName, this.selectedCategories, lastIndex, newSelected);
+      this.ebayService.getSbsCategoriesByParentId(newSelected.categoryID)
+        .subscribe(data => this.selectedCategories[this.selectedCategories.length-1].childrenCategories = data.map(elem => CategoryType.copy(elem)),
+          error2 => console.log("Zly request"),
+          () => {
+            console.log(this.selectedCategories)
+          });
+    }
   }
 
 }
