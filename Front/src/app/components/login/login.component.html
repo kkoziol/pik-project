@@ -1,15 +1,21 @@
-<div class="alert alert-danger" *ngIf="error">
-  Problem logging in
-</div>
+<div class="loginContainer">
+  <div class="alert alert-danger" *ngIf="error">
+    Problem logging in
+  </div>
 
-<form role="form" (submit)="loginUser()">
-  <div class="form-group">
-    <label class="inputLabel">Username:</label>
-    <input class="form-control" type="password" placeholder="Your password" [(ngModel)]=username name="username">
-  </div>
-  <div class="form-group">
-    <label class="inputLabel">Password:</label>
-    <input class="form-control" type="password" placeholder="Your password" [(ngModel)]=password name="password">
-  </div>
-  <button type="submit" class="btn btn-primary">Log in</button>
-</form>
+  <form role="form" (submit)="loginUser()">
+    <div class="form-group">
+      <label class="inputLabel">Username:</label>
+      <input class="form-control" type="password" placeholder="Your password" [(ngModel)]=username name="username">
+    </div>
+    <div class="form-group">
+      <label class="inputLabel">Password:</label>
+      <input class="form-control" type="password" placeholder="Your password" [(ngModel)]=password name="password">
+    </div>
+    <div class="center">
+      <button type="submit" class="btn btn-primary btn-general">Log in</button>
+    </div>
+  </form>
+
+
+</div>

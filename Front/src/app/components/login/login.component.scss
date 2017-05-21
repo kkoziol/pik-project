@@ -1,24 +1,31 @@
+@import "../../colors";
+
 .loginContainer {
-  display: table-caption;
-  background: red;
-  padding: 5rem 9rem;
+  position: fixed;
+  left: 50%;
+  top: 30%;
+  background-color: $main_background_color;
+  padding: 3rem 8rem;
   border-radius: 3%;
 
-  .labelInputRow {
-    margin: 1rem;
-
-    .inputLabel {
-      font-size: 1rem;
-    }
-
-    .inputField {
-      padding: 0.4rem 0.4rem 0.4rem 0.4rem;
-      width: 15rem;
-      border-radius: 3%;
-    }
+  .center {
+    text-align: center;
   }
 
-  .buttonRow {
-    text-align: center;
+  .inputLabel {
+    font-size: 1.3rem;
+    color: #607D8B;
+  }
+
+  .btn-general {
+    background-color: #CFD8DC;
+    border-color: #607D8B;
+    color: #607D8B;
+    padding: 0.5rem 3rem;
+
+  }
+
+  .btn-general:hover {
+    color: $main_active_color;
   }
 }

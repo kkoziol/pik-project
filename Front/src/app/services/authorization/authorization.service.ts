@@ -10,15 +10,17 @@ export class AuthorizationService {
   token: string;
 
   constructor(private http: Http) {
-    this.authorize = {active : true};
+    this.authorize = {active : false};
     const currentUser = JSON.parse(localStorage.getItem('currentUser'));
 
-    if(currentUser)
+    if(currentUser) {
       this.token = currentUser.token;
+      this.authorize.active = true;
+    }
   }
 
   login(username: string, password: string) {
-    const url = 'https://192.168.1.72:8800/oauth/token';
+    const url = 'https://localhost:8800/oauth/token';
 
     const paramsT: URLSearchParams = new URLSearchParams('grant_type=password&username=' + username + '&password=' + password);
 
@@ -35,6 +37,7 @@ export class AuthorizationService {
       .map(res =>  res.json())
       .subscribe(access_token => this.token = access_token.access_token,
                 error2 => console.log("Zle haslo"));
+
     localStorage.setItem('currentUser', JSON.stringify({ token: this.token}));
   }
 
