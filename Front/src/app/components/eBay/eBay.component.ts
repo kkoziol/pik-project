@@ -7,7 +7,7 @@ import {Subject} from 'rxjs/Subject';
 import 'rxjs/add/operator/debounceTime';
 import 'rxjs/add/operator/distinctUntilChanged';
 import 'rxjs/add/operator/switchMap';
-import {CategoryType} from './eBay.model';
+import {CategoryType, Item} from './eBay.model';
 import {until} from 'selenium-webdriver';
 import elementIsNotSelected = until.elementIsNotSelected;
 
@@ -25,6 +25,7 @@ export class EBayComponent implements OnInit {
   maxCost: number;
   categoryList: CategoryType[];
   selectedCategory: CategoryType;
+  itemList: Item[];
 
   constructor(private ebayService: EBayService) {
 
@@ -40,14 +41,30 @@ export class EBayComponent implements OnInit {
 
     this.ebayService.getMainCategories()
       .subscribe(data => this.categoryList = data,
-        error2 => console.log("Zly request"));
+        error2 => console.log('ERROR'));
   }
 
   submit() {
-    // if(this.selectedCategory.value !== 0){}
-    // else if(this.selectedCategory.value !== 0 && this.minCost && this.maxCost){}
-    // else {}
-    console.log(this.categoryList);
+//    if (this.selectedCategory.categoryId !== 0 && this.query !== '') {
+//      this.ebayService.getItemsByKeyWordAndCategory(this.query, this.selectedCategory.categoryId)
+//      .map(res =>  res.json())
+//      .subscribe(data => this.itemList = data,
+//        error2 => console.log('ERROR'));
+//    }else if (this.selectedCategory.categoryId !== 0 && this.query !== '' && (this.minCost <= this.maxCost) && this.minCost != null && this.maxCost != null) {
+//      this.ebayService.getItemsByKeyWordAndCategoryAndMinMaxPrice(this.query, this.selectedCategory.categoryId, this.minCost, this.maxCost)
+//      .map(res =>  res.json())
+//      .subscribe(data => this.itemList = data,
+//        error2 => console.log('ERROR'));
+//    }else 
+    if (this.query !== '') {
+      this.ebayService.getItemsByKeyWord(this.query)
+      .map(res =>  res.json())
+      .subscribe(data => this.itemList = data,
+        error2 => console.log('ERROR'));
+    }
+    else {
+      console.log('WRONG QUERY PARAMETERS');
+    }
   }
 
   chooseCategory = (category: CategoryType) => {

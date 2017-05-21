@@ -3,7 +3,7 @@ export class CategoryType {
   autoPayEnabled: boolean;
   b2bVatEnabed: boolean;
   catalogEnabled: boolean;
-  categoryId: string;
+  categoryId: number;
   categoryLevel: number;
   categoryName: string;
   categoyParentId: string[];
@@ -11,4 +11,14 @@ export class CategoryType {
   productSearchPageAvailable: boolean;
 
 
+}
+
+export class Item {
+  itemId: number;
+  title: string;
+  subtitle: string;
+  primaryCategory: string[];
+  galleryURL: string;
+  viewItemURL: string;
+  productId: string[];
 }
