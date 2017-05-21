@@ -5,7 +5,7 @@ import {AuthorizationService} from '../authorization/authorization.service';
 @Injectable()
 export class AuthorizationHttp {
 
-  applicationUrl = 'https://localhost:8800';
+  applicationUrl = 'https://192.168.1.72:8800';
 
   constructor(private http: Http, private authotrizationService: AuthorizationService) {}
 

@@ -3,6 +3,7 @@ import {Jsonp} from "@angular/http";
 
 import 'rxjs/add/operator/map';
 import {AuthorizationHttp} from "../authorizationHttp/authorizationHttp";
+import {CategoryType} from "../../components/eBay/eBay.model";
 
 @Injectable()
 export class EBayService {
@@ -10,7 +11,7 @@ export class EBayService {
   }
 
   getMainCategories() {
-    return this.authorizationHttp.get("/categories/maincategories");
+    return this.authorizationHttp.get("/categories/maincategories").map(res =>  res.json())
   }
 
   getSbsCategoriesByParentId(parentId: number) {
