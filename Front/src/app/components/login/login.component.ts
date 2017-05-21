@@ -12,7 +12,7 @@ export class LoginComponent implements OnInit{
   password: string;
   username: string;
 
-  constructor(private heroService: AuthorizationService) {
+  constructor(private authorizationService: AuthorizationService) {
     this.password = "";
     this.username = "";
   }
@@ -21,7 +21,7 @@ export class LoginComponent implements OnInit{
   }
 
   loginUser(){
-    this.heroService.login(this.username,this.password);
+    this.authorizationService.login(this.username,this.password);
   }
 
 

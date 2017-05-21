@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import {Authorize} from "./authorization.model";
 import {Observable} from "rxjs/Observable";
 import {Headers,Http, RequestOptions, URLSearchParams} from "@angular/http";
-import {isNullOrUndefined} from "util";
 
 
 @Injectable()
