@@ -34,4 +34,14 @@ export class CategoryType {
   }
 }
 
+export class Item {
+  itemId: number;
+  title: string;
+  subtitle: string;
+  primaryCategory: string[];
+  galleryURL: string;
+  viewItemURL: string;
+  productId: string[];
+}
+
 

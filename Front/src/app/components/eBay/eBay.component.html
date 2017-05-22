@@ -44,3 +44,15 @@
   </tr>
   </tbody>
 </table>
+<table class="gh-tbl">
+  <thead>
+  <th></th>
+  <th>Title</th>
+  <th>Item URL</th>
+  </thead>
+  <tr *ngFor="let item of itemList">
+    <td><img src="{{item.galleryURL}}"  style="width:128px;height:128px;"></td>
+    <td>{{item.title}}</td>
+    <td><a href="{{item.viewItemURL}}">{{item.viewItemURL}}</a></td>
+  </tr>
+</table>

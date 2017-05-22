@@ -55,6 +55,16 @@ export class EBayComponent implements OnInit {
     // selectedCategory = selectedCategory.find(categoryList => categoryList.childrenCategories.length > 0) .childrenCategories;
     console.log(find);
 
+    if (this.query !== '') {
+      this.ebayService.getItemsByKeyWord(this.query)
+        .map(res =>  res.json())
+        .subscribe(data => this.itemList = data,
+          error2 => console.log('ERROR'));
+    }
+    else {
+      console.log('WRONG QUERY PARAMETERS');
+    }
+
   }
 
   chooseCategory = (categoryName: string) => {
