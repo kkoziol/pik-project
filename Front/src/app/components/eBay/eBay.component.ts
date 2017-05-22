@@ -7,7 +7,7 @@ import {Subject} from 'rxjs/Subject';
 import 'rxjs/add/operator/debounceTime';
 import 'rxjs/add/operator/distinctUntilChanged';
 import 'rxjs/add/operator/switchMap';
-import {CategoryType} from './eBay.model';
+import {CategoryType, Item} from './eBay.model';
 import {until} from 'selenium-webdriver';
 import elementIsNotSelected = until.elementIsNotSelected;
 
@@ -25,6 +25,7 @@ export class EBayComponent implements OnInit {
   maxCost: number;
   categoryList: CategoryType[];
   selectedCategories: CategoryType[];
+  itemList: Item[];
 
   constructor(private ebayService: EBayService) {
     this.selectedCategories = [];
@@ -44,26 +45,26 @@ export class EBayComponent implements OnInit {
   }
 
   submit() {
-    // if(this.selectedCategory.value !== 0){}
-    // else if(this.selectedCategory.value !== 0 && this.minCost && this.maxCost){}
-    // else {}
-
-    let selectedCategory = this.categoryList;
-
-    console.log("in");
-    const find = selectedCategory.find(categoryList => categoryList.childrenCategories.length > 0);
-    // selectedCategory = selectedCategory.find(categoryList => categoryList.childrenCategories.length > 0) .childrenCategories;
-    console.log(find);
-
-    if (this.query !== '') {
-      this.ebayService.getItemsByKeyWord(this.query)
-        .map(res =>  res.json())
-        .subscribe(data => this.itemList = data,
-          error2 => console.log('ERROR'));
-    }
-    else {
-      console.log('WRONG QUERY PARAMETERS');
-    }
+     if(this.selectedCategories.length !== 0){
+       if (this.query !== '') {
+         this.ebayService.getItemsByKeyWordAndCategory(this.query, this.selectedCategories[this.selectedCategories.length-1].categoryID)
+           .subscribe(data => this.itemList = data,
+             error2 => console.log('ERROR'));
+       }
+       else {
+         console.log('WRONG QUERY PARAMETERS');
+       }
+     }
+     else {
+       if (this.query !== '') {
+         this.ebayService.getItemsByKeyWord(this.query)
+           .subscribe(data => this.itemList = data,
+             error2 => console.log('ERROR'));
+       }
+       else {
+         console.log('WRONG QUERY PARAMETERS');
+       }
+     }
 
   }
 
@@ -79,25 +80,15 @@ export class EBayComponent implements OnInit {
     }
 
     if (newSelected) {
-
-      const lastIndex = this.selectedCategories.length;
-
-      console.log(this.selectedCategories);
-
       const tmp = this.selectedCategories.find(cat => {
-        console.log(cat.categoryID === newSelected.categoryParentID[0]);
         return cat.categoryID === newSelected.categoryParentID[0];
       });
-
-      console.log(this.selectedCategories.indexOf(tmp));
 
       this.selectedCategories = this.selectedCategories.slice(
         0, this.selectedCategories.indexOf(tmp)+1);
 
-      console.log(this.selectedCategories);
       this.selectedCategories.push(newSelected);
 
-      console.log(categoryName, this.selectedCategories, lastIndex, newSelected);
       this.ebayService.getSbsCategoriesByParentId(newSelected.categoryID)
         .subscribe(data => this.selectedCategories[this.selectedCategories.length-1].childrenCategories = data.map(elem => CategoryType.copy(elem)),
           error2 => console.log("Zly request"),

@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import {AuthorizationService} from "./services/authorization/authorization.service";
 import {Authorize} from "./services/authorization/authorization.model";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'my-app',
@@ -10,10 +11,15 @@ import {Authorize} from "./services/authorization/authorization.model";
 export class AppComponent {
   logged:Authorize;
 
-  constructor(private heroService: AuthorizationService)
+  constructor(private authorizationService: AuthorizationService, private router: Router)
   {
-    this.logged = this.heroService.authorize;
+    this.logged = this.authorizationService.authorize;
   }
 
+  logout(){
+    localStorage.clear();
+    this.authorizationService.authorize.active = false;
+    this.router.navigate(['./']);
+  }
 
 }

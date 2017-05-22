@@ -1,4 +1,5 @@
 @import "../../colors";
+@import "../../app.component";
 
 .loginContainer {
   position: fixed;
@@ -15,17 +16,5 @@
   .inputLabel {
     font-size: 1.3rem;
     color: #607D8B;
-  }
-
-  .btn-general {
-    background-color: #CFD8DC;
-    border-color: #607D8B;
-    color: #607D8B;
-    padding: 0.5rem 3rem;
-
-  }
-
-  .btn-general:hover {
-    color: $main_active_color;
   }
 }

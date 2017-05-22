@@ -34,6 +34,18 @@ nav a.active {
   color: $main_active_color;
 }
 
+.btn-general {
+  background-color: #CFD8DC;
+  border-color: #607D8B;
+  color: #607D8B;
+  padding: 0.5rem 3rem;
+
+}
+
+.btn-general:hover {
+  color: $main_active_color;
+}
+
 .tapTopPanel {
   float: right;
   margin-right: 1rem;
@@ -46,7 +58,10 @@ nav a.active {
 }
 
 .mainContainer {
+  margin-top: 3rem;
 }
+
+
 
 
 
