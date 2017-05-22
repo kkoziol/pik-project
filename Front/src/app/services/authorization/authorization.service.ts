@@ -38,11 +38,12 @@ export class AuthorizationService {
       .subscribe(access_token => {
           this.token = access_token.access_token;
           this.authorize.active = true;
+
+          localStorage.setItem('currentUser', JSON.stringify({token: this.token}));
           this.router.navigate(['./eBay']);
         },
         error2 => console.log("Zle haslo"));
 
-    localStorage.setItem('currentUser', JSON.stringify({token: this.token}));
   }
 
 
