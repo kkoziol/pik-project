@@ -4,6 +4,6 @@ import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface OrderRepository extends JpaRepository<Order, Long>{
-	public List<Order> findByUserName(String login); 
+public interface OfferRepository extends JpaRepository<Offer,Long>{
+	public List<Offer> findByUserName(String name);
 }

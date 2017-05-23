@@ -20,7 +20,7 @@ export class AuthorizationService {
   }
 
   login(username: string, password: string) {
-    const url = 'https://192.168.1.72:8800/oauth/token';
+    const url = 'https://localhost:8800/oauth/token';
 
     const paramsT: URLSearchParams = new URLSearchParams('grant_type=password&username=' + username + '&password=' + password);
 
