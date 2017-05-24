@@ -19,6 +19,6 @@ public class EbayOfferController {
 	
 	@RequestMapping("/{username}")
 	public List<Offer> findByUser(@PathVariable String username){
-		return offerRepository.findByUserName(username);
+		return offerRepository.findByOrderUserName(username);
 	}
 }
