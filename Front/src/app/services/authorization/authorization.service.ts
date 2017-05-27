@@ -1,7 +1,8 @@
 import {Injectable} from '@angular/core';
 import {Authorize} from "./authorization.model";
 import {Headers, Http, RequestOptions, URLSearchParams} from "@angular/http";
-import {ActivatedRoute, Router} from "@angular/router";
+import {Router} from "@angular/router";
+import {AppConfig} from "../../config";
 
 
 @Injectable()
@@ -20,7 +21,7 @@ export class AuthorizationService {
   }
 
   login(username: string, password: string) {
-    const url = 'https://localhost:8800/oauth/token';
+    const url = AppConfig.serwerUrl + '/oauth/token';
 
     const paramsT: URLSearchParams = new URLSearchParams('grant_type=password&username=' + username + '&password=' + password);
 
@@ -38,9 +39,8 @@ export class AuthorizationService {
       .subscribe(access_token => {
           this.token = access_token.access_token;
           this.authorize.active = true;
-
-          localStorage.setItem('currentUser', JSON.stringify({token: this.token}));
           this.router.navigate(['./eBay']);
+          localStorage.setItem('currentUser', JSON.stringify({token: this.token}));
         },
         error2 => console.log("Zle haslo"));
 
