@@ -1,12 +1,12 @@
 import {Injectable} from '@angular/core';
 import {Http, Headers} from '@angular/http';
 import {AuthorizationService} from '../authorization/authorization.service';
-import {AppConfig} from "../../config";
+import {AppConfigConsts} from "../../config";
 
 @Injectable()
 export class AuthorizationHttp {
 
-  applicationUrl = AppConfig.serwerUrl;
+  applicationUrl = AppConfigConsts.serwerUrl;
 
   constructor(private http: Http, private authotrizationService: AuthorizationService) {}
 

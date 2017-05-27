@@ -2,7 +2,7 @@ import {Injectable} from '@angular/core';
 import {Authorize} from "./authorization.model";
 import {Headers, Http, RequestOptions, URLSearchParams} from "@angular/http";
 import {Router} from "@angular/router";
-import {AppConfig} from "../../config";
+import {AppConfigConsts} from "../../config";
 
 
 @Injectable()
@@ -21,7 +21,7 @@ export class AuthorizationService {
   }
 
   login(username: string, password: string) {
-    const url = AppConfig.serwerUrl + '/oauth/token';
+    const url = AppConfigConsts.serwerUrl + '/oauth/token';
 
     const paramsT: URLSearchParams = new URLSearchParams('grant_type=password&username=' + username + '&password=' + password);
 
