@@ -53,6 +53,12 @@ public class SearchEbayOffersDaemon extends Thread{
 			logger.debug("Running search");
 			Map<Order, UserPreference> preferences = preparePreferences();
 			searchForPreferences(preferences);
+			try {
+				Thread.sleep(60000);
+			} catch (InterruptedException e) {
+				logger.error("Thread interruped");
+				logger.error(e.getMessage());
+			}
 		}
 	}
 
