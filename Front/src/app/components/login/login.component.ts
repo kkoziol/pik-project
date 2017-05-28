@@ -18,7 +18,7 @@ export class LoginComponent implements OnInit{
   lastName: string;
   eMail: string;
   gender: string;
-  birthDate: number;
+  birthDate: string;
   confirmPassword: string;
 
   emailValidate: boolean;
@@ -32,7 +32,7 @@ export class LoginComponent implements OnInit{
     this.lastName = "";
     this.eMail = "";
     this.gender = "";
-    this.birthDate = -1;
+    this.birthDate = "";
     this.confirmPassword = "";
 
     this.emailValidate = true;
@@ -47,13 +47,13 @@ export class LoginComponent implements OnInit{
   }
 
   registerUser(){
-    //this.authorizationService.login(this.username,this.password);
+    this.authorizationService.register(this.username,this.password,this.firstName, this.lastName,this.eMail,this.gender,this.birthDate,this.confirmPassword);
   }
 
   validateEmail() {
    // this.emailValidate = EmailValidator.mailValidate(this.eMail);
    // console.log(this.emailValidate);
-    console.log("Email walidation");
+    console.log("Email validation");
   }
 
   validatePassword() {

@@ -14,6 +14,9 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+
+
+
 @Entity
 @Table(name="Orders")
 public class Order {
@@ -26,14 +29,17 @@ public class Order {
 	@JoinColumn(name = "USER_ID", nullable = false)
 	private User user;
 	
-	@Column(name = "REGISTRATION_DATE", nullable = false)
+	@Column(name = "SUBMIT_DATE", nullable = false)
 	private Date date;
 	
 	@Column(name = "IS_HIRTORY_LOG", nullable = false)
 	private boolean isHistoryLog;
 	
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "order")
-	private Set<Offer> offers = new HashSet<>();
+	private Set<FoundResult> offers = new HashSet<>();
+	
+	@Column(name = "PREFERENCES")
+	private String preferencesAsJson;
 
 	public Integer getOrderId() {
 		return orderId;
@@ -67,12 +73,20 @@ public class Order {
 		this.isHistoryLog = isHistoryLog;
 	}
 
-	public Set<Offer> getOffers() {
+	public Set<FoundResult> getOffers() {
 		return offers;
 	}
 
-	public void setOffers(Set<Offer> offers) {
+	public void setOffers(Set<FoundResult> offers) {
 		this.offers = offers;
+	}
+
+	public String getPreferencesAsJson() {
+		return preferencesAsJson;
+	}
+
+	public void setPreferencesAsJson(String preferencesAsJson) {
+		this.preferencesAsJson = preferencesAsJson;
 	}
 	
 	
