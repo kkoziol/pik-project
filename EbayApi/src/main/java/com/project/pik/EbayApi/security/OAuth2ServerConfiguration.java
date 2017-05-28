@@ -44,9 +44,9 @@ public class OAuth2ServerConfiguration {
 //					.accessDeniedHandler(new OAuth2AccessDeniedHandler());
 			
 			http.authorizeRequests().antMatchers("/categories/**")
-			.access("permitAll").antMatchers("/items/**")
-			.access("permitAll").antMatchers("/api/**")
-			.access("permitAll");
+			.access("hasRole('USER')").antMatchers("/items/**")
+			.access("hasRole('USER')").antMatchers("/api/**")
+			.access("hasRole('USER')");
 		}
 
 	}

@@ -39,6 +39,7 @@ public class EbayDataRestApplication {
 	
 	public static void main(String[] args) throws Exception {
 		SpringApplication.run(EbayDataRestApplication.class, args);
+		SearchEbayOffersDaemon.runInstance();
 	}
 
 
