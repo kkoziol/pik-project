@@ -7,18 +7,18 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.project.pik.EbayApi.daos.Offer;
-import com.project.pik.EbayApi.daos.OfferRepository;
+import com.project.pik.EbayApi.daos.FoundResultRepository;
+import com.project.pik.EbayApi.model.FoundResult;
 
 @Controller
 @RequestMapping("/offers")
 public class EbayOfferController {
 
 	@Autowired
-	private OfferRepository offerRepository;
+	private FoundResultRepository offerRepository;
 	
 	@RequestMapping("/{username}")
-	public List<Offer> findByUser(@PathVariable String username){
+	public List<FoundResult> findByUser(@PathVariable String username){
 		return offerRepository.findByOrderUserName(username);
 	}
 }

@@ -1,4 +1,4 @@
-package com.project.pik.EbayApi.daos;
+package com.project.pik.EbayApi.model;
 
 import java.sql.Date;
 import java.util.Calendar;
