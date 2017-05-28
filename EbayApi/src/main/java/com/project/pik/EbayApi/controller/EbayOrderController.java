@@ -12,9 +12,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.project.pik.EbayApi.daos.Order;
 import com.project.pik.EbayApi.daos.OrderRepository;
-import com.project.pik.EbayApi.daos.User;
+import com.project.pik.EbayApi.model.Order;
+import com.project.pik.EbayApi.model.User;
 
 @Controller
 @RequestMapping("/orders")

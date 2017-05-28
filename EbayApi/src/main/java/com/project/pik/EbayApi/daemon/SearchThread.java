@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,12 +25,14 @@ import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.project.pik.EbayApi.ApplicationConfig;
-import com.project.pik.EbayApi.daos.Order;
+import com.project.pik.EbayApi.mail.MailSender;
+import com.project.pik.EbayApi.model.Email;
+import com.project.pik.EbayApi.model.Order;
 import com.project.pik.EbayApi.service.OrderService;
 
 class SearchThread implements Runnable {
 	protected static final String SEARCHING_CURRENCY = "EUR";
-
+	Map<String,List<String>> foundUserUrls;
 	ApplicationConfig appConfig = new ApplicationConfig();
 
 	@Autowired
@@ -37,7 +40,7 @@ class SearchThread implements Runnable {
 
 	@Autowired
 	private ClientConfig eBayClientConfig;
-	
+
 	/** LOGGER */
 	private static final Logger logger = Logger.getLogger(SearchThread.class);
 
@@ -55,7 +58,12 @@ class SearchThread implements Runnable {
 	void consumeFoundUrls(Order order, List<String> urls) {
 		if (urls.isEmpty())
 			return;
-		order.getUser();
+		MailSender sender = new MailSender();
+		for (Email email : order.getUser().getEmails()) {
+			sender.sendSimpleMail(email.getValue(), "Ebay Search Engine - We found something interesting",
+					String.format("<html><h1>Hello %s</h1><p>Look at this:<br></br>%s</p></html>",
+							order.getUser().getName(), urls.stream().collect(Collectors.joining("<br></br>"))));
+		}
 	}
 
 	List<String> searchForSinglePreference(UserPreference preference) {
