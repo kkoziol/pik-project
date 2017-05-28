@@ -1,5 +1,4 @@
-import {Component, OnInit, Optional} from '@angular/core';
-import {AuthorizationService} from '../../services/authorization/authorization.service';
+import {Component, OnInit} from '@angular/core';
 import {EBayService} from '../../services/eBayApi/eBayApi.service';
 import {Observable} from 'rxjs/Observable';
 import {Subject} from 'rxjs/Subject';
@@ -19,7 +18,6 @@ import elementIsNotSelected = until.elementIsNotSelected;
 })
 
 export class EBayComponent implements OnInit {
-  items: Observable<string[]>;
   query: string;
   minCost: number;
   maxCost: number;
@@ -48,7 +46,7 @@ export class EBayComponent implements OnInit {
      if(this.selectedCategories.length !== 0){
        if (this.query !== '') {
          this.ebayService.getItemsByKeyWordAndCategory(this.query, this.selectedCategories[this.selectedCategories.length-1].categoryID)
-           .subscribe(data => this.itemList = data,
+           .subscribe(data => {this.itemList = data},
              error2 => console.log('ERROR'));
        }
        else {

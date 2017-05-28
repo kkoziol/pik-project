@@ -84,6 +84,7 @@ public class EbayServiceImpl implements EbayService {
 			logger.error(e.getMessage());
 		}
 
+		
 		return Arrays.asList(categories);
 	}
 

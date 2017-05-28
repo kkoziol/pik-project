@@ -1,4 +1,4 @@
-package com.project.pik.EbayApi.daos;
+package com.project.pik.EbayApi.model;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -11,7 +11,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
-@Table(name="Emails")
+@Table(name="EMAILS")
 public class Email {
 	@Id
 	@Column(name = "EMAIL_ID", nullable = false, unique = true, length = 11)

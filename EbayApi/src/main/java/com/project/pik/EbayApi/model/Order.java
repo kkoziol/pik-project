@@ -1,4 +1,4 @@
-package com.project.pik.EbayApi.daos;
+package com.project.pik.EbayApi.model;
 
 import java.sql.Date;
 import java.util.HashSet;
@@ -29,14 +29,14 @@ public class Order {
 	@JoinColumn(name = "USER_ID", nullable = false)
 	private User user;
 	
-	@Column(name = "REGISTRATION_DATE", nullable = false)
+	@Column(name = "SUBMIT_DATE", nullable = false)
 	private Date date;
 	
 	@Column(name = "IS_HIRTORY_LOG", nullable = false)
 	private boolean isHistoryLog;
 	
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "order")
-	private Set<Offer> offers = new HashSet<>();
+	private Set<FoundResult> offers = new HashSet<>();
 	
 	@Column(name = "PREFERENCES")
 	private String preferencesAsJson;
@@ -73,11 +73,11 @@ public class Order {
 		this.isHistoryLog = isHistoryLog;
 	}
 
-	public Set<Offer> getOffers() {
+	public Set<FoundResult> getOffers() {
 		return offers;
 	}
 
-	public void setOffers(Set<Offer> offers) {
+	public void setOffers(Set<FoundResult> offers) {
 		this.offers = offers;
 	}
 

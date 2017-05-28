@@ -14,7 +14,7 @@
     <div>
       <label>
         <select #c class="selectBlock" (change)="chooseCategory(c.value)">
-          <option>aaaaaaaaaaaaaaaaaaaaa</option>
+          <option>choose category...</option>
           <option *ngFor="let category of categoryList" [ngValue]="category">{{category.categoryName}}</option>
         </select>
       </label>
@@ -22,6 +22,7 @@
     <div *ngFor="let selectedCategory of selectedCategories">
       <label>
         <select #d class="selectBlock" (change)="chooseCategory(d.value)">
+          <option>choose category...</option>
           <option *ngFor="let category of selectedCategory.childrenCategories" [ngValue]="category">
             {{category.categoryName}}
           </option>
@@ -29,16 +30,17 @@
       </label>
     </div>
   </div>
+  <table class="gh-tbl">
+    <thead>
+    <th></th>
+    <th>Title</th>
+    <th>Item URL</th>
+    </thead>
+    <tr *ngFor="let item of itemList">
+      <td><img src="{{item.galleryURL}}" style="width:128px;height:128px;"></td>
+      <td>{{item.title}}</td>
+      <td><a href="{{item.viewItemURL}}">{{item.viewItemURL}}</a></td>
+    </tr>
+  </table>
+
 </div>
-<table class="gh-tbl">
-  <thead>
-  <th></th>
-  <th>Title</th>
-  <th>Item URL</th>
-  </thead>
-  <tr *ngFor="let item of itemList">
-    <td><img src="{{item.galleryURL}}" style="width:128px;height:128px;"></td>
-    <td>{{item.title}}</td>
-    <td><a href="{{item.viewItemURL}}">{{item.viewItemURL}}</a></td>
-  </tr>
-</table>
