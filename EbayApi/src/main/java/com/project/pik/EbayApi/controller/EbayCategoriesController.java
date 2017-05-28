@@ -2,7 +2,6 @@ package com.project.pik.EbayApi.controller;
 
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,8 +14,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.ebay.services.finding.Category;
 import com.ebay.soap.eBLBaseComponents.CategoryType;
-import com.project.pik.EbayApi.mail.MailSender;
-import com.project.pik.EbayApi.model.Email;
 import com.project.pik.EbayApi.service.EbayService;
 
 @RestController
