@@ -16,8 +16,14 @@
 
 package com.project.pik.EbayApi;
 
+import org.apache.catalina.Context;
+import org.apache.catalina.connector.Connector;
+import org.apache.tomcat.util.descriptor.web.SecurityCollection;
+import org.apache.tomcat.util.descriptor.web.SecurityConstraint;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.context.embedded.EmbeddedServletContainerFactory;
+import org.springframework.boot.context.embedded.tomcat.TomcatEmbeddedServletContainerFactory;
 import org.springframework.context.annotation.Bean;
 
 import com.project.pik.EbayApi.daemon.SearchEbayOffersDaemon;
@@ -29,7 +35,6 @@ public class EbayDataRestApplication {
 	
 	public static void main(String[] args) throws Exception {
 		SpringApplication.run(EbayDataRestApplication.class, args);
-		SearchEbayOffersDaemon.runInstance();
 	}
 
 
@@ -66,5 +71,11 @@ public class EbayDataRestApplication {
 	    
 	    return connector;
 	  }
+
+	public SearchEbayOffersDaemon searchEbayOffersDaemon(){
+		return SearchEbayOffersDaemon.getInstance();
+	}
+	
+
 	
 }

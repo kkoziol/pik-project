@@ -1,10 +1,11 @@
 package com.project.pik.EbayApi.daemon;
 
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
 public class UserPreference {
-	private Map<String, Set<String>> refinmentsAsSet;
+	private Map<String, Set<String>> refinmentsAsSet = new HashMap<>();
 	//private Map<String, Pair<String, String>> entriesAsRange;
 	private String categoryId;
 	private String prizeMax;

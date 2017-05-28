@@ -1,4 +1,4 @@
 export class AppConfigConsts {
-  static serwerUrl = "https://localhost"
+  static serwerUrl = "https://localhost:8800"
 }
 
