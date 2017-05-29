@@ -21,26 +21,8 @@
   </form>
 </div>
 
+<div class="loginContainer register" *ngIf="register">
 
-<div *ngIf="register">
-
-<!-- Defaut -->
-<div class="alert-success" *ngIf="success">
-    <p>Registration successfull, redirecting to login page...</p>
-</div>
-
-<!-- Defaut -->
-<div class="alert-error" *ngIf="error">
-    <p>Unsuccessfull registration, please try again.</p>
-</div>
-
-<!-- Defaut -->
-<div class="alert-error" *ngIf="error2">
-    <p>Please fill all the fields.</p>
-</div>
-
-
-<div class="loginContainer register" >
   <form role="form" (submit)="registerUser()">
     <div class="form-group">
       <label class="inputLabel">Username:</label>
@@ -85,5 +67,4 @@
   </form>
 
 
-</div>
 </div>

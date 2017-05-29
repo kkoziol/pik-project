@@ -11,42 +11,42 @@ export class EBayService {
   }
 
   getMainCategories() {
-    return this.authorizationHttp.get("/categories/maincategories").map(res =>  res.json())
+    return this.authorizationHttp.get("/ebay/categories/maincategories").map(res =>  res.json())
   }
 
   getSbsCategoriesByParentId(parentId: string) {
-    return this.authorizationHttp.get("/categories/subcategories/" + parentId).map(res =>  res.json());
+    return this.authorizationHttp.get("/ebay/categories/subcategories/" + parentId).map(res =>  res.json());
   }
 
   getSpecificsCategoriesById(categoryId: string) {
-    return this.authorizationHttp.get("/categories/categoryspecifics/" + categoryId).map(res =>  res.json());
+    return this.authorizationHttp.get("/ebay/categories/specifics/" + categoryId).map(res =>  res.json());
   }
 
   getBestMatchCategory(keyword: string) {
-    return this.authorizationHttp.get("/categories/bestmach/" + keyword);
+    return this.authorizationHttp.get("/ebay/categories/bestmach/" + keyword);
   }
 
   getCategoryNameById(categoryId: number) {
-    return this.authorizationHttp.get("/categories/categoryname/" + categoryId);
+    return this.authorizationHttp.get("/ebay/categories/categoryname/" + categoryId);
   }
 
   getItemsByKeyWord(keyword: string) {
-    return this.authorizationHttp.get("/items/search/" + keyword).map(res =>  res.json());
+    return this.authorizationHttp.get("/ebay/items/search/" + keyword).map(res =>  res.json());
   }
 
   getItemsByKeyWordAndCategory(keyword: string, categoryId: string) {
-    return this.authorizationHttp.get("/items/search/" + keyword + "/" + categoryId).map(res =>  res.json());
+    return this.authorizationHttp.get("/ebay/items/search/" + keyword + "/" + categoryId).map(res =>  res.json());
   }
 
   getItemsByKeyWordAndCategoryAndMinMaxPrice(keyword: string, categoryId: number, minPrice: number, maxPrice: number) {
-    return this.authorizationHttp.get("/items/search/" + keyword + "/" + categoryId + "/" + minPrice + "/" + maxPrice);
+    return this.authorizationHttp.get("/ebay/items/search/" + keyword + "/" + categoryId + "/" + minPrice + "/" + maxPrice);
   }
 
   getBestItemByKeyWord(keyword: string) {
-    return this.authorizationHttp.get("/items/bestmach/item/" + keyword);
+    return this.authorizationHttp.get("/ebay/items/bestmach/item/" + keyword);
   }
 
   getCheapestItemByKeyWordInCategory(keyword: string, categoryId: number) {
-    return this.authorizationHttp.get("/items/cheapest/item/" + keyword + "/" + categoryId);
+    return this.authorizationHttp.get("/ebay/items/cheapest/item/" + keyword + "/" + categoryId);
   }
 }

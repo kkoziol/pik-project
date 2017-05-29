@@ -45,11 +45,12 @@
         </label>
       </div>
       <label class="themeProperties">Properties</label>
+      <div class="propertiesContainer">
       <div>
-        <input class="form-control propertiesControlForm" type="text" placeholder="MaxCost" [(ngModel)]=maxCost
-               name="maxCost" (change)="addProperties('MaxCost',maxCost)">
         <input class="form-control propertiesControlForm" type="text" placeholder="MinCost" [(ngModel)]=minCost
                name="minCost" (change)="addProperties('MinCost',minCost)">
+        <input class="form-control propertiesControlForm" type="text" placeholder="MaxCost" [(ngModel)]=maxCost
+               name="maxCost" (change)="addProperties('MaxCost',maxCost)">
       </div>
       <div class="propertiesContainer" *ngFor="let item of properties">
         <label class="labelProperties">{{item.type}}</label>
@@ -63,6 +64,7 @@
                  placeholder="{{item.type}}" [(ngModel)]=item[i] name="value"
                  (change)="addProperties(item.type,item[i])">
         </label>
+      </div>
       </div>
     </div>
   </div>

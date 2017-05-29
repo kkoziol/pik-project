@@ -8,38 +8,32 @@ import {EmailValidator} from "../../controlers/EmailValidator";
   templateUrl: './login.component.html',
   styleUrls: [ './login.component.scss' ]
 })
-export class LoginComponent implements OnInit {
+export class LoginComponent implements OnInit{
 
   password: string;
   username: string;
   register: boolean;
-  success: boolean;
-  error: boolean;
-  error2: boolean;
 
   firstName: string;
   lastName: string;
   eMail: string;
   gender: string;
-  birthDate: string;
+  birthDate: number;
   confirmPassword: string;
 
   emailValidate: boolean;
   passwordValidate: boolean;
 
-  constructor(private authorizationService: AuthorizationService, private router: Router) {
-    this.password = '';
-    this.username = '';
+  constructor(private authorizationService: AuthorizationService) {
+    this.password = "";
+    this.username = "";
     this.register = false;
-    this.success = false;
-    this.error = false;
-    this.error2 = false;
-    this.firstName = '';
-    this.lastName = '';
-    this.eMail = '';
-    this.gender = '';
-    this.birthDate = '';
-    this.confirmPassword = '';
+    this.firstName = "";
+    this.lastName = "";
+    this.eMail = "";
+    this.gender = "";
+    this.birthDate = -1;
+    this.confirmPassword = "";
 
     this.emailValidate = true;
     this.passwordValidate = true;
@@ -48,24 +42,12 @@ export class LoginComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  loginUser() {
-    this.authorizationService.login(this.username, this.password);
+  loginUser(){
+    this.authorizationService.login(this.username,this.password);
   }
 
-  registerUser() {
-   if (this.username !== '' && this.password !== '' && this.firstName !== '' && this.lastName !== '' && this.eMail !== '' && this.gender !== '' && this.confirmPassword !== '') {
-    this.error2 = false;
-    if (this.authorizationService.register(this.username, this.password, this.firstName, this.lastName, this.eMail, this.gender, this.birthDate, this.confirmPassword)) {
-      this.success = true;
-      setTimeout((router: Router) => {
-        this.register = false;
-    }, 3000);
-    }else {
-      this.error = true;
-    }
-    }else {
-     this.error2 = true;
-   }
+  registerUser(){
+    //this.authorizationService.login(this.username,this.password);
   }
 
   validateEmail() {
