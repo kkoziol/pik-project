@@ -6,8 +6,7 @@ export class OrdersService {
   constructor(private authorizationHttp: AuthorizationHttp) {
   }
 
-  addOrder(order:Order) {
-    this.authorizationHttp.post("/orders/" + this.authorizationHttp.usernameord,order);
+  addOrder() {
   }
 
   getSbsCategoriesByParentId(parentId: number) {
