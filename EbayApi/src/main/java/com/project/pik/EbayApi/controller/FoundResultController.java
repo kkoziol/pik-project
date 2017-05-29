@@ -32,7 +32,7 @@ public class FoundResultController {
 	@ResponseBody
 	@Async
 	public DeferredResult<List<FoundResult>> findByUserAsync(@PathVariable String username){
-		DeferredResult<List<FoundResult>> deferredResult = new DeferredResult<>(40000L, new ArrayList<>());
+		DeferredResult<List<FoundResult>> deferredResult = new DeferredResult<>(500000L, new ArrayList<>());
 		SearchEbayOffersDaemon.getInstance().registerListener(username, deferredResult);
 		return deferredResult;
 	}

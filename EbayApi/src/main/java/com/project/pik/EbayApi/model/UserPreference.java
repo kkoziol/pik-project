@@ -29,7 +29,16 @@ public class UserPreference {
 	private String prizeMin;
 	private String condition;
 	private String deliveryOptions;
+	private String keyword;
 	
+	
+	
+	public String getKeyword() {
+		return keyword;
+	}
+	public void setKeyword(String keyword) {
+		this.keyword = keyword;
+	}
 	public Map<String, Set<String>> getCategorySpecifics() {
 		return categorySpecifics;
 	}

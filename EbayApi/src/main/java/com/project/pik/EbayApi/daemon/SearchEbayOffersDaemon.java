@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,13 +22,14 @@ import com.ebay.services.finding.FindItemsAdvancedResponse;
 import com.ebay.services.finding.FindingServicePortType;
 import com.ebay.services.finding.ItemFilter;
 import com.ebay.services.finding.ItemFilterType;
+import com.ebay.services.finding.PaginationInput;
 import com.ebay.services.finding.SearchItem;
-import com.ebay.services.finding.SearchResult;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.project.pik.EbayApi.model.FoundResult;
 import com.project.pik.EbayApi.model.Order;
+import com.project.pik.EbayApi.model.User;
 import com.project.pik.EbayApi.model.UserPreference;
 import com.project.pik.EbayApi.repositories.FoundResultRepository;
 import com.project.pik.EbayApi.repositories.OrderRepository;
@@ -55,7 +57,7 @@ public class SearchEbayOffersDaemon extends Thread{
 			Map<Order, UserPreference> preferences = preparePreferences();
 			searchForPreferences(preferences);
 			try {
-				Thread.sleep(60000);
+				Thread.sleep(2000);
 			} catch (InterruptedException e) {
 				logger.error("Thread interruped");
 				logger.error(e.getMessage());
@@ -86,21 +88,22 @@ public class SearchEbayOffersDaemon extends Thread{
 	private void consumeFoundUrls(Order order, List<String> urls) {
 		if (urls.isEmpty())
 			return;
-		for(String url : urls){
+		foundResultRepository.save(urls.stream().map(u -> {
 			FoundResult offer = new FoundResult();
 			offer.setOrder(order);
-			offer.setUrl(url);
-			foundResultRepository.save(offer);
-		}
-		asyncCallbackToUser(order, foundResultRepository.findByOrderUserName(order.getUser().getName()));
+			offer.setUrl(u);
+			return offer;
+		}).collect(Collectors.toList()));
+		User user = order.getUser();
+		String login = user.getLogin();
+		asyncCallbackToUser(login, foundResultRepository.findByOrderUserName(login));
 	}
 
 
 
-	private void asyncCallbackToUser(Order order, List<FoundResult> results) {
-		String userLogin = order.getUser().getLogin();
-		if(registeredListeners.containsKey(userLogin)){
-			registeredListeners.get(userLogin).setResult(results);
+	private void asyncCallbackToUser(String login, List<FoundResult> results) {
+		if(registeredListeners.containsKey(login)){
+			registeredListeners.get(login).setResult(results);
 		}
 	}
 
@@ -109,6 +112,7 @@ public class SearchEbayOffersDaemon extends Thread{
 		List<String> urlsToReturn = new ArrayList<>();
 		FindItemsAdvancedRequest fiAdvRequest = new FindItemsAdvancedRequest();
 		FindingServicePortType serviceClient = FindingServiceClientFactory.getServiceClient(eBayClientConfig);
+		fiAdvRequest.setDescriptionSearch(false);
 		if (preference.getPrizeMin() != null) {
 			ItemFilter filter = new ItemFilter();
 			filter.setName(ItemFilterType.MIN_PRICE);
@@ -127,33 +131,42 @@ public class SearchEbayOffersDaemon extends Thread{
 			fiAdvRequest.getItemFilter().add(filter);
 		}
 
-		if (preference.getCondition() != null) {
-			// TODO - zmienic condition na conditionsList
-			ItemFilter filter = new ItemFilter();
-			filter.setName(ItemFilterType.CONDITION);
-			filter.setParamValue(UserPreference.mapMnemonicToCode(preference.getCondition()));
-			fiAdvRequest.getItemFilter().add(filter);
+//		if (preference.getCondition() != null) {
+//			// TODO - zmienic condition na conditionsList
+//			ItemFilter filter = new ItemFilter();
+//			filter.setName(ItemFilterType.CONDITION);
+//			filter.setParamValue(UserPreference.mapMnemonicToCode(preference.getCondition()));
+//			fiAdvRequest.getItemFilter().add(filter);
+//		}
+
+//		if (preference.getCategoryId() != null) {
+//			fiAdvRequest.getCategoryId().add(preference.getCategoryId());
+//		}
+		
+		if(preference.getKeyword() != null) {
+			fiAdvRequest.setKeywords(preference.getKeyword());
 		}
 
-		if (preference.getCategoryId() != null) {
-			fiAdvRequest.getCategoryId().add(preference.getCategoryId());
-		}
-
-		Map<String, Set<String>> refinments = preference.getCategorySpecifics();
-		if(refinments == null || fiAdvRequest.getItemFilter().isEmpty()){  
-	          return new ArrayList<>();  
-	        } 
-		refinments.forEach((n, v) -> {
-			AspectFilter aspectFilter = new AspectFilter();
-			aspectFilter.setAspectName(n);
-			aspectFilter.getAspectValueName().addAll(v);
-			fiAdvRequest.getAspectFilter().add(aspectFilter);
-		});
+//		Map<String, Set<String>> refinments = preference.getCategorySpecifics();
+//		if(refinments == null || fiAdvRequest.getItemFilter().isEmpty()){  
+//	          return new ArrayList<>();  
+//	        } 
+//		refinments.forEach((n, v) -> {
+//			AspectFilter aspectFilter = new AspectFilter();
+//			aspectFilter.setAspectName(n);
+//			aspectFilter.getAspectValueName().addAll(v);
+//			fiAdvRequest.getAspectFilter().add(aspectFilter);
+//		});
+		
+		PaginationInput pages = new PaginationInput();
+		pages.setPageNumber(1);
+		fiAdvRequest.setPaginationInput(pages);
+		
 		FindItemsAdvancedResponse response = serviceClient.findItemsAdvanced(fiAdvRequest);
-		SearchResult searchResult = response.getSearchResult();
-		List<SearchItem> items = searchResult.getItem();
-		for (SearchItem item : items)
-			urlsToReturn.add(item.getViewItemURL());
+		
+		if (response.getSearchResult() != null
+				&& !response.getSearchResult().getItem().isEmpty())
+			urlsToReturn.addAll(response.getSearchResult().getItem().stream().map(SearchItem::getViewItemURL).collect(Collectors.toList()));
 
 		return urlsToReturn;
 	}
