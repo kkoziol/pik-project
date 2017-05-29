@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import {AuthorizationService} from "./services/authorization/authorization.service";
 import {Authorize} from "./services/authorization/authorization.model";
 import {Router} from "@angular/router";
+import {FoundResult} from "./services/foundResult/foundResult.service";
 
 @Component({
   selector: 'my-app',
@@ -11,7 +12,7 @@ import {Router} from "@angular/router";
 export class AppComponent {
   logged:Authorize;
 
-  constructor(private authorizationService: AuthorizationService, private router: Router)
+  constructor(private authorizationService: AuthorizationService, private found: FoundResult, private router: Router)
   {
     this.logged = this.authorizationService.authorize;
   }

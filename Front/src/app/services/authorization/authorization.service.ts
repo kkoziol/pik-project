@@ -17,7 +17,7 @@ export class AuthorizationService {
 
     if (currentUser) {
       this.token = currentUser.token;
-      this.username = JSON.parse(localStorage.getItem('currentUserName'));
+      this.username = JSON.parse(localStorage.getItem('currentUserName')).username;
       this.authorize.active = true;
     }
   }
@@ -49,35 +49,6 @@ export class AuthorizationService {
         error2 => console.log("Zle haslo"));
 
   }
-
-  register(username: string,password: string,firstName: string, lastName: string,eMail: string,gender: string,birthDate: string,confirmPassword: string) : boolean {
-    const url ='https://localhost:8444/register';
-    const userToAdd = {
-      username: username,
-      password: password,
-      confirmPassword: confirmPassword,
-      firstName: firstName,
-      lastName: lastName,
-      eMail: eMail,
-      gender: gender,
-      birthDate: birthDate
-    };
-    const headers = new Headers();
-    headers.append('Accept', 'application/json');
-    headers.append('Content-Type', 'application/json');
-    const options = new RequestOptions({headers: headers});
-    this.http.post(url, JSON.stringify(userToAdd), options)
-      .map(res => res.json())
-      .subscribe(response => {
-          //console.log(response.body);
-        },
-        error2 => {
-          console.log("Wrong request");
-          return false;
-        });
-    return true;
-  }
-}
 
 
 
