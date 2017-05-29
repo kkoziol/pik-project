@@ -61,6 +61,7 @@ public class ApplicationConfig {
 		ApiContext context = new ApiContext();
 		context.setApiCredential(credential);
 		context.setApiServerUrl("https://api.ebay.com/wsapi"); // production
+		context.setApiLogging(null);
 
 		return context;
 	}

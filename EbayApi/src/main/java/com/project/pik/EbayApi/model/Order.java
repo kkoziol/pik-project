@@ -38,7 +38,7 @@ public class Order {
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "order")
 	private Set<FoundResult> offers = new HashSet<>();
 	
-	@Column(name = "PREFERENCES")
+	@Column(name = "PREFERENCES",length=2000)
 	private String preferencesAsJson;
 
 	public Integer getOrderId() {

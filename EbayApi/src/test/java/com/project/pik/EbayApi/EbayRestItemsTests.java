@@ -42,8 +42,7 @@ public class EbayRestItemsTests {
 		this.mvc.perform(get("/ebay/items/search/test/1"))
 		.andExpect(status().isOk())
 		.andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
-		.andExpect(content().string(containsString("item")))
-		.andDo(MockMvcResultHandlers.print());
+		.andExpect(content().string(containsString("item")));
 	}
 	
 	@Test
@@ -51,8 +50,7 @@ public class EbayRestItemsTests {
 		this.mvc.perform(get("/ebay/items/bestmatch/test"))
 		.andExpect(status().isOk())
 		.andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
-		.andExpect(content().string(containsString("item")))
-		.andDo(MockMvcResultHandlers.print());
+		.andExpect(content().string(containsString("item")));
 	}
 	
 	@Test
@@ -60,7 +58,6 @@ public class EbayRestItemsTests {
 		this.mvc.perform(get("/ebay/items/cheapest/test/20081"))
 		.andExpect(status().isOk())
 		.andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
-		.andExpect(content().string(containsString("item")))
-		.andDo(MockMvcResultHandlers.print());
+		.andExpect(content().string(containsString("item")));
 	}
 }

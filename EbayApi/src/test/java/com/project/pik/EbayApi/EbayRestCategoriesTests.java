@@ -64,8 +64,8 @@ public class EbayRestCategoriesTests {
 		this.mvc.perform(get("/ebay/categories/maincategories"))
 		.andExpect(status().isOk())
 		.andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
-		.andExpect(content().string(containsString("categoryID")))
-		.andDo(MockMvcResultHandlers.print());
+		.andExpect(content().string(containsString("categoryID")));
+	//	.andDo(MockMvcResultHandlers.print());
 	}
 	
 	@Test
@@ -73,8 +73,7 @@ public class EbayRestCategoriesTests {
 		this.mvc.perform(get("/ebay/categories/subcategories/20081"))
 		.andExpect(status().isOk())
 		.andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
-		.andExpect(content().string(containsString("categoryID")))
-		.andDo(MockMvcResultHandlers.print());
+		.andExpect(content().string(containsString("categoryID")));
 	}
 	
 	@Test
@@ -82,8 +81,7 @@ public class EbayRestCategoriesTests {
 		this.mvc.perform(get("/ebay/categories/specifics/870"))
 		.andExpect(status().isOk())
 		.andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
-		.andExpect(content().string(containsString("Color")))
-		.andDo(MockMvcResultHandlers.print());
+		.andExpect(content().string(containsString("Color")));
 	}
 	
 	@Test
@@ -91,7 +89,6 @@ public class EbayRestCategoriesTests {
 		this.mvc.perform(get("/ebay/categories/bestmatch/test"))
 		.andExpect(status().isOk())
 		.andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
-		.andExpect(content().string(containsString("categoryId")))
-		.andDo(MockMvcResultHandlers.print());
+		.andExpect(content().string(containsString("categoryId")));
 	}
 }

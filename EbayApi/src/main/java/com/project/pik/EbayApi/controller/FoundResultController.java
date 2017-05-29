@@ -1,5 +1,6 @@
 package com.project.pik.EbayApi.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,7 +32,7 @@ public class FoundResultController {
 	@ResponseBody
 	@Async
 	public DeferredResult<List<FoundResult>> findByUserAsync(@PathVariable String username){
-		DeferredResult<List<FoundResult>> deferredResult = new DeferredResult<>();
+		DeferredResult<List<FoundResult>> deferredResult = new DeferredResult<>(40000L, new ArrayList<>());
 		SearchEbayOffersDaemon.getInstance().registerListener(username, deferredResult);
 		return deferredResult;
 	}
