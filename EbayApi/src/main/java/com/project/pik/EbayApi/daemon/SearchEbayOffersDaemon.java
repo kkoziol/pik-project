@@ -131,7 +131,7 @@ public class SearchEbayOffersDaemon extends Thread{
 			// TODO - zmienic condition na conditionsList
 			ItemFilter filter = new ItemFilter();
 			filter.setName(ItemFilterType.CONDITION);
-			filter.setParamValue(mapMnemonicToCode(preference.getCondition()));
+			filter.setParamValue(UserPreference.mapMnemonicToCode(preference.getCondition()));
 			fiAdvRequest.getItemFilter().add(filter);
 		}
 
@@ -139,7 +139,7 @@ public class SearchEbayOffersDaemon extends Thread{
 			fiAdvRequest.getCategoryId().add(preference.getCategoryId());
 		}
 
-		Map<String, Set<String>> refinments = preference.getRefinmentsAsSet();
+		Map<String, Set<String>> refinments = preference.getCategorySpecifics();
 		if(refinments == null || fiAdvRequest.getItemFilter().isEmpty()){  
 	          return new ArrayList<>();  
 	        } 
@@ -158,37 +158,12 @@ public class SearchEbayOffersDaemon extends Thread{
 		return urlsToReturn;
 	}
 
-	private String mapMnemonicToCode(String mnemonic) {
-		// https://developer.ebay.com/devzone/finding/callref/types/ItemFilterType.html
-		// section: Condition
-		if (mnemonic.compareToIgnoreCase("New") == 0) {
-			return "1000";
-		} else if (mnemonic.compareToIgnoreCase("New other (see details)") == 0) {
-			return "1500";
-		} else if (mnemonic.compareToIgnoreCase("New with defects") == 0) {
-			return "1750";
-		} else if (mnemonic.compareToIgnoreCase("Manufacturer refurbished") == 0) {
-			return "2000";
-		} else if (mnemonic.compareToIgnoreCase("Seller refurbished") == 0) {
-			return "2500";
-		} else if (mnemonic.compareToIgnoreCase("Used") == 0) {
-			return "3000";
-		} else if (mnemonic.compareToIgnoreCase("Very Good") == 0) {
-			return "4000";
-		} else if (mnemonic.compareToIgnoreCase("Good") == 0) {
-			return "5000";
-		} else if (mnemonic.compareToIgnoreCase("Acceptable") == 0) {
-			return "6000";
-		} else if (mnemonic.compareToIgnoreCase("For parts or not working") == 0) {
-			return "7000";
-		} else {
-			throw new IllegalStateException("Mnemonic: '" + mnemonic + "'could not be mapped to code");
-		}
-	}
+	
 
 	private Map<Order, UserPreference> preparePreferences() {
 		Map<Order, UserPreference> toReturn = new HashMap<>();
 		ObjectMapper jsonMapper = new ObjectMapper();
+		
 		List<Order> ordersToSearchFor = orderRepository.findAll(); // TODO - filter
 		for (Order order : ordersToSearchFor) {
 			String preferenceAsJson = order.getPreferencesAsJson();
