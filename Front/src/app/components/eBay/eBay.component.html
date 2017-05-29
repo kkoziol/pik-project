@@ -1,0 +1,46 @@
+<div class="form-inline ebayContainer">
+  <div class="titlelabel">
+    <label class="form-group">Write search query</label>
+    <input type="text"
+           class="form-group form-control"
+           size="50"
+           maxlength="300"
+           placeholder="Search..."
+           [(ngModel)]=query>
+
+    <button class="btn btn-primary btn-general form-group" (click)="submit()">Search</button>
+  </div>
+  <div class="myListElem">
+    <div>
+      <label>
+        <select #c class="selectBlock" (change)="chooseCategory(c.value)">
+          <option>choose category...</option>
+          <option *ngFor="let category of categoryList" [ngValue]="category">{{category.categoryName}}</option>
+        </select>
+      </label>
+    </div>
+    <div *ngFor="let selectedCategory of selectedCategories">
+      <label>
+        <select #d class="selectBlock" (change)="chooseCategory(d.value)">
+          <option>choose category...</option>
+          <option *ngFor="let category of selectedCategory.childrenCategories" [ngValue]="category">
+            {{category.categoryName}}
+          </option>
+        </select>
+      </label>
+    </div>
+  </div>
+  <table class="gh-tbl">
+    <thead>
+    <th></th>
+    <th>Title</th>
+    <th>Item URL</th>
+    </thead>
+    <tr *ngFor="let item of itemList">
+      <td><img src="{{item.galleryURL}}" style="width:128px;height:128px;"></td>
+      <td>{{item.title}}</td>
+      <td><a href="{{item.viewItemURL}}">{{item.viewItemURL}}</a></td>
+    </tr>
+  </table>
+
+</div>

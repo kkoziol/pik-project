@@ -1,0 +1,48 @@
+@import "../../colors";
+@import "../../app.component";
+
+.loginContainer {
+  margin: auto;
+  width: 40rem;
+  background-color: $main_background_color;
+  padding: 3rem 6rem;
+  border-radius: 3%;
+
+  .center {
+    text-align: center;
+  }
+
+  .inputLabel {
+    font-size: 1.3rem;
+    color: $main_text_color;
+  }
+
+  .genderButtons {
+    display: inline-block;
+    vertical-align: top;
+    margin-left: 1rem;
+    color: $main_text_color;
+  }
+
+  .register-link {
+    font-size: 1rem;
+    text-decoration: underline;
+    color: $main_text_color;
+    cursor: pointer;
+
+  }
+
+  .register-link:hover{
+    color: $main_active_color;
+  }
+
+  .error {
+    color: $main_active_color;
+    border-color: $main_active_color;
+  }
+
+}
+
+.register {
+  top: 10%;
+}

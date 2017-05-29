@@ -5,40 +5,40 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.project.pik.EbayView.daos.UserDao;
+import com.project.pik.EbayView.models.UserRepository;
 import com.project.pik.EbayView.models.entities.User;
+import com.project.pik.EbayView.models.entities.UserDAO;
 
 @Service
 public class UserServiceImpl implements UserService {
-	private UserDao userDao;
-
-	@Override
-	public UserDao getUserDao() {
-		return userDao;
-	}
-
+	
 	@Autowired
-	public void setUserDao(UserDao userDao) {
-		this.userDao = userDao;
-	}
+	UserRepository userRepo;
+	
+	@Autowired
+	UserDAO userDAO;
 
 	@Override
-	public boolean saveOrUpdate(User user) {
-		return userDao.saveOrUpdate(user);
-	}
+	public boolean registerUser(com.project.pik.EbayView.jsonEntities.User user) {
 
-	@Override
-	public User getUser(int id) {
-		return userDao.getUser(id);
+		List<User> users = userRepo.findByLogin(user.getUsername());
+		System.out.println("users size: "+users.size());
+		
+		if(users.isEmpty() && (user.getPassword().equals(user.getConfirmPassword()))){
+			User userToAdd = new User();
+			userToAdd.setAuthorities("ROLE_USER");
+			//userToAdd.setDateOfBirth(user.getBirthDate());   TO_DO
+			userToAdd.setLogin(user.getUsername());
+			userToAdd.setName(user.getFirstName());
+			userToAdd.setPassword(user.getPassword());
+			userToAdd.setSex(user.getGender());
+			userToAdd.setSurname(user.getLastName());
+			//userToAdd.setUserId(3);
+			userDAO.addUser(userToAdd);
+			System.out.println("USER ADDED");
+			return true;
+		}else
+		return false;
 	}
-
-	@Override
-	public void deleteUser(int id) {
-		userDao.deleteUser(id);
-	}
-
-	@Override
-	public List<User> getUserList() {
-		return userDao.getUserList();
-	}
+	
 }
