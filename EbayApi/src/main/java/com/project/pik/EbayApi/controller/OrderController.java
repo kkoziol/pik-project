@@ -12,13 +12,13 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.project.pik.EbayApi.daos.OrderRepository;
 import com.project.pik.EbayApi.model.Order;
 import com.project.pik.EbayApi.model.User;
+import com.project.pik.EbayApi.repositories.OrderRepository;
 
 @RestController
 @RequestMapping("/orders")
-public class EbayOrderController {
+public class OrderController {
 	
 	@Autowired
 	private OrderRepository orderRepository;
@@ -37,7 +37,4 @@ public class EbayOrderController {
 		order.setUser(user);
 		orderRepository.save(order);
 	}
-	
-	
-	
 }

@@ -21,7 +21,7 @@ public class EbayServiceImplTests {
 	 * Category: Computers/Tablets & NetworkingDesktops & All-In-One
 	 * ComputersApple Desktops & All-In-One Computers
 	 */
-	private final static String desktopAndAllInOneComputersCategorieId = "111418";
+	private final static String DESKTOP_AND_ALL_IN_ONE_COMPUTERS_CATEGORY_ID = "111418";
 	private final static Logger logger = Logger.getLogger(EbayServiceImplTests.class);
 
 	@Autowired
@@ -30,7 +30,7 @@ public class EbayServiceImplTests {
 	@Test
 	public void testgetCategorySpecificsByCategoryId() {
 		String asString = castMapStringListStringTo(
-				ebayCategoriesService.getCategorySpecificsByCategoryId(desktopAndAllInOneComputersCategorieId));
+				ebayCategoriesService.getCategorySpecificsByCategoryId(DESKTOP_AND_ALL_IN_ONE_COMPUTERS_CATEGORY_ID));
 		logger.debug(asString);
 	}
 

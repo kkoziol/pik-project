@@ -1,4 +1,4 @@
-package com.project.pik.EbayApi.daemon;
+package com.project.pik.EbayApi.model;
 
 import java.util.HashMap;
 import java.util.Map;

@@ -1,4 +1,4 @@
-package com.project.pik.EbayApi.daos;
+package com.project.pik.EbayApi.repositories;
 
 import java.util.List;
 

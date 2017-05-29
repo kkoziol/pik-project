@@ -26,10 +26,11 @@ import com.ebay.services.finding.SearchResult;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.project.pik.EbayApi.daos.FoundResultRepository;
-import com.project.pik.EbayApi.daos.OrderRepository;
 import com.project.pik.EbayApi.model.FoundResult;
 import com.project.pik.EbayApi.model.Order;
+import com.project.pik.EbayApi.model.UserPreference;
+import com.project.pik.EbayApi.repositories.FoundResultRepository;
+import com.project.pik.EbayApi.repositories.OrderRepository;
 
 @Service
 public class SearchEbayOffersDaemon extends Thread{

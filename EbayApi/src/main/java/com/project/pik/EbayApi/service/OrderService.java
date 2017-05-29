@@ -5,8 +5,8 @@ import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.project.pik.EbayApi.daos.OrderRepository;
 import com.project.pik.EbayApi.model.Order;
+import com.project.pik.EbayApi.repositories.OrderRepository;
 
 public class OrderService{
 

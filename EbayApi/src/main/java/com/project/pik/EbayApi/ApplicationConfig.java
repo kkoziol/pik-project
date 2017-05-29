@@ -93,9 +93,6 @@ public class ApplicationConfig {
 		return new EbayItemsServiceImpl();
 	}
 
-	@Bean
-	public SearchEbayOffersDaemon searchEbayOffersDaemon() {
-		return SearchEbayOffersDaemon.getInstance();
-	}
+
 
 }
