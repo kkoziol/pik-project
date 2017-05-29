@@ -27,6 +27,8 @@ import com.ebay.services.finding.SearchItem;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.project.pik.EbayApi.mail.MailSender;
+import com.project.pik.EbayApi.model.Email;
 import com.project.pik.EbayApi.model.FoundResult;
 import com.project.pik.EbayApi.model.Order;
 import com.project.pik.EbayApi.model.User;
@@ -72,11 +74,11 @@ public class SearchEbayOffersDaemon extends Thread{
 		return instance;
 	}
 	
-	public void registerListener(String userLogin, DeferredResult<List<FoundResult>> result){
+	public synchronized void registerListener(String userLogin, DeferredResult<List<FoundResult>> result){
 		registeredListeners.put(userLogin, result);
 	}
 	
-	public void unregisterListener(String userLogin){
+	public synchronized void unregisterListener(String userLogin){
 		// TODO - when user logs out, remove its listener
 		registeredListeners.remove(userLogin);
 	}
@@ -97,6 +99,10 @@ public class SearchEbayOffersDaemon extends Thread{
 		User user = order.getUser();
 		String login = user.getLogin();
 		asyncCallbackToUser(login, foundResultRepository.findByOrderUserName(login));
+		MailSender sender = new MailSender(); 
+	    for (Email email : order.getUser().getEmails()) {
+	    	sender.sendFoundOffer(email, order, urls);
+	    } 
 	}
 
 
