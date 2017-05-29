@@ -25,12 +25,12 @@ public class EbayServiceImplTests {
 	private final static Logger logger = Logger.getLogger(EbayServiceImplTests.class);
 
 	@Autowired
-	private EbayServiceImpl ebayService;
+	private EbayCategoriesService ebayCategoriesService;
 
 	@Test
 	public void testgetCategorySpecificsByCategoryId() {
 		String asString = castMapStringListStringTo(
-				ebayService.getCategorySpecificsByCategoryId(desktopAndAllInOneComputersCategorieId));
+				ebayCategoriesService.getCategorySpecificsByCategoryId(desktopAndAllInOneComputersCategorieId));
 		logger.debug(asString);
 	}
 

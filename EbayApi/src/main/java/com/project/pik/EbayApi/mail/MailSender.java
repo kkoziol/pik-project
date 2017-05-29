@@ -19,8 +19,6 @@ import javax.mail.internet.MimeMultipart;
 
 import org.apache.log4j.Logger;
 
-import com.project.pik.EbayApi.service.EbayServiceImpl;
-
 public class MailSender {
 	/** LOGGER */
 	private static final Logger logger = Logger.getLogger(MailSender.class);
@@ -30,7 +28,7 @@ public class MailSender {
 	public MailSender() {
 		Properties keys = new Properties();
 		try {
-			InputStream in = EbayServiceImpl.class.getResourceAsStream(MAIL_PROPERTIES_FILE_NAME);
+			InputStream in = MailSender.class.getResourceAsStream(MAIL_PROPERTIES_FILE_NAME);
 			keys.load(in);
 		} catch (IOException e) {
 			logger.error("Could not load email properties file");

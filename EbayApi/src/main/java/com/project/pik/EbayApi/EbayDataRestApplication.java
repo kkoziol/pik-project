@@ -26,20 +26,11 @@ import org.springframework.boot.context.embedded.EmbeddedServletContainerFactory
 import org.springframework.boot.context.embedded.tomcat.TomcatEmbeddedServletContainerFactory;
 import org.springframework.context.annotation.Bean;
 
-import com.project.pik.EbayApi.daemon.SearchEbayOffersDaemon;
-import com.project.pik.EbayApi.service.EbayService;
-import com.project.pik.EbayApi.service.EbayServiceImpl;
-
 @SpringBootApplication
 public class EbayDataRestApplication {
 
 	public static void main(String[] args) throws Exception {
 		SpringApplication.run(EbayDataRestApplication.class, args);
-	}
-
-	@Bean
-	EbayService getEbayService() {
-		return new EbayServiceImpl();
 	}
 
 	@Bean
@@ -68,11 +59,6 @@ public class EbayDataRestApplication {
 		connector.setRedirectPort(8800);
 
 		return connector;
-	}
-
-	@Bean
-	public SearchEbayOffersDaemon searchEbayOffersDaemon() {
-		return SearchEbayOffersDaemon.getInstance();
 	}
 
 }

@@ -18,44 +18,37 @@ import com.ebay.sdk.ApiContext;
 import com.ebay.sdk.ApiCredential;
 import com.ebay.services.client.ClientConfig;
 import com.project.pik.EbayApi.daemon.SearchEbayOffersDaemon;
-import com.project.pik.EbayApi.service.EbayService;
-import com.project.pik.EbayApi.service.EbayServiceImpl;
+import com.project.pik.EbayApi.service.EbayCategoriesService;
+import com.project.pik.EbayApi.service.EbayCategoriesServiceImpl;
+import com.project.pik.EbayApi.service.EbayItemsService;
+import com.project.pik.EbayApi.service.EbayItemsServiceImpl;
 
 @Configuration
 public class ApplicationConfig {
 
-	private static final Logger logger = Logger.getLogger(EbayDataRestApplication.class);
+	private static final Logger logger = Logger.getLogger(ApplicationConfig.class);
 
-	@Bean
-	EbayService getEbayService() {
-		return new EbayServiceImpl();
-	}
-	
 	@Bean
 	public TaskExecutor taskExecutor() {
-	    return new SimpleAsyncTaskExecutor(); // Or use another one of your liking
-	}
-	
-	@Bean
-	public CommandLineRunner schedulingRunner(TaskExecutor executor) {
-	    return new CommandLineRunner() {
-	        public void run(String... args) throws Exception {
-	            executor.execute(SearchEbayOffersDaemon.getInstance());
-	        }
-	    };
+		return new SimpleAsyncTaskExecutor(); // Or use another one of your
+												// liking
 	}
 
-//	@Bean
-//	public EmbeddedServletContainerCustomizer containerCustomizer() {
-//		return (container -> container.setPort(8090));
-//	}
+	@Bean
+	public CommandLineRunner schedulingRunner(TaskExecutor executor) {
+		return new CommandLineRunner() {
+			public void run(String... args) throws Exception {
+				executor.execute(SearchEbayOffersDaemon.getInstance());
+			}
+		};
+	}
 
 	@Bean
 	@Lazy
 	public ApiContext eBaySoapApi() {
 		Properties keys = new Properties();
 		try {
-			InputStream in = EbayServiceImpl.class.getResourceAsStream(PROPERTIES_FILE_NAME);
+			InputStream in = ApplicationConfig.class.getResourceAsStream(PROPERTIES_FILE_NAME);
 			keys.load(in);
 		} catch (IOException e) {
 			logger.error("Could not load ebay properties file");
@@ -77,7 +70,7 @@ public class ApplicationConfig {
 	public ClientConfig eBayClientConfig() {
 		Properties keys = new Properties();
 		try {
-			InputStream in = EbayServiceImpl.class.getResourceAsStream(PROPERTIES_FILE_NAME);
+			InputStream in = ApplicationConfig.class.getResourceAsStream(PROPERTIES_FILE_NAME);
 			keys.load(in);
 		} catch (IOException e) {
 			logger.error("Could not load ebay properties file");
@@ -88,6 +81,21 @@ public class ApplicationConfig {
 		config.setApplicationId(keys.getProperty("appId"));
 
 		return config;
+	}
+
+	@Bean
+	EbayCategoriesService getEbayCategoriesService() {
+		return new EbayCategoriesServiceImpl();
+	}
+
+	@Bean
+	EbayItemsService getEbayItemsService() {
+		return new EbayItemsServiceImpl();
+	}
+
+	@Bean
+	public SearchEbayOffersDaemon searchEbayOffersDaemon() {
+		return SearchEbayOffersDaemon.getInstance();
 	}
 
 }

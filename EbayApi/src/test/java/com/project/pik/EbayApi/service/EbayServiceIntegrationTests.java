@@ -39,12 +39,12 @@ import com.project.pik.EbayApi.EbayDataRestApplication;
 public class EbayServiceIntegrationTests {
 
 	@Autowired
-	EbayService ebayService;
+	EbayCategoriesService ebayCategoriesService;
 
 	@Test
 	public void findAllMainCategories() {
 
-		List<CategoryType> mainCategories = this.ebayService.getMainCategories();
+		List<CategoryType> mainCategories = this.ebayCategoriesService.getMainCategories();
 		assertThat(mainCategories.size(), is(greaterThan(10)));
 	}
 }
