@@ -1,5 +1,5 @@
 <div class="form-inline ebayContainer">
-  <div class="left">
+ <!--   <div class="left">
     <label class="form-group">Write search query</label>
     <input type="text"
            class="form-group form-control"
@@ -22,6 +22,24 @@
         <td><a href="{{item.viewItemURL}}">{{item.viewItemURL}}</a></td>
       </tr>
     </table>
+  </div>-->
+  
+  <div class="left">
+   <input type="text"
+           class="form-group form-control"
+           size="50"
+           maxlength="300"
+           placeholder="Search..."
+           [(ngModel)]=query>
+           <br>
+		  <div>
+		  <label>choose condition:</label>
+		 <select #c class="selectBlock" [(ngModel)]="selectedCondition">
+		  <option *ngFor="let con of conditions" [ngValue]="con">{{con}}</option>
+		</select>
+		  
+		  </div>
+  
   </div>
 
   <div class="right">
@@ -68,5 +86,5 @@
       </div>
     </div>
   </div>
-  <button class="confirmButton">Take</button>
+  <button class="confirmButton" (click)="findOffers()" >Find offers</button>
 </div>

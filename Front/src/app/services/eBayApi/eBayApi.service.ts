@@ -49,4 +49,8 @@ export class EBayService {
   getCheapestItemByKeyWordInCategory(keyword: string, categoryId: number) {
     return this.authorizationHttp.get("/ebay/items/cheapest/item/" + keyword + "/" + categoryId);
   }
+  
+  putOrderPreferences(username: string, data: {}){
+  	return  this.authorizationHttp.post("/orders/"+username, data);
+  }
 }

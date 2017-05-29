@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {EBayService} from '../../services/eBayApi/eBayApi.service';
 import {Observable} from 'rxjs/Observable';
 import {Subject} from 'rxjs/Subject';
+import {UserPreference} from './orders.model';
 
 import 'rxjs/add/operator/debounceTime';
 import 'rxjs/add/operator/distinctUntilChanged';
@@ -26,11 +27,14 @@ export class OrdersComponent implements OnInit {
   itemList: Item[];
   properties: Properties[];
   selectedProperties: {};
+  conditions: string[];
+  selectedCondition: string;
 
   constructor(private ebayService: EBayService) {
     this.selectedCategories = [];
     this.properties = [];
     this.selectedProperties = {};
+    this.conditions = [];
   }
 
   private searchTermStream = new Subject<string>();
@@ -44,6 +48,8 @@ export class OrdersComponent implements OnInit {
     this.ebayService.getMainCategories()
       .subscribe(data => this.categoryList = data.map(elem => CategoryType.copy(elem)),
         error2 => console.log("Zly request"));
+    this.conditions = ['New', 'New other (see details)', 'New with defects', 'Manufacturer refurbished', 'Seller refurbished', 'Used', 'Very Good', 'Good', 'Acceptable', 'For parts or not working'];
+    
   }
 
   submit() {
@@ -161,5 +167,27 @@ export class OrdersComponent implements OnInit {
     }
   }
 
+  findOffers(){
+      const user = JSON.parse(localStorage.getItem('currentUserName'));
+      let preference: UserPreference;
+      preference = new UserPreference();
+      preference.categoryID = this.selectedCategories[this.selectedCategories.length - 1].categoryID;
+      preference.minPrice = this.minCost;
+      preference.maxPrice = this.maxCost;
+      preference.condition = this.selectedCondition;
+      preference.properties = this.selectedProperties;
+      preference.deliveryOptions = 'Free International shipping';
+      preference.keyword = this.query;
+      console.log(preference);
+      this.ebayService.putOrderPreferences(user.username, preference)
+       .map(res => res.json())
+      .subscribe(response => {
+          console.log(response.body);
+        },
+        error2 => {
+          console.log("Wrong post order");
+          return false;
+        });
+  }
 }
 
