@@ -12,19 +12,19 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.context.request.async.DeferredResult;
 
 import com.project.pik.EbayApi.daemon.SearchEbayOffersDaemon;
-import com.project.pik.EbayApi.daos.FoundResultRepository;
 import com.project.pik.EbayApi.model.FoundResult;
+import com.project.pik.EbayApi.repositories.FoundResultRepository;
 
 @RestController
-@RequestMapping("/offers")
+@RequestMapping("/foundresults")
 public class FoundResultController {
 
 	@Autowired
-	private FoundResultRepository offerRepository;
+	private FoundResultRepository foundResultRepository;
 	
 	@RequestMapping("/{username}")
 	public List<FoundResult> findByUser(@PathVariable String username){
-		return offerRepository.findByOrderUserName(username);
+		return foundResultRepository.findByOrderUserName(username);
 	}
 	
 	@RequestMapping(value = "/async/{username}", method = RequestMethod.GET)

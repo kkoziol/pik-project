@@ -27,19 +27,12 @@ import org.springframework.boot.context.embedded.tomcat.TomcatEmbeddedServletCon
 import org.springframework.context.annotation.Bean;
 
 import com.project.pik.EbayApi.daemon.SearchEbayOffersDaemon;
-import com.project.pik.EbayApi.service.EbayService;
-import com.project.pik.EbayApi.service.EbayServiceImpl;
 
 @SpringBootApplication
 public class EbayDataRestApplication {
 
 	public static void main(String[] args) throws Exception {
 		SpringApplication.run(EbayDataRestApplication.class, args);
-	}
-
-	@Bean
-	EbayService getEbayService() {
-		return new EbayServiceImpl();
 	}
 
 	@Bean
