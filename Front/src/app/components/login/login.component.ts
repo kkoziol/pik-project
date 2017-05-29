@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import {AuthorizationService} from '../../services/authorization/authorization.service';
-import {Router} from '@angular/router';
-//import {EmailValidator} from "../../controlers/EmailValidator";
+import {AuthorizationService} from "../../services/authorization/authorization.service";
+import {EmailValidator} from "../../controlers/EmailValidator";
 
 
 @Component({
@@ -70,9 +69,8 @@ export class LoginComponent implements OnInit {
   }
 
   validateEmail() {
-   // this.emailValidate = EmailValidator.mailValidate(this.eMail);
-   // console.log(this.emailValidate);
-    console.log('Email validation');
+    this.emailValidate = EmailValidator.mailValidate(this.eMail);
+    console.log(this.emailValidate);
   }
 
   validatePassword() {

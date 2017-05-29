@@ -14,12 +14,12 @@ export class EBayService {
     return this.authorizationHttp.get("/categories/maincategories").map(res =>  res.json())
   }
 
-  getSbsCategoriesByParentId(parentId: number) {
+  getSbsCategoriesByParentId(parentId: string) {
     return this.authorizationHttp.get("/categories/subcategories/" + parentId).map(res =>  res.json());
   }
 
-  getSpecificsCategoriesById(categoryId: number) {
-    return this.authorizationHttp.get("/categories/categoryspecifics/" + categoryId);
+  getSpecificsCategoriesById(categoryId: string) {
+    return this.authorizationHttp.get("/categories/categoryspecifics/" + categoryId).map(res =>  res.json());
   }
 
   getBestMatchCategory(keyword: string) {

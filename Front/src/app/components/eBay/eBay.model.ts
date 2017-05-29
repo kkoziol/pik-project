@@ -34,6 +34,11 @@ export class CategoryType {
   }
 }
 
+export class Properties {
+  type: string;
+  value: string[];
+}
+
 export class Item {
   itemId: number;
   title: string;

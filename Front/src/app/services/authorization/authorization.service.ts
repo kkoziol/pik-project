@@ -59,7 +59,7 @@ export class AuthorizationService {
     };
     const headers = new Headers();
     headers.append('Accept', 'application/json');
-    headers.append('Content-Type', 'application/json');  
+    headers.append('Content-Type', 'application/json');
     const options = new RequestOptions({headers: headers});
      this.http.post(url, JSON.stringify(userToAdd), options)
        .map(res => res.json())
