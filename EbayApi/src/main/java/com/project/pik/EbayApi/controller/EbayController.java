@@ -105,14 +105,14 @@ public class EbayController {
 	}
 
 	@RequestMapping(value = "/items/bestmatch/{keyword}", method = RequestMethod.GET)
-	public ResponseEntity<Category> searchBestMachingItemForKeyword(@PathVariable("keyword") String keyword) {
+	public ResponseEntity<SearchItem> searchBestMachingItemForKeyword(@PathVariable("keyword") String keyword) {
 		SearchItem item = ebayItemsService.getBestMatchItem(keyword);
 		if (item == null) {
 			logger.error("Cannot receive best matching category of " + keyword);
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 		}
 
-		return new ResponseEntity<>(item.getPrimaryCategory(), HttpStatus.OK);
+		return new ResponseEntity<>(item, HttpStatus.OK);
 	}
 
 	@RequestMapping(value = "/items/cheapest/{keyword}/{categoryId}", method = RequestMethod.GET)
