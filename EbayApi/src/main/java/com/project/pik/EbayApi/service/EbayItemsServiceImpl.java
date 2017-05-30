@@ -65,7 +65,9 @@ public class EbayItemsServiceImpl implements EbayItemsService {
 			fiAdvRequest.getItemFilter().add(filterMax);
 		}
 
-		
+		PaginationInput pagesIn = new PaginationInput();
+		pagesIn.setPageNumber(pageNumber);
+		fiAdvRequest.setPaginationInput(pagesIn);
 		
 		
 		
@@ -73,10 +75,7 @@ public class EbayItemsServiceImpl implements EbayItemsService {
 		PaginationOutput pages = new PaginationOutput();
 		pages.setPageNumber(pageNumber);
 		fiAdvResponse.setPaginationOutput(pages);
-		int returnedPageNumber = fiAdvResponse.getPaginationOutput().getTotalPages();
 		List<SearchItem> items = new ArrayList<>();
-		if(returnedPageNumber < 1 || pageNumber > returnedPageNumber)
-			return items;
 		
 		if (fiAdvResponse.getSearchResult() != null
 				&& !fiAdvResponse.getSearchResult().getItem().isEmpty())
