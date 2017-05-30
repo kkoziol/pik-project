@@ -1,5 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {EBayService} from '../../services/eBayApi/eBayApi.service';
+import {AuthorizationService} from "../../services/authorization/authorization.service";
 import {Observable} from 'rxjs/Observable';
 import {Subject} from 'rxjs/Subject';
 import {UserPreference} from './orders.model';
@@ -30,7 +31,7 @@ export class OrdersComponent implements OnInit {
   conditions: string[];
   selectedCondition: string;
 
-  constructor(private ebayService: EBayService) {
+  constructor(private ebayService: EBayService, private authotrizationService: AuthorizationService) {
     this.selectedCategories = [];
     this.properties = [];
     this.selectedProperties = {};
@@ -168,7 +169,6 @@ export class OrdersComponent implements OnInit {
   }
 
   findOffers(){
-      const user = JSON.parse(localStorage.getItem('currentUserName'));
       let preference: UserPreference;
       preference = new UserPreference();
       preference.categoryID = this.selectedCategories[this.selectedCategories.length - 1].categoryID;
@@ -179,7 +179,7 @@ export class OrdersComponent implements OnInit {
       preference.deliveryOptions = 'Free International shipping';
       preference.keyword = this.query;
       console.log(preference);
-      this.ebayService.putOrderPreferences(user.username, preference)
+      this.ebayService.putOrderPreferences(this.authotrizationService.username, preference)
        .map(res => res.json())
       .subscribe(response => {
           console.log(response.body);
