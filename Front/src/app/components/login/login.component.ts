@@ -54,19 +54,19 @@ export class LoginComponent implements OnInit {
   }
 
   registerUser() {
-    if (this.username !== '' && this.password !== '' && this.firstName !== '' && this.lastName !== '' && this.eMail !== '' && this.gender !== '' && this.confirmPassword !== '') {
-      this.error2 = false;
-      if (this.authorizationService.register(this.username, this.password, this.firstName, this.lastName, this.eMail, this.gender, this.birthDate, this.confirmPassword)) {
-        this.success = true;
-        setTimeout((router: Router) => {
-          this.register = false;
-        }, 3000);
-      }else {
-        this.error = true;
-      }
+   if (this.username !== '' && this.password !== '' && this.firstName !== '' && this.lastName !== '' && this.eMail !== '' && this.gender !== '' && this.confirmPassword !== '') {
+    this.error2 = false;
+    if (this.authorizationService.register(this.username, this.password, this.firstName, this.lastName, this.eMail, this.gender, this.birthDate, this.confirmPassword)) {
+      this.success = true;
+      setTimeout((router: Router) => {
+        this.register = false;
+    }, 3000);
     }else {
-      this.error2 = true;
+      this.error = true;
     }
+    }else {
+     this.error2 = true;
+   }
   }
 
   validateEmail() {

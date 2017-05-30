@@ -1,6 +1,5 @@
 import {Component, OnInit} from '@angular/core';
 import {EBayService} from '../../services/eBayApi/eBayApi.service';
-import {Observable} from 'rxjs/Observable';
 import {Subject} from 'rxjs/Subject';
 
 import 'rxjs/add/operator/debounceTime';
@@ -19,8 +18,6 @@ import elementIsNotSelected = until.elementIsNotSelected;
 
 export class EBayComponent implements OnInit {
   query: string;
-  minCost: number;
-  maxCost: number;
   categoryList: CategoryType[];
   selectedCategories: CategoryType[];
   itemList: Item[];
@@ -40,7 +37,6 @@ export class EBayComponent implements OnInit {
   }
 
   ngOnInit() {
-
     this.ebayService.getMainCategories()
       .subscribe(data => this.categoryList = data.map(elem => CategoryType.copy(elem)),
         error2 => console.log("Zly request"));
@@ -113,7 +109,7 @@ export class EBayComponent implements OnInit {
   chooseCategory = (categoryName: string) => {
     //TODO Refactor shity kod ale w przy takim czasie odopowiedzzi z serwera nie ma sensu przyspieszyc
     let newSelected;
-    console.log("KLIK",categoryName);
+
     if (this.selectedCategories.length > 0) {
       newSelected = this.selectedCategories.find(category =>
       category.childrenCategories.find(categoryChild => categoryChild.categoryName === categoryName) !== null)
