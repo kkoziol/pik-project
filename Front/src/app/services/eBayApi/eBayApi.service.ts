@@ -51,6 +51,6 @@ export class EBayService {
   }
   
   putOrderPreferences(username: string, data: {}){
-  	return  this.authorizationHttp.post("/orders/"+username, data);
+  	return  this.authorizationHttp.post("/orders/add/"+username, data);
   }
 }
