@@ -37,7 +37,7 @@ public class OrderController {
 	@ResponseBody 
 	@RequestMapping(value = "/list/{username}", method = RequestMethod.GET, produces = "application/json")
 	public ResponseEntity<List<Order>> getOrdersPerUser(@PathVariable String username){
-		List<Order> orders = orderRepository.findByUserName(username);
+		List<Order> orders = orderRepository.findByUserLogin(username);
 		
 		if (orders == null || orders.isEmpty()) {
 			logger.error("Cannot receive orders for user " + username);

@@ -8,6 +8,8 @@ import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import javax.persistence.EntityManager;
+
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -49,6 +51,9 @@ public class SearchEbayOffersDaemon extends Thread {
 	private FoundResultRepository foundResultRepository;
 
 	@Autowired
+	private EntityManager entityManager;
+	
+	@Autowired
 	private ClientConfig eBayClientConfig;
 
 	@Override
@@ -89,15 +94,15 @@ public class SearchEbayOffersDaemon extends Thread {
 	private void consumeFoundUrls(Order order, List<String> urls) {
 		if (urls.isEmpty())
 			return;
-		foundResultRepository.save(urls.stream().map(u -> {
-			FoundResult offer = new FoundResult();
-			offer.setOrder(order);
-			offer.setUrl(u);
-			return offer;
-		}).collect(Collectors.toList()));
+		String urlsInClause = "(" + urls.stream().map(u -> "'" + u + "'").collect(Collectors.joining(",")) + ")";
+		List<String> urlsInDb = entityManager.createNativeQuery("SELECT url FROM FOUND_RESULTS WHERE url in " + urlsInClause, String.class).getResultList();
+		urls.removeAll(urlsInDb);
+		if(urls.isEmpty()){
+			return;
+		}
 		User user = order.getUser();
 		String login = user.getLogin();
-		asyncCallbackToUser(login, foundResultRepository.findByOrderUserName(login));
+		asyncCallbackToUser(login, foundResultRepository.findByOrderUserLogin(login));
 		MailSender sender = new MailSender();
 		for (Email email : order.getUser().getEmails()) {
 			sender.sendFoundOffer(email, order, urls);

@@ -9,5 +9,5 @@ import com.project.pik.EbayApi.model.Order;
 
 @Repository
 public interface OrderRepository extends JpaRepository<Order, Long>{
-	public List<Order> findByUserName(String login); 
+	public List<Order> findByUserLogin(String login); 
 }

@@ -22,6 +22,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
+
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest(classes = EbayDataRestApplication.class)
 @WebAppConfiguration
@@ -32,7 +33,7 @@ public class FoundResultsRestTests {
 	private WebApplicationContext context;
 
 	private MockMvc mvc;
-	
+
 	@Autowired
 	private EntityManager entityManager;
 
@@ -40,21 +41,22 @@ public class FoundResultsRestTests {
 	public void setup() {
 		this.mvc = MockMvcBuilders.webAppContextSetup(this.context).build();
 	}
-	
-	
+
 	@After
 	public void cleanup() {
-		entityManager.createNativeQuery("DELETE FROM found_results where order_id in (select order_id from orders where user_id in (select user_id from users where login='test'))");
+		entityManager
+				.createNativeQuery(
+						"DELETE FROM found_results where order_id in (select order_id from orders "
+						+ "where user_id in (select user_id from users where login='test'))")
+				.executeUpdate();
 	}
-	
+
 	@Test
-	public void testAsyncResponse() throws Exception {		
-		MvcResult resultActions = this.mvc.perform(get("/foundresults/async/test"))
-	            .andExpect(request().asyncStarted())
-	            .andReturn();
-		
-		this.mvc.perform(asyncDispatch(resultActions))
-        .andExpect(status().is2xxSuccessful());
+	public void testAsyncResponse() throws Exception {
+		MvcResult resultActions = this.mvc.perform(get("/foundresults/async/test")).andExpect(request().asyncStarted())
+				.andReturn();
+
+		this.mvc.perform(asyncDispatch(resultActions)).andExpect(status().is2xxSuccessful());
 	}
-	
+
 }

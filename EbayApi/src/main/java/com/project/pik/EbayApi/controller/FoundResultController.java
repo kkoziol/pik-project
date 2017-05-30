@@ -29,7 +29,7 @@ public class FoundResultController {
 
 	@RequestMapping("/list/{username}")
 	public ResponseEntity<List<FoundResult>> findByUser(@PathVariable String username) {
-		List<FoundResult> results = foundResultRepository.findByOrderUserName(username);
+		List<FoundResult> results = foundResultRepository.findByOrderUserLogin(username);
 
 		if (results == null || results.isEmpty()) {
 			logger.error("Cannot receive found results for user " + username);
