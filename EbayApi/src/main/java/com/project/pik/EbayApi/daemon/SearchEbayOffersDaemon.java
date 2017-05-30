@@ -1,6 +1,5 @@
 package com.project.pik.EbayApi.daemon;
 
-
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -37,24 +36,24 @@ import com.project.pik.EbayApi.repositories.FoundResultRepository;
 import com.project.pik.EbayApi.repositories.OrderRepository;
 
 @Service
-public class SearchEbayOffersDaemon extends Thread{
+public class SearchEbayOffersDaemon extends Thread {
 	private static SearchEbayOffersDaemon instance = null;
 	private static final String SEARCHING_CURRENCY = "EUR";
-	private Map<String, DeferredResult<List<FoundResult>> > registeredListeners = new HashMap<>();
+	private Map<String, DeferredResult<List<FoundResult>>> registeredListeners = new HashMap<>();
 	private final Logger logger = Logger.getLogger(SearchEbayOffersDaemon.class);
 
 	@Autowired
 	private OrderRepository orderRepository;
-	
+
 	@Autowired
 	private FoundResultRepository foundResultRepository;
 
 	@Autowired
 	private ClientConfig eBayClientConfig;
-	
+
 	@Override
 	public void run() {
-		while(true){
+		while (true) {
 			logger.debug("Running search");
 			Map<Order, UserPreference> preferences = preparePreferences();
 			searchForPreferences(preferences);
@@ -67,22 +66,22 @@ public class SearchEbayOffersDaemon extends Thread{
 		}
 	}
 
-	public static SearchEbayOffersDaemon getInstance(){
-		if(instance == null){
+	public static SearchEbayOffersDaemon getInstance() {
+		if (instance == null) {
 			instance = new SearchEbayOffersDaemon();
 		}
 		return instance;
 	}
-	
-	public synchronized void registerListener(String userLogin, DeferredResult<List<FoundResult>> result){
+
+	public synchronized void registerListener(String userLogin, DeferredResult<List<FoundResult>> result) {
 		registeredListeners.put(userLogin, result);
 	}
-	
-	public synchronized void unregisterListener(String userLogin){
+
+	public synchronized void unregisterListener(String userLogin) {
 		// TODO - when user logs out, remove its listener
 		registeredListeners.remove(userLogin);
 	}
-	
+
 	private void searchForPreferences(Map<Order, UserPreference> preferences) {
 		preferences.forEach((o, p) -> consumeFoundUrls(o, searchForSinglePreference(p)));
 	}
@@ -99,16 +98,14 @@ public class SearchEbayOffersDaemon extends Thread{
 		User user = order.getUser();
 		String login = user.getLogin();
 		asyncCallbackToUser(login, foundResultRepository.findByOrderUserName(login));
-		MailSender sender = new MailSender(); 
-	    for (Email email : order.getUser().getEmails()) {
-	    	sender.sendFoundOffer(email, order, urls);
-	    } 
+		MailSender sender = new MailSender();
+		for (Email email : order.getUser().getEmails()) {
+			sender.sendFoundOffer(email, order, urls);
+		}
 	}
 
-
-
 	private void asyncCallbackToUser(String login, List<FoundResult> results) {
-		if(registeredListeners.containsKey(login)){
+		if (registeredListeners.containsKey(login)) {
 			registeredListeners.get(login).setResult(results);
 		}
 	}
@@ -137,53 +134,53 @@ public class SearchEbayOffersDaemon extends Thread{
 			fiAdvRequest.getItemFilter().add(filter);
 		}
 
-//		if (preference.getCondition() != null) {
-//			// TODO - zmienic condition na conditionsList
-//			ItemFilter filter = new ItemFilter();
-//			filter.setName(ItemFilterType.CONDITION);
-//			filter.setParamValue(UserPreference.mapMnemonicToCode(preference.getCondition()));
-//			fiAdvRequest.getItemFilter().add(filter);
+//		if (preference.getConditions() != null && !preference.getConditions().isEmpty()) {
+//			preference.getConditions().forEach(c -> {
+//				ItemFilter filter = new ItemFilter();
+//				filter.setName(ItemFilterType.CONDITION);
+//				filter.setParamValue(UserPreference.mapMnemonicToCode(c));
+//				fiAdvRequest.getItemFilter().add(filter);
+//			});
 //		}
 
-//		if (preference.getCategoryId() != null) {
-//			fiAdvRequest.getCategoryId().add(preference.getCategoryId());
-//		}
-		
-		if(preference.getKeyword() != null) {
+		if (preference.getCategoryId() != null) {
+			fiAdvRequest.getCategoryId().add(preference.getCategoryId());
+		}
+
+		if (preference.getKeyword() != null) {
 			fiAdvRequest.setKeywords(preference.getKeyword());
 		}
 
 //		Map<String, Set<String>> refinments = preference.getCategorySpecifics();
-//		if(refinments == null || fiAdvRequest.getItemFilter().isEmpty()){  
-//	          return new ArrayList<>();  
-//	        } 
+//		if (refinments == null || fiAdvRequest.getItemFilter().isEmpty()) {
+//			return new ArrayList<>();
+//		}
 //		refinments.forEach((n, v) -> {
 //			AspectFilter aspectFilter = new AspectFilter();
 //			aspectFilter.setAspectName(n);
 //			aspectFilter.getAspectValueName().addAll(v);
 //			fiAdvRequest.getAspectFilter().add(aspectFilter);
 //		});
-		
+
 		PaginationInput pages = new PaginationInput();
 		pages.setPageNumber(1);
 		fiAdvRequest.setPaginationInput(pages);
-		
+
 		FindItemsAdvancedResponse response = serviceClient.findItemsAdvanced(fiAdvRequest);
-		
-		if (response.getSearchResult() != null
-				&& !response.getSearchResult().getItem().isEmpty())
-			urlsToReturn.addAll(response.getSearchResult().getItem().stream().map(SearchItem::getViewItemURL).collect(Collectors.toList()));
+
+		if (response.getSearchResult() != null && !response.getSearchResult().getItem().isEmpty())
+			urlsToReturn.addAll(response.getSearchResult().getItem().stream().map(SearchItem::getViewItemURL)
+					.collect(Collectors.toList()));
 
 		return urlsToReturn;
 	}
 
-	
-
 	private Map<Order, UserPreference> preparePreferences() {
 		Map<Order, UserPreference> toReturn = new HashMap<>();
 		ObjectMapper jsonMapper = new ObjectMapper();
-		
-		List<Order> ordersToSearchFor = orderRepository.findAll(); // TODO - filter
+
+		List<Order> ordersToSearchFor = orderRepository.findAll(); // TODO -
+																	// filter
 		for (Order order : ordersToSearchFor) {
 			String preferenceAsJson = order.getPreferencesAsJson();
 			UserPreference preference = null;
@@ -199,5 +196,5 @@ public class SearchEbayOffersDaemon extends Thread{
 
 		return toReturn;
 	}
-	
+
 }

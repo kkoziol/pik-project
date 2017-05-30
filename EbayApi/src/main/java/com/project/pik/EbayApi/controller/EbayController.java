@@ -54,7 +54,7 @@ public class EbayController {
 			@PathVariable("categoryId") String categoryId) {
 		Map<String, List<String>> specifics = ebayCategoriesService.getCategorySpecificsByCategoryId(categoryId);
 		if (specifics == null || specifics.isEmpty()) {
-			logger.error("Cannot specifics of category: " + categoryId);
+			logger.error("Cannot receive specifics of category: " + categoryId);
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 		}
 

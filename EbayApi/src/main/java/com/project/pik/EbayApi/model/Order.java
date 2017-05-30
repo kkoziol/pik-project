@@ -36,7 +36,7 @@ public class Order {
 	private boolean isHistoryLog;
 	
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "order")
-	private Set<FoundResult> offers = new HashSet<>();
+	private Set<FoundResult> foundResults = new HashSet<>();
 	
 	@Column(name = "PREFERENCES",length=2000)
 	private String preferencesAsJson;
@@ -73,12 +73,13 @@ public class Order {
 		this.isHistoryLog = isHistoryLog;
 	}
 
-	public Set<FoundResult> getOffers() {
-		return offers;
+
+	public Set<FoundResult> getFoundResults() {
+		return foundResults;
 	}
 
-	public void setOffers(Set<FoundResult> offers) {
-		this.offers = offers;
+	public void setFoundResults(Set<FoundResult> foundResults) {
+		this.foundResults = foundResults;
 	}
 
 	public String getPreferencesAsJson() {

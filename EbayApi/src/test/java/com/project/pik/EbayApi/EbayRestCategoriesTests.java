@@ -63,8 +63,7 @@ public class EbayRestCategoriesTests {
 		this.mvc.perform(get("/ebay/categories/maincategories"))
 		.andExpect(status().isOk())
 		.andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
-		.andExpect(content().string(containsString("categoryID")));
-	//	.andDo(MockMvcResultHandlers.print());
+		.andExpect(content().string(containsString("categoryID")));	
 	}
 	
 	@Test
