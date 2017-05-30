@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import com.ebay.services.client.ClientConfig;
 import com.ebay.services.client.FindingServiceClientFactory;
@@ -19,6 +20,7 @@ import com.ebay.services.finding.PaginationOutput;
 import com.ebay.services.finding.SearchItem;
 import com.ebay.services.finding.SortOrderType;
 
+@Service
 public class EbayItemsServiceImpl implements EbayItemsService {
 	@Autowired
 	private ClientConfig eBayClientConfig;

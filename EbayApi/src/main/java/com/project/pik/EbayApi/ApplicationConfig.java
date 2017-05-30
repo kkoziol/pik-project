@@ -7,7 +7,6 @@ import java.io.InputStream;
 import java.util.Properties;
 
 import org.apache.log4j.Logger;
-import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Lazy;
@@ -19,10 +18,6 @@ import com.ebay.sdk.ApiCredential;
 import com.ebay.sdk.ApiLogging;
 import com.ebay.services.client.ClientConfig;
 import com.project.pik.EbayApi.daemon.SearchEbayOffersDaemon;
-import com.project.pik.EbayApi.service.EbayCategoriesService;
-import com.project.pik.EbayApi.service.EbayCategoriesServiceImpl;
-import com.project.pik.EbayApi.service.EbayItemsService;
-import com.project.pik.EbayApi.service.EbayItemsServiceImpl;
 
 @Configuration
 public class ApplicationConfig {
@@ -35,14 +30,14 @@ public class ApplicationConfig {
 												// liking
 	}
 
-	@Bean
-	public CommandLineRunner schedulingRunner(TaskExecutor executor) {
-		return new CommandLineRunner() {
-			public void run(String... args) throws Exception {
-				executor.execute(SearchEbayOffersDaemon.getInstance());
-			}
-		};
-	}
+//	@Bean
+//	public CommandLineRunner schedulingRunner(TaskExecutor executor) {
+//		return new CommandLineRunner() {
+//			public void run(String... args) throws Exception {
+//				executor.execute(SearchEbayOffersDaemon.getInstance());
+//			}
+//		};
+//	}
 
 	@Bean
 	@Lazy
@@ -91,16 +86,12 @@ public class ApplicationConfig {
 		return config;
 	}
 
-	@Bean
-	EbayCategoriesService getEbayCategoriesService() {
-		return new EbayCategoriesServiceImpl();
-	}
 
-	@Bean
-	EbayItemsService getEbayItemsService() {
-		return new EbayItemsServiceImpl();
-	}
 
+	@Bean(initMethod="start")
+	public SearchEbayOffersDaemon searchEbayOffersDaemon() {
+		return SearchEbayOffersDaemon.getInstance();
+	}
 
 
 }

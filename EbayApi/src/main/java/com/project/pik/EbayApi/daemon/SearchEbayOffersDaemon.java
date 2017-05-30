@@ -8,11 +8,12 @@ import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import javax.annotation.PreDestroy;
 import javax.persistence.EntityManager;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.async.DeferredResult;
 
 import com.ebay.services.client.ClientConfig;
@@ -37,13 +38,13 @@ import com.project.pik.EbayApi.model.UserPreference;
 import com.project.pik.EbayApi.repositories.FoundResultRepository;
 import com.project.pik.EbayApi.repositories.OrderRepository;
 
-@Service
+@Component
 public class SearchEbayOffersDaemon extends Thread {
 	private static SearchEbayOffersDaemon instance = null;
 	private static final String SEARCHING_CURRENCY = "EUR";
 	private Map<String, DeferredResult<List<FoundResult>>> registeredListeners = new HashMap<>();
 	private final Logger logger = Logger.getLogger(SearchEbayOffersDaemon.class);
-
+	private volatile boolean threadWorking;
 	@Autowired
 	private OrderRepository orderRepository;
 
@@ -56,10 +57,17 @@ public class SearchEbayOffersDaemon extends Thread {
 	@Autowired
 	private ClientConfig eBayClientConfig;
 
+    @PreDestroy
+    @Override
+    public void destroy() {
+    	threadWorking = false;
+        this.interrupt();
+    }
 
 	@Override
 	public void run() {
-		while (true) {
+		threadWorking = true;
+		while (threadWorking) {
 			logger.debug("Running search");
 			Map<Order, UserPreference> preferences = preparePreferences();
 			searchForPreferences(preferences);
