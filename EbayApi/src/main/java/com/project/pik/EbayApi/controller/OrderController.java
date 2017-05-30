@@ -3,8 +3,6 @@ package com.project.pik.EbayApi.controller;
 import java.util.Calendar;
 import java.util.List;
 
-import javax.persistence.EntityManager;
-
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -22,6 +20,7 @@ import com.project.pik.EbayApi.model.Order;
 import com.project.pik.EbayApi.model.User;
 import com.project.pik.EbayApi.model.UserPreference;
 import com.project.pik.EbayApi.repositories.OrderRepository;
+import com.project.pik.EbayApi.repositories.UserRepository;
 
 @RestController
 @RequestMapping("/orders")
@@ -31,7 +30,7 @@ public class OrderController {
 	private OrderRepository orderRepository;
 	
 	@Autowired
-	private EntityManager entityManager;
+	private UserRepository userRepository;
 	
 	
 	@ResponseBody 
@@ -51,7 +50,8 @@ public class OrderController {
 	public ResponseEntity<Order> addOrderForUser(@PathVariable String username, @RequestBody UserPreference preference){
 		Order order = new Order();
 		order.setDate(new java.sql.Date(Calendar.getInstance().getTime().getTime()));
-		order.setUser(entityManager.getReference(User.class, username));
+		User user = userRepository.findOneByLogin(username);
+		order.setUser(user);
 		order.setHistoryLog(false);
 		
 		

@@ -7,5 +7,5 @@ import com.project.pik.EbayApi.model.User;
 
 @Repository
 public interface UserRepository extends JpaRepository<User,Long>{
-	
+	User findOneByLogin(String login);
 }
