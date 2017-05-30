@@ -38,7 +38,7 @@ public class EbayRestItemsTests {
 	
 	@Test
 	public void testKeywordSearching() throws Exception {
-		this.mvc.perform(get("/ebay/items/search/test/1"))
+		this.mvc.perform(get("/ebay/items/search/drapala/1"))
 		.andExpect(status().isOk())
 		.andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
 		.andExpect(content().string(containsString("item")));

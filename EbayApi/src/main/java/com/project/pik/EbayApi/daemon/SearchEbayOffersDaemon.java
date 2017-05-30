@@ -105,8 +105,8 @@ public class SearchEbayOffersDaemon extends Thread {
 			return;
 		String urlsInClause = "(" + urls.stream().map(u -> "'" + u + "'").collect(Collectors.joining(",")) + ")";
 		@SuppressWarnings("unchecked")
-		List<String> urlsInDb = entityManager
-				.createNativeQuery("SELECT url FROM FOUND_RESULTS WHERE url in " + urlsInClause, String.class)
+		List<String> urlsInDb = (List<String>) entityManager
+				.createNativeQuery("SELECT url FROM FOUND_RESULTS WHERE url in " + urlsInClause)
 				.getResultList();
 		urls.removeAll(urlsInDb);
 		if (urls.isEmpty()) {
