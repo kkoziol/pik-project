@@ -23,11 +23,17 @@ export class EBayComponent implements OnInit {
   itemList: Item[];
   properties: Properties[];
   selectedProperties: {};
+  pageCounter: number;
+  someData: boolean;
+  nothingElse: boolean;
 
   constructor(private ebayService: EBayService) {
     this.selectedCategories = [];
     this.properties = [];
     this.selectedProperties = {};
+    this.pageCounter = 1;
+    this.someData = false;
+    this.nothingElse = false;
   }
 
   private searchTermStream = new Subject<string>();
@@ -43,11 +49,36 @@ export class EBayComponent implements OnInit {
   }
 
   submit() {
-    if (this.selectedCategories.length !== 0) {
+    this.nothingElse = false;
+    this.pageCounter = 1;
+    this.getData();
+
+  }
+    
+  nextPage(){
+      this.pageCounter = this.pageCounter + 1;
+      this.getData();
+  }
+    
+  previousPage(){
+      this.pageCounter = this.pageCounter - 1;
+      this.getData();
+  }
+    
+  getData(){
+     if (this.selectedCategories.length !== 0) {
       if (this.query !== '') {
-        this.ebayService.getItemsByKeyWordAndCategory(this.query, this.selectedCategories[this.selectedCategories.length - 1].categoryID)
+        this.ebayService.getItemsByKeyWordAndCategory(this.query + '/'+this.pageCounter, this.selectedCategories[this.selectedCategories.length - 1].categoryID)
           .subscribe(data => {
-              this.itemList = data
+              if(!data){
+                  console.log('nothing else');
+                  this.pageCounter = this.pageCounter - 1;
+                  this.nothingElse = true;
+              }else{
+                this.someData = true;
+                this.itemList = [];
+                this.itemList = data
+              }
             },
             error2 => console.log('ERROR'));
       }
@@ -57,15 +88,24 @@ export class EBayComponent implements OnInit {
     }
     else {
       if (this.query !== '') {
-        this.ebayService.getItemsByKeyWord(this.query)
-          .subscribe(data => this.itemList = data,
+        this.ebayService.getItemsByKeyWord(this.query+ '/'+this.pageCounter)
+          .subscribe(data => {
+           if(!data){
+                  console.log('nothing else');
+                  this.pageCounter = this.pageCounter - 1;
+                  this.nothingElse = true;
+              }else{
+               this.someData = true; 
+               this.itemList = [];
+               this.itemList = data
+              }   
+          },
             error2 => console.log('ERROR'));
       }
       else {
         console.log('WRONG QUERY PARAMETERS');
       }
-    }
-
+    } 
   }
 
   addProperties = (type,value) => {
