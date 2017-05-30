@@ -14,8 +14,8 @@ public class FoundResultService {
 	@Autowired
 	private FoundResultRepository foundResultRepository;
 	
-	public List<FoundResult> findByUserName(String name) {
-		return foundResultRepository.findByOrderUserName(name);
+	public List<FoundResult> findByUserLogin(String name) {
+		return foundResultRepository.findByOrderUserLogin(name);
 	}
 
 }

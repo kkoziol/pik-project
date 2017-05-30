@@ -4,7 +4,9 @@ import static com.project.pik.EbayApi.consts.ApiConsts.MAIL_PROPERTIES_FILE_NAME
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.List;
 import java.util.Properties;
+import java.util.stream.Collectors;
 
 import javax.mail.Message;
 import javax.mail.MessagingException;
@@ -18,6 +20,9 @@ import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
 
 import org.apache.log4j.Logger;
+
+import com.project.pik.EbayApi.model.Email;
+import com.project.pik.EbayApi.model.Order;
 
 public class MailSender {
 	/** LOGGER */
@@ -69,5 +74,11 @@ public class MailSender {
 			logger.error("Wrong message");
 			logger.error(e.getMessage());
 		} 
+	}
+
+	public void sendFoundOffer(Email email, Order order, List<String> urls) {
+		sendSimpleMail(email.getValue(), "Ebay Search Engine - We found something interesting", 
+		          String.format("<html><h1>Hello %s</h1><p>Look at this:<br></br>%s</p></html>", 
+		              order.getUser().getName(), urls.stream().collect(Collectors.joining("<br></br>")))); 
 	}
 }

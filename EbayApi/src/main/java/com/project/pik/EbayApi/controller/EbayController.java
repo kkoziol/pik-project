@@ -54,7 +54,7 @@ public class EbayController {
 			@PathVariable("categoryId") String categoryId) {
 		Map<String, List<String>> specifics = ebayCategoriesService.getCategorySpecificsByCategoryId(categoryId);
 		if (specifics == null || specifics.isEmpty()) {
-			logger.error("Cannot specifics of category: " + categoryId);
+			logger.error("Cannot receive specifics of category: " + categoryId);
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 		}
 
@@ -105,14 +105,14 @@ public class EbayController {
 	}
 
 	@RequestMapping(value = "/items/bestmatch/{keyword}", method = RequestMethod.GET)
-	public ResponseEntity<Category> searchBestMachingItemForKeyword(@PathVariable("keyword") String keyword) {
+	public ResponseEntity<SearchItem> searchBestMachingItemForKeyword(@PathVariable("keyword") String keyword) {
 		SearchItem item = ebayItemsService.getBestMatchItem(keyword);
 		if (item == null) {
 			logger.error("Cannot receive best matching category of " + keyword);
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 		}
 
-		return new ResponseEntity<>(item.getPrimaryCategory(), HttpStatus.OK);
+		return new ResponseEntity<>(item, HttpStatus.OK);
 	}
 
 	@RequestMapping(value = "/items/cheapest/{keyword}/{categoryId}", method = RequestMethod.GET)

@@ -1,8 +1,10 @@
 package com.project.pik.EbayApi.model;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
 import org.apache.log4j.Logger;
 
 
@@ -27,9 +29,18 @@ public class UserPreference {
 	private String categoryId;
 	private String prizeMax;
 	private String prizeMin;
-	private String condition;
+	private List<String> conditions;
 	private String deliveryOptions;
+	private String keyword;
 	
+	
+	
+	public String getKeyword() {
+		return keyword;
+	}
+	public void setKeyword(String keyword) {
+		this.keyword = keyword;
+	}
 	public Map<String, Set<String>> getCategorySpecifics() {
 		return categorySpecifics;
 	}
@@ -54,11 +65,12 @@ public class UserPreference {
 	public void setPrizeMin(String prizeMin) {
 		this.prizeMin = prizeMin;
 	}
-	public String getCondition() {
-		return condition;
+	
+	public List<String> getConditions() {
+		return conditions;
 	}
-	public void setCondition(String condition) {
-		this.condition = condition;
+	public void setConditions(List<String> condition) {
+		this.conditions = condition;
 	}
 	public String getDeliveryOptions() {
 		return deliveryOptions;

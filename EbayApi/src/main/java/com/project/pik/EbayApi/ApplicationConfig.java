@@ -16,6 +16,7 @@ import org.springframework.core.task.TaskExecutor;
 
 import com.ebay.sdk.ApiContext;
 import com.ebay.sdk.ApiCredential;
+import com.ebay.sdk.ApiLogging;
 import com.ebay.services.client.ClientConfig;
 import com.project.pik.EbayApi.daemon.SearchEbayOffersDaemon;
 import com.project.pik.EbayApi.service.EbayCategoriesService;
@@ -61,6 +62,11 @@ public class ApplicationConfig {
 		ApiContext context = new ApiContext();
 		context.setApiCredential(credential);
 		context.setApiServerUrl("https://api.ebay.com/wsapi"); // production
+		ApiLogging logger = new ApiLogging();
+		logger.setLogSOAPMessages(false);
+		logger.setLogHTTPHeaders(false);
+		logger.setLogExceptions(false);
+		context.setApiLogging(logger);
 
 		return context;
 	}
@@ -79,6 +85,8 @@ public class ApplicationConfig {
 		/** Set ClientConfig for finding API */
 		ClientConfig config = new ClientConfig();
 		config.setApplicationId(keys.getProperty("appId"));
+		config.setHttpHeaderLoggingEnabled(false);
+		config.setSoapMessageLoggingEnabled(false);
 
 		return config;
 	}

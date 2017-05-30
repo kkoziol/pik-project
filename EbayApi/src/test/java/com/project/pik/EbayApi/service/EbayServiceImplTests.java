@@ -31,7 +31,6 @@ public class EbayServiceImplTests {
 	public void testgetCategorySpecificsByCategoryId() {
 		String asString = castMapStringListStringTo(
 				ebayCategoriesService.getCategorySpecificsByCategoryId(DESKTOP_AND_ALL_IN_ONE_COMPUTERS_CATEGORY_ID));
-		logger.debug(asString);
 	}
 
 	public String castMapStringListStringTo(Map<String, List<String>> toCast) {

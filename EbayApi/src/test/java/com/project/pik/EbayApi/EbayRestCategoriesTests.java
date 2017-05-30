@@ -22,18 +22,19 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import org.junit.Before;
+import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.junit.runners.MethodSorters;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.MediaType;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
-
-import com.project.pik.EbayApi.EbayDataRestApplication;
 
 /**
  * Integration test to run the application.
@@ -43,23 +44,49 @@ import com.project.pik.EbayApi.EbayDataRestApplication;
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest(classes = EbayDataRestApplication.class)
 @WebAppConfiguration
-@ActiveProfiles("scratch")
+@ActiveProfiles("test")
+@FixMethodOrder(MethodSorters.NAME_ASCENDING)
 // Separate profile for web tests to avoid clashing databases
-public class EbayApplicationTests {
-
+public class EbayRestCategoriesTests {
 	@Autowired
 	private WebApplicationContext context;
 
 	private MockMvc mvc;
 
 	@Before
-	public void setUp() {
+	public void setup() {
 		this.mvc = MockMvcBuilders.webAppContextSetup(this.context).build();
 	}
 
 	@Test
 	public void testMainCategories() throws Exception {
-		this.mvc.perform(get("/ebay/categories/maincategories")).andExpect(status().isOk())
-				.andExpect(content().string(containsString("categoryID")));
+		this.mvc.perform(get("/ebay/categories/maincategories"))
+		.andExpect(status().isOk())
+		.andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
+		.andExpect(content().string(containsString("categoryID")));	
+	}
+	
+	@Test
+	public void testSubCategories() throws Exception {
+		this.mvc.perform(get("/ebay/categories/subcategories/20081"))
+		.andExpect(status().isOk())
+		.andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
+		.andExpect(content().string(containsString("categoryID")));
+	}
+	
+	@Test
+	public void testSpecificsOfCategories() throws Exception {
+		this.mvc.perform(get("/ebay/categories/specifics/870"))
+		.andExpect(status().isOk())
+		.andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
+		.andExpect(content().string(containsString("Color")));
+	}
+	
+	@Test
+	public void testBestMatchOfCategories() throws Exception {
+		this.mvc.perform(get("/ebay/categories/bestmatch/test"))
+		.andExpect(status().isOk())
+		.andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
+		.andExpect(content().string(containsString("categoryId")));
 	}
 }
