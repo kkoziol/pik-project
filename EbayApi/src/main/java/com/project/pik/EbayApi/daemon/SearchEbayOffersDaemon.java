@@ -134,14 +134,13 @@ public class SearchEbayOffersDaemon extends Thread {
 			fiAdvRequest.getItemFilter().add(filter);
 		}
 
-//		if (preference.getConditions() != null && !preference.getConditions().isEmpty()) {
-//			preference.getConditions().forEach(c -> {
-//				ItemFilter filter = new ItemFilter();
-//				filter.setName(ItemFilterType.CONDITION);
-//				filter.setParamValue(UserPreference.mapMnemonicToCode(c));
-//				fiAdvRequest.getItemFilter().add(filter);
-//			});
-//		}
+		if (preference.getConditions() != null && !preference.getConditions().isEmpty()) {
+			ItemFilter filter = new ItemFilter();
+			filter.setName(ItemFilterType.CONDITION);
+			filter.getValue().addAll(preference.getConditions().stream().map(c -> UserPreference.mapMnemonicToCode(c))
+					.collect(Collectors.toList()));
+			fiAdvRequest.getItemFilter().add(filter);
+		}
 
 		if (preference.getCategoryId() != null) {
 			fiAdvRequest.getCategoryId().add(preference.getCategoryId());
@@ -151,16 +150,17 @@ public class SearchEbayOffersDaemon extends Thread {
 			fiAdvRequest.setKeywords(preference.getKeyword());
 		}
 
-//		Map<String, Set<String>> refinments = preference.getCategorySpecifics();
-//		if (refinments == null || fiAdvRequest.getItemFilter().isEmpty()) {
-//			return new ArrayList<>();
-//		}
-//		refinments.forEach((n, v) -> {
-//			AspectFilter aspectFilter = new AspectFilter();
-//			aspectFilter.setAspectName(n);
-//			aspectFilter.getAspectValueName().addAll(v);
-//			fiAdvRequest.getAspectFilter().add(aspectFilter);
-//		});
+		 Map<String, Set<String>> refinments =
+		 preference.getCategorySpecifics();
+		 if (refinments == null || fiAdvRequest.getItemFilter().isEmpty()) {
+		 return new ArrayList<>();
+		 }
+		 refinments.forEach((n, v) -> {
+		 AspectFilter aspectFilter = new AspectFilter();
+		 aspectFilter.setAspectName(n);
+		 aspectFilter.getAspectValueName().addAll(v);
+		 fiAdvRequest.getAspectFilter().add(aspectFilter);
+		 });
 
 		PaginationInput pages = new PaginationInput();
 		pages.setPageNumber(1);
@@ -168,9 +168,11 @@ public class SearchEbayOffersDaemon extends Thread {
 
 		FindItemsAdvancedResponse response = serviceClient.findItemsAdvanced(fiAdvRequest);
 
-		if (response.getSearchResult() != null && !response.getSearchResult().getItem().isEmpty())
-			urlsToReturn.addAll(response.getSearchResult().getItem().stream().map(SearchItem::getViewItemURL)
-					.collect(Collectors.toList()));
+		if (response.getSearchResult() != null && !response.getSearchResult().getItem().isEmpty()){
+			List<String> foundedUrls = response.getSearchResult().getItem().stream().map(SearchItem::getViewItemURL)
+					.collect(Collectors.toList());
+			urlsToReturn.addAll(foundedUrls);
+		}
 
 		return urlsToReturn;
 	}
