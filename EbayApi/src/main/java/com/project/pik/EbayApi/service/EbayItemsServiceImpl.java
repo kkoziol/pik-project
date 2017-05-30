@@ -15,6 +15,7 @@ import com.ebay.services.finding.FindingServicePortType;
 import com.ebay.services.finding.ItemFilter;
 import com.ebay.services.finding.ItemFilterType;
 import com.ebay.services.finding.PaginationInput;
+import com.ebay.services.finding.PaginationOutput;
 import com.ebay.services.finding.SearchItem;
 import com.ebay.services.finding.SortOrderType;
 
@@ -64,11 +65,14 @@ public class EbayItemsServiceImpl implements EbayItemsService {
 			fiAdvRequest.getItemFilter().add(filterMax);
 		}
 
-		PaginationInput pages = new PaginationInput();
-		pages.setPageNumber(pageNumber);
-		fiAdvRequest.setPaginationInput(pages);
+		
+		
+		
 		
 		FindItemsAdvancedResponse fiAdvResponse = serviceClient.findItemsAdvanced(fiAdvRequest);
+		PaginationOutput pages = new PaginationOutput();
+		pages.setPageNumber(pageNumber);
+		fiAdvResponse.setPaginationOutput(pages);
 		int returnedPageNumber = fiAdvResponse.getPaginationOutput().getTotalPages();
 		List<SearchItem> items = new ArrayList<>();
 		if(returnedPageNumber < 1 || pageNumber > returnedPageNumber)
