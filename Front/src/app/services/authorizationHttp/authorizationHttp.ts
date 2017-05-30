@@ -25,7 +25,8 @@ export class AuthorizationHttp {
   post(url, data) {
     const headers = new Headers();
     this.createAuthorizationHeader(headers);
-    return this.http.post(this.applicationUrl + url, data, {
+    headers.append('Content-Type', 'application/json');
+    return this.http.post(this.applicationUrl + url, JSON.stringify(data), {
       headers: headers
     });
   }

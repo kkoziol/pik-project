@@ -48,16 +48,16 @@
 }
 
 //----- Base Alert Extend
-%alert {
-    width:100%;
-    padding:20px;
-    display:inline-block;
-    border-radius:4px;
- 
+ %alert {
+   width:100%;
+   padding:20px;
+   display:inline-block;
+   border-radius:4px;
+
     p, &:before {
         float:left;
     }
- 
+
     &:before {
         width:25px;
         height:25px;
@@ -67,7 +67,7 @@
         border-radius:1000px;
         background:no-repeat;
     }
- 
+
     p {
         color:#fff;
     }
@@ -75,22 +75,23 @@
 
 //----- Success
 .alert-success {
-    background:#75aa61;
-    @extend %alert;
- 
-    &:before {
-        background-color:#75aa61;
-        background-position:-47px 7px;
-    }
+  background:#75aa61;
+  @extend %alert;
+
+  &:before {
+    background-color:#75aa61;
+    background-position:-47px 7px;
+  }
 }
 
 //----- Errr
 .alert-error {
-    background:#ae6872;
-    @extend %alert;
- 
-    &:before {
-        background-color:#ae6872;
-        background-position:-47px 7px;
-    }
+  background:#ae6872;
+  @extend %alert;
+
+  &:before {
+    background-color:#ae6872;
+    background-position:-47px 7px;
+  }
 }
+

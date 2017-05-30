@@ -2,13 +2,14 @@ import {Injectable} from '@angular/core';
 import {Authorize} from "./authorization.model";
 import {Headers, Http, RequestOptions, URLSearchParams} from "@angular/http";
 import {Router} from "@angular/router";
-import {AppConfigConsts} from "../../config";
+import { AppConfigConsts} from "../../config";
 
 
 @Injectable()
 export class AuthorizationService {
   authorize: Authorize;
   token: string;
+  username: string;
 
   constructor(private http: Http, private router: Router) {
     this.authorize = {active: false};
@@ -16,6 +17,8 @@ export class AuthorizationService {
 
     if (currentUser) {
       this.token = currentUser.token;
+      const user = JSON.parse(localStorage.getItem('currentUserName'));
+      this.username = user.username;
       this.authorize.active = true;
     }
   }
@@ -38,13 +41,16 @@ export class AuthorizationService {
       .map(res => res.json())
       .subscribe(access_token => {
           this.token = access_token.access_token;
+          this.username = username;
           this.authorize.active = true;
           this.router.navigate(['./eBay']);
           localStorage.setItem('currentUser', JSON.stringify({token: this.token}));
+          localStorage.setItem('currentUserName', JSON.stringify({username: username}));
         },
         error2 => console.log("Zle haslo"));
 
   }
+
   register(username: string,password: string,firstName: string, lastName: string,eMail: string,gender: string,birthDate: string,confirmPassword: string) : boolean {
     const url ='https://localhost:8444/register';
     const userToAdd = {
@@ -59,17 +65,20 @@ export class AuthorizationService {
     };
     const headers = new Headers();
     headers.append('Accept', 'application/json');
-    headers.append('Content-Type', 'application/json');  
+    headers.append('Content-Type', 'application/json');
     const options = new RequestOptions({headers: headers});
-     this.http.post(url, JSON.stringify(userToAdd), options)
-       .map(res => res.json())
+    this.http.post(url, JSON.stringify(userToAdd), options)
+      .map(res => res.json())
       .subscribe(response => {
           //console.log(response.body);
         },
         error2 => {
-        console.log("Wrong request");
+          console.log("Wrong request");
           return false;
         });
-  return true;
+    return true;
   }
 }
+
+
+

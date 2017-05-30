@@ -1,5 +1,5 @@
 <div class="form-inline ebayContainer">
-  <div class="titlelabel">
+  <div class="left">
     <label class="form-group">Write search query</label>
     <input type="text"
            class="form-group form-control"
@@ -10,37 +10,59 @@
 
     <button class="btn btn-primary btn-general form-group" (click)="submit()">Search</button>
   </div>
-  <div class="myListElem">
-    <div>
-      <label>
-        <select #c class="selectBlock" (change)="chooseCategory(c.value)">
-          <option>choose category...</option>
-          <option *ngFor="let category of categoryList" [ngValue]="category">{{category.categoryName}}</option>
-        </select>
-      </label>
-    </div>
-    <div *ngFor="let selectedCategory of selectedCategories">
-      <label>
-        <select #d class="selectBlock" (change)="chooseCategory(d.value)">
-          <option>choose category...</option>
-          <option *ngFor="let category of selectedCategory.childrenCategories" [ngValue]="category">
-            {{category.categoryName}}
-          </option>
-        </select>
-      </label>
+
+  <div class="right">
+    <div class="myListElem">
+      <div>
+        <label>
+          <select #c class="selectBlock" (change)="chooseMainCategory(c.value)">
+            <option>choose category...</option>
+            <option *ngFor="let category of categoryList" [ngValue]="category">{{category.categoryName}}</option>
+          </select>
+        </label>
+      </div>
+      <div *ngFor="let selectedCategory of selectedCategories">
+        <label *ngIf="selectedCategory.childrenCategories.length > 0">
+          <select #d class="selectBlock" (change)="chooseCategory(d.value)">
+            <option>choose category...</option>
+            <option *ngFor="let category of selectedCategory.childrenCategories" [ngValue]="category">
+              {{category.categoryName}}
+            </option>
+          </select>
+        </label>
+      </div>
+      <label class="themeProperties">Properties</label>
+      <div class="propertiesContainer" *ngFor="let item of properties">
+        <label class="labelProperties">{{item.type}}</label>
+        <label>
+          <select #e class="selectBlockProperties" *ngIf="item.value.length > 0" (change)="addProperties(item.type,e.value)">
+            <option>choose category...</option>
+            <option *ngFor="let value of item.value; let i = index" [ngValue]="value">{{value}}</option>
+          </select>
+          <input *ngIf="item.value.length === 0" class="form-control propertiesControlForm" type="text" placeholder="{{item.type}}" [(ngModel)]=item[i] name="value" (change)="addProperties(item.type,item[i])">
+        </label>
+      </div>
     </div>
   </div>
-  <table class="gh-tbl">
-    <thead>
-    <th></th>
-    <th>Title</th>
-    <th>Item URL</th>
-    </thead>
-    <tr *ngFor="let item of itemList">
-      <td><img src="{{item.galleryURL}}" style="width:128px;height:128px;"></td>
-      <td>{{item.title}}</td>
-      <td><a href="{{item.viewItemURL}}">{{item.viewItemURL}}</a></td>
-    </tr>
-  </table>
-
+  <br>
+<div *ngIf="someData">
+<table class="gh-tbl" >
+      <thead>
+      <th></th>
+      <th>Title</th>
+      <th>Item URL</th>
+      </thead>
+      <tr *ngFor="let item of itemList">
+        <td><img src="{{item.galleryURL}}" style="width:128px;height:128px;"></td>
+        <td>{{item.title}}</td>
+        <td><a href="{{item.viewItemURL}}">{{item.viewItemURL}}</a></td>
+      </tr>
+    </table>
+    <br>
+    <button class="btn btn-primary btn-general" (click)="previousPage()" *ngIf="pageCounter > 1 && someData">Previous page</button>
+    <button class="btn btn-primary btn-general" (click)="nextPage()" *ngIf="!nothingElse">Next page</button>
+    </div>
+  <div *ngIf="!someData">
+  <p>Nothing to show</p>
+  </div>
 </div>
