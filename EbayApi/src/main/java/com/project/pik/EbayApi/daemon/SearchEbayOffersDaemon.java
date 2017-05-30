@@ -52,9 +52,11 @@ public class SearchEbayOffersDaemon extends Thread {
 
 	@Autowired
 	private EntityManager entityManager;
-	
+
 	@Autowired
 	private ClientConfig eBayClientConfig;
+
+	private FindingServicePortType serviceClient = FindingServiceClientFactory.getServiceClient(eBayClientConfig);
 
 	@Override
 	public void run() {
@@ -63,7 +65,7 @@ public class SearchEbayOffersDaemon extends Thread {
 			Map<Order, UserPreference> preferences = preparePreferences();
 			searchForPreferences(preferences);
 			try {
-				Thread.sleep(2000);
+				Thread.sleep(1000);
 			} catch (InterruptedException e) {
 				logger.error("Thread interruped");
 				logger.error(e.getMessage());
@@ -95,9 +97,12 @@ public class SearchEbayOffersDaemon extends Thread {
 		if (urls.isEmpty())
 			return;
 		String urlsInClause = "(" + urls.stream().map(u -> "'" + u + "'").collect(Collectors.joining(",")) + ")";
-		List<String> urlsInDb = entityManager.createNativeQuery("SELECT url FROM FOUND_RESULTS WHERE url in " + urlsInClause, String.class).getResultList();
+		@SuppressWarnings("unchecked")
+		List<String> urlsInDb = entityManager
+				.createNativeQuery("SELECT url FROM FOUND_RESULTS WHERE url in " + urlsInClause, String.class)
+				.getResultList();
 		urls.removeAll(urlsInDb);
-		if(urls.isEmpty()){
+		if (urls.isEmpty()) {
 			return;
 		}
 		User user = order.getUser();
@@ -119,53 +124,49 @@ public class SearchEbayOffersDaemon extends Thread {
 
 		List<String> urlsToReturn = new ArrayList<>();
 		FindItemsAdvancedRequest fiAdvRequest = new FindItemsAdvancedRequest();
-		FindingServicePortType serviceClient = FindingServiceClientFactory.getServiceClient(eBayClientConfig);
 		fiAdvRequest.setDescriptionSearch(false);
-		if (preference.getPrizeMin() != null) {
-			ItemFilter filter = new ItemFilter();
-			filter.setName(ItemFilterType.MIN_PRICE);
-			filter.setParamName("Currency");
-			filter.setParamValue(SEARCHING_CURRENCY);
-			filter.getValue().add(String.valueOf(preference.getPrizeMin()));
-			fiAdvRequest.getItemFilter().add(filter);
-		}
-
-		if (preference.getPrizeMax() != null) {
-			ItemFilter filter = new ItemFilter();
-			filter.setName(ItemFilterType.MAX_PRICE);
-			filter.setParamName("Currency");
-			filter.setParamValue(SEARCHING_CURRENCY);
-			filter.getValue().add(String.valueOf(preference.getPrizeMax()));
-			fiAdvRequest.getItemFilter().add(filter);
-		}
-
-		if (preference.getConditions() != null && !preference.getConditions().isEmpty()) {
-			ItemFilter filter = new ItemFilter();
-			filter.setName(ItemFilterType.CONDITION);
-			filter.getValue().addAll(preference.getConditions().stream().map(c -> UserPreference.mapMnemonicToCode(c))
-					.collect(Collectors.toList()));
-			fiAdvRequest.getItemFilter().add(filter);
+		if (preference.getKeyword() != null) {
+			fiAdvRequest.setKeywords(preference.getKeyword());
 		}
 
 		if (preference.getCategoryId() != null) {
 			fiAdvRequest.getCategoryId().add(preference.getCategoryId());
 		}
 
-		if (preference.getKeyword() != null) {
-			fiAdvRequest.setKeywords(preference.getKeyword());
+		if (preference.getPriceMin() != null) {
+			ItemFilter filter = new ItemFilter();
+			filter.setName(ItemFilterType.MIN_PRICE);
+			filter.setParamName("Currency");
+			filter.setParamValue(SEARCHING_CURRENCY);
+			filter.getValue().add(String.valueOf(preference.getPriceMin()));
+			fiAdvRequest.getItemFilter().add(filter);
+		}
+		if (preference.getPriceMax() != null) {
+			ItemFilter filter = new ItemFilter();
+			filter.setName(ItemFilterType.MAX_PRICE);
+			filter.setParamName("Currency");
+			filter.setParamValue(SEARCHING_CURRENCY);
+			filter.getValue().add(String.valueOf(preference.getPriceMax()));
+			fiAdvRequest.getItemFilter().add(filter);
 		}
 
-		 Map<String, Set<String>> refinments =
-		 preference.getCategorySpecifics();
-		 if (refinments == null || fiAdvRequest.getItemFilter().isEmpty()) {
-		 return new ArrayList<>();
-		 }
-		 refinments.forEach((n, v) -> {
-		 AspectFilter aspectFilter = new AspectFilter();
-		 aspectFilter.setAspectName(n);
-		 aspectFilter.getAspectValueName().addAll(v);
-		 fiAdvRequest.getAspectFilter().add(aspectFilter);
-		 });
+		if (preference.getConditions() != null && !preference.getConditions().isEmpty()) {
+			ItemFilter filter = new ItemFilter();
+			filter.setName(ItemFilterType.CONDITION);
+			filter.getValue().addAll(preference.getConditions().stream().map(UserPreference::mapMnemonicToCode)
+					.collect(Collectors.toList()));
+			fiAdvRequest.getItemFilter().add(filter);
+		}
+
+		Map<String, Set<String>> refinments = preference.getCategorySpecifics();
+		if (refinments != null) {
+			refinments.forEach((n, v) -> {
+				AspectFilter aspectFilter = new AspectFilter();
+				aspectFilter.setAspectName(n);
+				aspectFilter.getAspectValueName().addAll(v);
+				fiAdvRequest.getAspectFilter().add(aspectFilter);
+			});
+		}
 
 		PaginationInput pages = new PaginationInput();
 		pages.setPageNumber(1);
@@ -174,11 +175,12 @@ public class SearchEbayOffersDaemon extends Thread {
 
 		FindItemsAdvancedResponse response = serviceClient.findItemsAdvanced(fiAdvRequest);
 
-		if (response.getSearchResult() != null && !response.getSearchResult().getItem().isEmpty()){
-			List<String> foundedUrls = response.getSearchResult().getItem().stream().map(SearchItem::getViewItemURL)
-					.collect(Collectors.toList());
-			urlsToReturn.addAll(foundedUrls);
-		}
+		if (response.getSearchResult() == null || response.getSearchResult().getItem().isEmpty())
+			return new ArrayList<>();
+
+		List<String> foundedUrls = response.getSearchResult().getItem().stream().map(SearchItem::getViewItemURL)
+				.collect(Collectors.toList());
+		urlsToReturn.addAll(foundedUrls);
 
 		return urlsToReturn;
 	}
@@ -186,21 +188,16 @@ public class SearchEbayOffersDaemon extends Thread {
 	private Map<Order, UserPreference> preparePreferences() {
 		Map<Order, UserPreference> toReturn = new HashMap<>();
 		ObjectMapper jsonMapper = new ObjectMapper();
-
-		List<Order> ordersToSearchFor = orderRepository.findAll(); // TODO -
-																	// filter
-		for (Order order : ordersToSearchFor) {
-			String preferenceAsJson = order.getPreferencesAsJson();
-			UserPreference preference = null;
+		List<Order> ordersToSearchFor = orderRepository.findByIsHistoryLog(false);
+		ordersToSearchFor.forEach(o -> {
 			try {
-				preference = jsonMapper.readValue(preferenceAsJson, UserPreference.class);
+				toReturn.put(o, jsonMapper.readValue(o.getPreferencesAsJson(), UserPreference.class));
 			} catch (JsonParseException | JsonMappingException e) {
 				logger.error(e.getMessage());
 			} catch (IOException e) {
 				logger.error(e.getMessage());
 			}
-			toReturn.put(order, preference);
-		}
+		});
 
 		return toReturn;
 	}

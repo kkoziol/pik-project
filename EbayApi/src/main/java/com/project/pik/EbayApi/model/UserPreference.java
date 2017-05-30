@@ -27,8 +27,8 @@ public class UserPreference {
 	}
 	private Map<String, Set<String>> categorySpecifics;
 	private String categoryId;
-	private String prizeMax;
-	private String prizeMin;
+	private String priceMax;
+	private String priceMin;
 	private List<String> conditions;
 	private String deliveryOptions;
 	private String keyword;
@@ -53,17 +53,17 @@ public class UserPreference {
 	public void setCategoryId(String categoryId) {
 		this.categoryId = categoryId;
 	}
-	public String getPrizeMax() {
-		return prizeMax;
+	public String getPriceMax() {
+		return priceMax;
 	}
-	public void setPrizeMax(String prizeMax) {
-		this.prizeMax = prizeMax;
+	public void setPriceMax(String prizeMax) {
+		this.priceMax = prizeMax;
 	}
-	public String getPrizeMin() {
-		return prizeMin;
+	public String getPriceMin() {
+		return priceMin;
 	}
-	public void setPrizeMin(String prizeMin) {
-		this.prizeMin = prizeMin;
+	public void setPriceMin(String prizeMin) {
+		this.priceMin = prizeMin;
 	}
 	
 	public List<String> getConditions() {
