@@ -11,7 +11,6 @@ import java.util.Optional;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
 import com.ebay.sdk.ApiContext;
 import com.ebay.sdk.SdkException;
@@ -32,7 +31,6 @@ import com.ebay.soap.eBLBaseComponents.NameRecommendationType;
 import com.ebay.soap.eBLBaseComponents.RecommendationsType;
 import com.ebay.soap.eBLBaseComponents.ValueRecommendationType;
 
-@Service
 public class EbayCategoriesServiceImpl implements EbayCategoriesService {
 
 	@Autowired
