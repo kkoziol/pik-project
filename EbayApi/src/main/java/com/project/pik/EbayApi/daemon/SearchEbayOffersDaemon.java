@@ -164,6 +164,7 @@ public class SearchEbayOffersDaemon extends Thread {
 
 		PaginationInput pages = new PaginationInput();
 		pages.setPageNumber(1);
+		pages.setEntriesPerPage(20);
 		fiAdvRequest.setPaginationInput(pages);
 
 		FindItemsAdvancedResponse response = serviceClient.findItemsAdvanced(fiAdvRequest);

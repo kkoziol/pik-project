@@ -2,10 +2,12 @@ package com.project.pik.EbayApi;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.asyncDispatch;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.request;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import javax.persistence.EntityManager;
+
+import org.junit.After;
 import org.junit.Before;
 import org.junit.FixMethodOrder;
 import org.junit.Test;
@@ -31,11 +33,18 @@ public class FoundResultsRestTests {
 
 	private MockMvc mvc;
 	
-	
+	@Autowired
+	private EntityManager entityManager;
 
 	@Before
 	public void setup() {
 		this.mvc = MockMvcBuilders.webAppContextSetup(this.context).build();
+	}
+	
+	
+	@After
+	public void cleanup() {
+		entityManager.createNativeQuery("DELETE FROM found_results where order_id in (select order_id from orders where user_id in (select user_id from users where login='test'))");
 	}
 	
 	@Test
