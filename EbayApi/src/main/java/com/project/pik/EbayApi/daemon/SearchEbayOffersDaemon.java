@@ -56,7 +56,6 @@ public class SearchEbayOffersDaemon extends Thread {
 	@Autowired
 	private ClientConfig eBayClientConfig;
 
-	private FindingServicePortType serviceClient = FindingServiceClientFactory.getServiceClient(eBayClientConfig);
 
 	@Override
 	public void run() {
@@ -173,6 +172,7 @@ public class SearchEbayOffersDaemon extends Thread {
 		pages.setEntriesPerPage(20);
 		fiAdvRequest.setPaginationInput(pages);
 
+		FindingServicePortType serviceClient = FindingServiceClientFactory.getServiceClient(eBayClientConfig);
 		FindItemsAdvancedResponse response = serviceClient.findItemsAdvanced(fiAdvRequest);
 
 		if (response.getSearchResult() == null || response.getSearchResult().getItem().isEmpty())
