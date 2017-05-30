@@ -53,31 +53,31 @@ export class OrdersComponent implements OnInit {
     
   }
 
-  submit() {
-    if (this.selectedCategories.length !== 0) {
-      if (this.query !== '') {
-        this.ebayService.getItemsByKeyWordAndCategory(this.query, this.selectedCategories[this.selectedCategories.length - 1].categoryID)
-          .subscribe(data => {
-              this.itemList = data
-            },
-            error2 => console.log('ERROR'));
-      }
-      else {
-        console.log('WRONG QUERY PARAMETERS');
-      }
-    }
-    else {
-      if (this.query !== '') {
-        this.ebayService.getItemsByKeyWord(this.query)
-          .subscribe(data => this.itemList = data,
-            error2 => console.log('ERROR'));
-      }
-      else {
-        console.log('WRONG QUERY PARAMETERS');
-      }
-    }
-
-  }
+//  submit() {
+//    if (this.selectedCategories.length !== 0) {
+//      if (this.query !== '') {
+//        this.ebayService.getItemsByKeyWordAndCategory(this.query, this.selectedCategories[this.selectedCategories.length - 1].categoryID)
+//          .subscribe(data => {
+//              this.itemList = data
+//            },
+//            error2 => console.log('ERROR'));
+//      }
+//      else {
+//        console.log('WRONG QUERY PARAMETERS');
+//      }
+//    }
+//    else {
+//      if (this.query !== '') {
+//        this.ebayService.getItemsByKeyWord(this.query)
+//          .subscribe(data => this.itemList = data,
+//            error2 => console.log('ERROR'));
+//      }
+//      else {
+//        console.log('WRONG QUERY PARAMETERS');
+//      }
+//    }
+//
+//  }
 
   addProperties = (type,value) => {
     this.selectedProperties[type] = value;
