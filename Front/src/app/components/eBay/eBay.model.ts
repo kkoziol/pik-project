@@ -47,7 +47,6 @@ export class Item {
   galleryURL: string;
   viewItemURL: string;
   productId: string[];
-  sellingStatus: string[][];
 }
 
 

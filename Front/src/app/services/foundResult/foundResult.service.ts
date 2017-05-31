@@ -7,21 +7,30 @@ type NotificationPermission = "default" | "denied" | "granted";
 
 type NotificationDirection = "auto" | "ltr" | "rtl";
 
+export interface Listening {
+  active:boolean;
+}
+
 @Injectable()
 export class FoundResultService {
 
   //foundOrders: Order[];
+  listening: Listening;
   constructor(private authorizationHttp: AuthorizationHttp, private authotrizationService: AuthorizationService) {
     this.startListening();
+    this.listening =  {active: false};
+    if(authotrizationService.authorize.active)
+      this.listening.active = true;
   }
 
   startListening() {
-    //this.liste();
+    this.liste();
   }
 
   liste() {
-    // this.authorizationHttp.get("/foundresults/async/" + this.authotrizationService.username).map(res => res.json()).subscribe(data => {
-    //   this.notifyMe(); this.liste(); /*this.foundOrders = data;*/},error2 => {if(error2 === 504)this.liste()})
+    if(this.listening)
+    this.authorizationHttp.get("/foundresults/async/" + this.authotrizationService.username).map(res => res.json()).subscribe(data => {
+      this.notifyMe(); this.liste();},error2 => {if(error2 === 504)this.liste()})
   }
 
 
@@ -36,7 +45,7 @@ export class FoundResultService {
       // If it's okay let's create a notification
       var notification = new Notification("Masz nową ofertę!");
       notification.onclick = function(){
-        window.location.href = "http://localhost:4200/orders";
+        window.location.href = "http://localhost:4200/result";
         this.cancel();
       };
     }
@@ -48,7 +57,7 @@ export class FoundResultService {
         if (permission === "granted") {
           var notification = new Notification("Masz nową ofertę!");
           notification.onclick = function(){
-            window.location.href = "localhost:4200/orders";
+            window.location.href = "localhost:4200/result";
             this.cancel();
           };
         }
