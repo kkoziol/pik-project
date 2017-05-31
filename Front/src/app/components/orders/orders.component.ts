@@ -181,7 +181,7 @@ export class OrdersComponent implements OnInit {
       preference.categoryID = this.selectedCategories[this.selectedCategories.length - 1].categoryID;
       preference.priceMin = this.minCost;
       preference.priceMax = this.maxCost;
-      preference.condition = this.selectedCondition;
+      preference.conditions = [this.selectedCondition];
       preference.categorySpecifics = this.selectedProperties;
       preference.deliveryOptions = 'Free International shipping';
       preference.keyword = this.query;

@@ -4,7 +4,7 @@ export class UserPreference {
   categoryID: string;
   priceMin: number;
   priceMax: number;
-  condition: string;
+  conditions: string[];
   deliveryOptions: string;
   categorySpecifics: {};
   keyword: string;
