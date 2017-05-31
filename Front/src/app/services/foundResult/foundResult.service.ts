@@ -16,7 +16,7 @@ export class FoundResultService {
   }
 
   startListening() {
-    this.liste();
+    //this.liste();
   }
 
   liste() {

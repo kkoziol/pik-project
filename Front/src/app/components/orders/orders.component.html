@@ -42,9 +42,9 @@
       <div class="propertiesContainer">
       <div>
         <input class="form-control propertiesControlForm" type="text" placeholder="MinCost" [(ngModel)]=minCost
-               name="minCost" (change)="addProperties('MinCost',minCost)">
+               name="minCost" (change)="addProperties('priceMin',minCost)">
         <input class="form-control propertiesControlForm" type="text" placeholder="MaxCost" [(ngModel)]=maxCost
-               name="maxCost" (change)="addProperties('MaxCost',maxCost)">
+               name="maxCost" (change)="addProperties('priceMax',maxCost)">
       </div>
       <div class="propertiesContainer" *ngFor="let item of properties">
         <label class="labelProperties">{{item.type}}</label>

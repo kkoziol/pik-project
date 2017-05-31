@@ -30,12 +30,12 @@ export class EBayService {
     return this.authorizationHttp.get("/ebay/categories/categoryname/" + categoryId);
   }
 
-  getItemsByKeyWord(keyword: string) {
-    return this.authorizationHttp.get("/ebay/items/search/" + keyword).map(res =>  res.json());
+  getItemsByKeyWord(keyword: string, pageNumber: number) {
+    return this.authorizationHttp.get("/ebay/items/search/" + keyword + '/'+pageNumber).map(res =>  res.json());
   }
 
-  getItemsByKeyWordAndCategory(keyword: string, categoryId: string) {
-    return this.authorizationHttp.get("/ebay/items/search/" + keyword + "/" + categoryId).map(res =>  res.json());
+  getItemsByKeyWordAndCategory(keyword: string, categoryId: string, pageNumber: number) {
+    return this.authorizationHttp.get("/ebay/items/search/" + keyword + "/" + categoryId + '/'+pageNumber).map(res =>  res.json());
   }
 
   getItemsByKeyWordAndCategoryAndMinMaxPrice(keyword: string, categoryId: number, minPrice: number, maxPrice: number) {
@@ -51,7 +51,7 @@ export class EBayService {
   }
   
   putOrderPreferences(username: string, data: {}){
-  	return  this.authorizationHttp.post("/orders/"+username, data);
+  	return  this.authorizationHttp.post("/orders/add/"+username, data);
   }
     
   getUserOrders(username: string){
