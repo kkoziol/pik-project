@@ -10,6 +10,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 
 @Entity
 @Table(name="FOUND_RESULTS")
@@ -22,6 +24,7 @@ public class FoundResult {
 	@Column(name = "URL", nullable = false, length = 2000)
 	private String url;
 	
+	@JsonManagedReference
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "ORDER_ID", nullable = false)
 	private Order order;

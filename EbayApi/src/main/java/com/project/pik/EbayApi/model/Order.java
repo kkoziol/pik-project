@@ -15,6 +15,9 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 
 
 @Entity
@@ -25,6 +28,7 @@ public class Order {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer orderId;
 	
+	@JsonManagedReference
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "USER_ID", nullable = false)
 	private User user;
@@ -35,6 +39,7 @@ public class Order {
 	@Column(name = "IS_HIRTORY_LOG", nullable = false)
 	private boolean isHistoryLog;
 	
+	@JsonBackReference
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "order")
 	private Set<FoundResult> foundResults = new HashSet<>();
 	

@@ -17,6 +17,8 @@ import javax.persistence.Table;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 @Entity
 @Table(name = "Users")
 public class User {
@@ -40,8 +42,10 @@ public class User {
 	private String sex;
 	@Column(name = "AUTHORITIES", nullable = true, length = 20)
 	private String authorities = "ROLE_USER";
+	@JsonBackReference
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
 	private Set<Email> emails = new HashSet<>();
+	@JsonBackReference
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
 	private Set<Order> orders = new HashSet<>();
 	
