@@ -197,7 +197,7 @@ export class OrdersComponent implements OnInit {
           return false;
         });
   }
-    
+
   getUserOrders(){
 
       this.ebayService.getUserOrders(this.authotrizationService.username)
@@ -213,8 +213,9 @@ export class OrdersComponent implements OnInit {
             },
             error2 => console.log('ERROR'));
   }
-    
+
   matchCategory(categoryID: string): string{
+    if(this.categoryList !== undefined)
       for(let category of this.categoryList){
           if(categoryID === category.categoryID)
             return category.categoryName;

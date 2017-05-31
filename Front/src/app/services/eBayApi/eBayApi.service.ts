@@ -49,12 +49,12 @@ export class EBayService {
   getCheapestItemByKeyWordInCategory(keyword: string, categoryId: number) {
     return this.authorizationHttp.get("/ebay/items/cheapest/item/" + keyword + "/" + categoryId);
   }
-  
+
   putOrderPreferences(username: string, data: {}){
   	return  this.authorizationHttp.post("/orders/add/"+username, data);
   }
-    
+
   getUserOrders(username: string){
-     return this.authorizationHttp.get("/orders/list/" + username); 
+     return this.authorizationHttp.get("/orders/list/" + username);
   }
 }

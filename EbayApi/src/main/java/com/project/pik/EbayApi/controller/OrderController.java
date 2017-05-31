@@ -1,7 +1,9 @@
 package com.project.pik.EbayApi.controller;
 
+import java.io.IOException;
 import java.util.Calendar;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,15 +37,24 @@ public class OrderController {
 	
 	@ResponseBody 
 	@RequestMapping(value = "/list/{username}", method = RequestMethod.GET, produces = "application/json")
-	public ResponseEntity<List<Order>> getOrdersPerUser(@PathVariable String username){
+	public ResponseEntity<List<UserPreference>> getOrdersPerUser(@PathVariable String username){
 		List<Order> orders = orderRepository.findByUserLogin(username);
 		
 		if (orders == null || orders.isEmpty()) {
 			logger.error("Cannot receive orders for user " + username);
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 		}
-
-		return new ResponseEntity<>(orders, HttpStatus.OK);
+		
+		ObjectMapper jsonMapper = new ObjectMapper();
+		List<UserPreference> prefs = orders.stream().map(o -> {
+			try {
+				return jsonMapper.readValue(o.getPreferencesAsJson(), UserPreference.class);
+			} catch (IOException e) {
+				logger.error(e.getMessage());
+			}
+			return new UserPreference();
+		}).collect(Collectors.toList());
+		return new ResponseEntity<>(prefs, HttpStatus.OK);
 	}
 	
 	@RequestMapping(value = "/add/{username}", method = RequestMethod.POST)

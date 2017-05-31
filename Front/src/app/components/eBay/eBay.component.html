@@ -1,5 +1,6 @@
 <div class="form-inline ebayContainer">
   <div class="left">
+    <div class="searchComponent">
     <label class="form-group">Write search query</label>
     <input type="text"
            class="form-group form-control"
@@ -9,6 +10,7 @@
            [(ngModel)]=query>
 
     <button class="btn btn-primary btn-general form-group" (click)="submit()">Search</button>
+    </div>
   </div>
 
   <div class="right">
