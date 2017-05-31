@@ -30,12 +30,17 @@ export class OrdersComponent implements OnInit {
   selectedProperties: {};
   conditions: string[];
   selectedCondition: string;
+  userPreferences: UserPreference[];
+  //pageCounter: number;
+  someData: boolean;
 
   constructor(private ebayService: EBayService, private authotrizationService: AuthorizationService) {
     this.selectedCategories = [];
     this.properties = [];
     this.selectedProperties = {};
     this.conditions = [];
+    this.userPreferences = [];
+    this.someData = false;
   }
 
   private searchTermStream = new Subject<string>();
@@ -45,39 +50,39 @@ export class OrdersComponent implements OnInit {
   }
 
   ngOnInit() {
-
+    this.getUserOrders();
     this.ebayService.getMainCategories()
       .subscribe(data => this.categoryList = data.map(elem => CategoryType.copy(elem)),
         error2 => console.log("Zly request"));
     this.conditions = ['New', 'New other (see details)', 'New with defects', 'Manufacturer refurbished', 'Seller refurbished', 'Used', 'Very Good', 'Good', 'Acceptable', 'For parts or not working'];
-    
+
   }
 
-//  submit() {
-//    if (this.selectedCategories.length !== 0) {
-//      if (this.query !== '') {
-//        this.ebayService.getItemsByKeyWordAndCategory(this.query, this.selectedCategories[this.selectedCategories.length - 1].categoryID)
-//          .subscribe(data => {
-//              this.itemList = data
-//            },
-//            error2 => console.log('ERROR'));
-//      }
-//      else {
-//        console.log('WRONG QUERY PARAMETERS');
-//      }
-//    }
-//    else {
-//      if (this.query !== '') {
-//        this.ebayService.getItemsByKeyWord(this.query)
-//          .subscribe(data => this.itemList = data,
-//            error2 => console.log('ERROR'));
-//      }
-//      else {
-//        console.log('WRONG QUERY PARAMETERS');
-//      }
-//    }
-//
-//  }
+  submit() {
+    if (this.selectedCategories.length !== 0) {
+      if (this.query !== '') {
+        this.ebayService.getItemsByKeyWordAndCategory(this.query, this.selectedCategories[this.selectedCategories.length - 1].categoryID)
+          .subscribe(data => {
+              this.itemList = data
+            },
+            error2 => console.log('ERROR'));
+      }
+      else {
+        console.log('WRONG QUERY PARAMETERS');
+      }
+    }
+    else {
+      if (this.query !== '') {
+        this.ebayService.getItemsByKeyWord(this.query)
+          .subscribe(data => this.itemList = data,
+            error2 => console.log('ERROR'));
+      }
+      else {
+        console.log('WRONG QUERY PARAMETERS');
+      }
+    }
+
+  }
 
   addProperties = (type,value) => {
     this.selectedProperties[type] = value;
@@ -90,6 +95,8 @@ export class OrdersComponent implements OnInit {
 
     this.selectedCategories = [];
     this.selectedCategories.push(newSelected);
+
+    console.log(newSelected);
 
     this.ebayService.getSbsCategoriesByParentId(newSelected.categoryID)
       .subscribe(data => this.selectedCategories[this.selectedCategories.length - 1].childrenCategories = data.map(elem => CategoryType.copy(elem)),
@@ -172,10 +179,10 @@ export class OrdersComponent implements OnInit {
       let preference: UserPreference;
       preference = new UserPreference();
       preference.categoryID = this.selectedCategories[this.selectedCategories.length - 1].categoryID;
-      preference.minPrice = this.minCost;
-      preference.maxPrice = this.maxCost;
+      preference.priceMin = this.minCost;
+      preference.priceMax = this.maxCost;
       preference.condition = this.selectedCondition;
-      preference.properties = this.selectedProperties;
+      preference.categorySpecifics = this.selectedProperties;
       preference.deliveryOptions = 'Free International shipping';
       preference.keyword = this.query;
       console.log(preference);
@@ -183,11 +190,37 @@ export class OrdersComponent implements OnInit {
        .map(res => res.json())
       .subscribe(response => {
           console.log(response.body);
+          this.getUserOrders()
         },
         error2 => {
           console.log("Wrong post order");
           return false;
         });
+  }
+    
+  getUserOrders(){
+
+      this.ebayService.getUserOrders(this.authotrizationService.username)
+     .map(res => res.json())
+     .subscribe(data => {
+              if(!data){
+                  console.log('nothing else');
+              }else{
+                this.someData = true;
+                this.userPreferences = [];
+                this.userPreferences = data
+              }
+            },
+            error2 => console.log('ERROR'));
+  }
+    
+  matchCategory(categoryID: string): string{
+      for(let category of this.categoryList){
+          if(categoryID === category.categoryID)
+            return category.categoryName;
+          else
+              return 'Category not found';
+      }
   }
 }
 

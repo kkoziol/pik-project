@@ -1,9 +1,13 @@
 <div class="header">
+  <div class="title">
+    SNAJPER
+  </div>
   <nav class="tapTopPanel" *ngIf="logged.active">
     <a routerLink="/eBay" routerLinkActive="active">EBay</a>
     <a routerLink="/history" routerLinkActive="active">History</a>
     <a routerLink="/orders" routerLinkActive="active">Orders</a>
     <a routerLink="/settings" routerLinkActive="active">Settings</a>
+    <a routerLink="/result" routerLinkActive="active">Result</a>
     <a (click)="logout()">Logout</a>
   </nav>
 </div>

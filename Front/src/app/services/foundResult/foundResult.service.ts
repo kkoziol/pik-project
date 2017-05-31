@@ -7,6 +7,61 @@ type NotificationPermission = "default" | "denied" | "granted";
 
 type NotificationDirection = "auto" | "ltr" | "rtl";
 
+@Injectable()
+export class FoundResultService {
+
+  //foundOrders: Order[];
+  constructor(private authorizationHttp: AuthorizationHttp, private authotrizationService: AuthorizationService) {
+    this.startListening();
+  }
+
+  startListening() {
+    this.liste();
+  }
+
+  liste() {
+    this.authorizationHttp.get("/foundresults/async/" + this.authotrizationService.username).map(res => res.json()).subscribe(data => {
+      this.notifyMe(); this.liste(); /*this.foundOrders = data;*/},error2 => {if(error2 === 504)this.liste()})
+  }
+
+
+  notifyMe() {
+    // Let's check if the browser supports notifications
+    if (!("Notification" in window)) {
+      alert("This browser does not support desktop notification");
+    }
+
+    // Let's check whether notification permissions have already been granted
+    else if (Notification.permission === "granted") {
+      // If it's okay let's create a notification
+      var notification = new Notification("Masz nową ofertę!");
+      notification.onclick = function(){
+        window.location.href = "http://localhost:4200/orders";
+        this.cancel();
+      };
+    }
+
+    // Otherwise, we need to ask the user for permission
+    else if (Notification.permission !== "denied") {
+      Notification.requestPermission(function (permission) {
+        // If the user accepts, let's create a notification
+        if (permission === "granted") {
+          var notification = new Notification("Masz nową ofertę!");
+          notification.onclick = function(){
+            window.location.href = "localhost:4200/orders";
+            this.cancel();
+          };
+        }
+      });
+    }
+
+    // At last, if the user has denied notifications, and you
+    // want to be respectful there is no need to bother them any more.
+  }
+}
+
+
+
 interface NotificationPermissionCallback {
   (permission: NotificationPermission): void;
 }
@@ -67,55 +122,3 @@ declare class Notification extends EventTarget {
   readonly actions: NotificationAction[]
 }
 
-@Injectable()
-export class FoundResult {
-
-  //foundOrders: Order[];
-  constructor(private authorizationHttp: AuthorizationHttp, private authotrizationService: AuthorizationService) {
-    this.startListening();
-  }
-
-  startListening() {
-    this.liste();
-  }
-
-  liste() {
-    this.authorizationHttp.get("/foundresults/async/" + this.authotrizationService.username).map(res => res.json()).subscribe(data => {
-      this.notifyMe(); this.liste(); /*this.foundOrders = data;*/},error2 => {if(error2 === 504)this.liste()})
-  }
-
-
-  notifyMe() {
-    // Let's check if the browser supports notifications
-    if (!("Notification" in window)) {
-      alert("This browser does not support desktop notification");
-    }
-
-    // Let's check whether notification permissions have already been granted
-    else if (Notification.permission === "granted") {
-      // If it's okay let's create a notification
-      var notification = new Notification("Masz nową ofertę!");
-      notification.onclick = function(){
-        window.location.href = "http://localhost:4200/orders";
-        this.cancel();
-      };
-    }
-
-    // Otherwise, we need to ask the user for permission
-    else if (Notification.permission !== "denied") {
-      Notification.requestPermission(function (permission) {
-        // If the user accepts, let's create a notification
-        if (permission === "granted") {
-          var notification = new Notification("Masz nową ofertę!");
-          notification.onclick = function(){
-            window.location.href = "localhost:4200/orders";
-            this.cancel();
-          };
-        }
-      });
-    }
-
-    // At last, if the user has denied notifications, and you
-    // want to be respectful there is no need to bother them any more.
-  }
-}

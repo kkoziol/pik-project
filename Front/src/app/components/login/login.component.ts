@@ -58,6 +58,13 @@ export class LoginComponent implements OnInit {
     this.error2 = false;
     if (this.authorizationService.register(this.username, this.password, this.firstName, this.lastName, this.eMail, this.gender, this.birthDate, this.confirmPassword)) {
       this.success = true;
+       this.password = '';
+       this.username = '';
+       this.firstName = '';
+       this.lastName = '';
+       this.eMail = '';
+       this.gender = '';
+       this.confirmPassword = '';
       setTimeout((router: Router) => {
         this.register = false;
     }, 3000);
