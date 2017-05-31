@@ -7,10 +7,21 @@
 
   .left {
     float: left;
-    width: calc(100% - 35rem);
+    width: calc(100% - 40rem);
+
+    th {
+      padding: 1rem;
+      background-color: #CFD8DC;
+      border: 1px solid black;
+    }
+
+    td {
+      padding: 0.5rem;
+      border: 1px solid black;
+    }
 
     .searchComponent {
-      margin: 0 auto;
+      margin: 5rem auto;
     }
   }
 
@@ -21,7 +32,7 @@
 
   .right {
 
-    position: absolute;
+    position: fixed;
     right: 0;
     top: 5rem;
     width: 40rem;

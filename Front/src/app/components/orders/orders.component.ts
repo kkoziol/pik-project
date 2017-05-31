@@ -39,7 +39,7 @@ export class OrdersComponent implements OnInit {
     this.properties = [];
     this.selectedProperties = {};
     this.conditions = [];
-    this.userPreferences = [];
+    this.userPreferences = [new UserPreference()];
     this.someData = false;
   }
 
@@ -58,31 +58,31 @@ export class OrdersComponent implements OnInit {
 
   }
 
-//  submit() {
-//    if (this.selectedCategories.length !== 0) {
-//      if (this.query !== '') {
-//        this.ebayService.getItemsByKeyWordAndCategory(this.query, this.selectedCategories[this.selectedCategories.length - 1].categoryID)
-//          .subscribe(data => {
-//              this.itemList = data
-//            },
-//            error2 => console.log('ERROR'));
-//      }
-//      else {
-//        console.log('WRONG QUERY PARAMETERS');
-//      }
-//    }
-//    else {
-//      if (this.query !== '') {
-//        this.ebayService.getItemsByKeyWord(this.query)
-//          .subscribe(data => this.itemList = data,
-//            error2 => console.log('ERROR'));
-//      }
-//      else {
-//        console.log('WRONG QUERY PARAMETERS');
-//      }
-//    }
-//
-//  }
+  submit() {
+    if (this.selectedCategories.length !== 0) {
+      if (this.query !== '') {
+        this.ebayService.getItemsByKeyWordAndCategory(this.query, this.selectedCategories[this.selectedCategories.length - 1].categoryID)
+          .subscribe(data => {
+              this.itemList = data
+            },
+            error2 => console.log('ERROR'));
+      }
+      else {
+        console.log('WRONG QUERY PARAMETERS');
+      }
+    }
+    else {
+      if (this.query !== '') {
+        this.ebayService.getItemsByKeyWord(this.query)
+          .subscribe(data => this.itemList = data,
+            error2 => console.log('ERROR'));
+      }
+      else {
+        console.log('WRONG QUERY PARAMETERS');
+      }
+    }
+
+  }
 
   addProperties = (type,value) => {
     this.selectedProperties[type] = value;
@@ -96,7 +96,7 @@ export class OrdersComponent implements OnInit {
     this.selectedCategories = [];
     this.selectedCategories.push(newSelected);
 
-    console.log(newSelected);
+    console.log(newSelected,this.selectedCategories);
 
     this.ebayService.getSbsCategoriesByParentId(newSelected.categoryID)
       .subscribe(data => this.selectedCategories[this.selectedCategories.length - 1].childrenCategories = data.map(elem => CategoryType.copy(elem)),
@@ -127,7 +127,6 @@ export class OrdersComponent implements OnInit {
   chooseCategory = (categoryName: string) => {
     //TODO Refactor shity kod ale w przy takim czasie odopowiedzzi z serwera nie ma sensu przyspieszyc
     let newSelected;
-    console.log("KLIK",categoryName);
     if (this.selectedCategories.length > 0) {
       newSelected = this.selectedCategories.find(category =>
       category.childrenCategories.find(categoryChild => categoryChild.categoryName === categoryName) !== null)
@@ -181,7 +180,7 @@ export class OrdersComponent implements OnInit {
       preference.categoryID = this.selectedCategories[this.selectedCategories.length - 1].categoryID;
       preference.priceMin = this.minCost;
       preference.priceMax = this.maxCost;
-      preference.conditions = [this.selectedCondition];
+      preference.condition = this.selectedCondition;
       preference.categorySpecifics = this.selectedProperties;
       preference.deliveryOptions = 'Free International shipping';
       preference.keyword = this.query;
@@ -208,7 +207,7 @@ export class OrdersComponent implements OnInit {
               }else{
                 this.someData = true;
                 this.userPreferences = [];
-                this.userPreferences = data
+                this.userPreferences = data;
               }
             },
             error2 => console.log('ERROR'));
