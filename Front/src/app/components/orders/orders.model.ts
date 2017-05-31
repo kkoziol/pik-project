@@ -8,7 +8,7 @@ export class UserPreference {
   deliveryOptions: string;
   categorySpecifics: {};
   keyword: string;
-  dateAndTime: Date;
+  dateAndTime: string;
 }
 
 
