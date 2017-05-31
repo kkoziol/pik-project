@@ -213,5 +213,14 @@ export class OrdersComponent implements OnInit {
             },
             error2 => console.log('ERROR'));
   }
+    
+  matchCategory(categoryID: string): string{
+      for(let category of this.categoryList){
+          if(categoryID === category.categoryID)
+            return category.categoryName;
+          else
+              return 'Category not found';
+      }
+  }
 }
 
