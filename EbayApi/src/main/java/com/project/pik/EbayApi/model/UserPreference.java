@@ -1,5 +1,6 @@
 package com.project.pik.EbayApi.model;
 
+import java.sql.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -32,7 +33,7 @@ public class UserPreference {
 	private List<String> conditions;
 	private String deliveryOptions;
 	private String keyword;
-	
+	private Date dateAndTime;
 	
 	
 	public String getKeyword() {
@@ -77,6 +78,13 @@ public class UserPreference {
 	}
 	public void setDeliveryOptions(String deliveryOptions) {
 		this.deliveryOptions = deliveryOptions;
+	}
+	
+	public Date getDateAndTime() {
+		return dateAndTime;
+	}
+	public void setDateAndTime(Date dateAndTime) {
+		this.dateAndTime = dateAndTime;
 	}
 	public static String mapMnemonicToCode(String mnemonic) {
 		if(conditionMnemonicToCodeMap.containsKey(mnemonic)){

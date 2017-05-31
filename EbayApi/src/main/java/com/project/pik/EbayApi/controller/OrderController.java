@@ -49,7 +49,7 @@ public class OrderController {
 	@RequestMapping(value = "/add/{username}", method = RequestMethod.POST)
 	public ResponseEntity<Order> addOrderForUser(@PathVariable String username, @RequestBody UserPreference preference){
 		Order order = new Order();
-		order.setDate(new java.sql.Date(Calendar.getInstance().getTime().getTime()));
+		preference.setDateAndTime(new java.sql.Date(Calendar.getInstance().getTime().getTime()));
 		User user = userRepository.findOneByLogin(username);
 		order.setUser(user);
 		order.setHistoryLog(false);
