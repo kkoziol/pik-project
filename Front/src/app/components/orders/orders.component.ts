@@ -39,7 +39,7 @@ export class OrdersComponent implements OnInit {
     this.properties = [];
     this.selectedProperties = {};
     this.conditions = [];
-    this.userPreferences = [new UserPreference()];
+    this.userPreferences = [];
     this.someData = false;
   }
 
@@ -50,7 +50,7 @@ export class OrdersComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.getUserOrders();
+   // this.getUserOrders();
     this.ebayService.getMainCategories()
       .subscribe(data => this.categoryList = data.map(elem => CategoryType.copy(elem)),
         error2 => console.log("Zly request"));
