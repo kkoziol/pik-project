@@ -2,11 +2,12 @@ import {Properties} from '../eBay/eBay.model';
 
 export class UserPreference {
   categoryID: string;
-  minPrice: number;
-  maxPrice: number;
+  priceMin: number;
+  priceMax: number;
   condition: string;
   deliveryOptions: string;
-  properties: {};
+  categorySpecifics: {};
   keyword: string;
+  dateAndTime: string;
   
 }

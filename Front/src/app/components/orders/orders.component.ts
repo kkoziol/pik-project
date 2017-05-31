@@ -30,12 +30,17 @@ export class OrdersComponent implements OnInit {
   selectedProperties: {};
   conditions: string[];
   selectedCondition: string;
+  userPreferences: UserPreference[];
+  //pageCounter: number;
+  someData: boolean;
 
   constructor(private ebayService: EBayService, private authotrizationService: AuthorizationService) {
     this.selectedCategories = [];
     this.properties = [];
     this.selectedProperties = {};
     this.conditions = [];
+    this.userPreferences = [];
+    this.someData = false;
   }
 
   private searchTermStream = new Subject<string>();
@@ -45,7 +50,7 @@ export class OrdersComponent implements OnInit {
   }
 
   ngOnInit() {
-
+    this.getUserOrders();
     this.ebayService.getMainCategories()
       .subscribe(data => this.categoryList = data.map(elem => CategoryType.copy(elem)),
         error2 => console.log("Zly request"));
@@ -172,10 +177,10 @@ export class OrdersComponent implements OnInit {
       let preference: UserPreference;
       preference = new UserPreference();
       preference.categoryID = this.selectedCategories[this.selectedCategories.length - 1].categoryID;
-      preference.minPrice = this.minCost;
-      preference.maxPrice = this.maxCost;
+      preference.priceMin = this.minCost;
+      preference.priceMax = this.maxCost;
       preference.condition = this.selectedCondition;
-      preference.properties = this.selectedProperties;
+      preference.categorySpecifics = this.selectedProperties;
       preference.deliveryOptions = 'Free International shipping';
       preference.keyword = this.query;
       console.log(preference);
@@ -183,11 +188,28 @@ export class OrdersComponent implements OnInit {
        .map(res => res.json())
       .subscribe(response => {
           console.log(response.body);
+          this.getUserOrders()
         },
         error2 => {
           console.log("Wrong post order");
           return false;
         });
+  }
+    
+  getUserOrders(){
+
+      this.ebayService.getUserOrders(this.authotrizationService.username)
+     .map(res => res.json())
+     .subscribe(data => {
+              if(!data){
+                  console.log('nothing else');
+              }else{
+                this.someData = true;
+                this.userPreferences = [];
+                this.userPreferences = data
+              }
+            },
+            error2 => console.log('ERROR'));
   }
 }
 
