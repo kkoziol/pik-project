@@ -20,8 +20,8 @@ export class FoundResultService {
   }
 
   liste() {
-    this.authorizationHttp.get("/foundresults/async/" + this.authotrizationService.username).map(res => res.json()).subscribe(data => {
-      this.notifyMe(); this.liste(); /*this.foundOrders = data;*/},error2 => {if(error2 === 504)this.liste()})
+    // this.authorizationHttp.get("/foundresults/async/" + this.authotrizationService.username).map(res => res.json()).subscribe(data => {
+    //   this.notifyMe(); this.liste(); /*this.foundOrders = data;*/},error2 => {if(error2 === 504)this.liste()})
   }
 
 
