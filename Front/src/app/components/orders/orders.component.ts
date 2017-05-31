@@ -50,34 +50,34 @@ export class OrdersComponent implements OnInit {
       .subscribe(data => this.categoryList = data.map(elem => CategoryType.copy(elem)),
         error2 => console.log("Zly request"));
     this.conditions = ['New', 'New other (see details)', 'New with defects', 'Manufacturer refurbished', 'Seller refurbished', 'Used', 'Very Good', 'Good', 'Acceptable', 'For parts or not working'];
-    
+
   }
 
-//  submit() {
-//    if (this.selectedCategories.length !== 0) {
-//      if (this.query !== '') {
-//        this.ebayService.getItemsByKeyWordAndCategory(this.query, this.selectedCategories[this.selectedCategories.length - 1].categoryID)
-//          .subscribe(data => {
-//              this.itemList = data
-//            },
-//            error2 => console.log('ERROR'));
-//      }
-//      else {
-//        console.log('WRONG QUERY PARAMETERS');
-//      }
-//    }
-//    else {
-//      if (this.query !== '') {
-//        this.ebayService.getItemsByKeyWord(this.query)
-//          .subscribe(data => this.itemList = data,
-//            error2 => console.log('ERROR'));
-//      }
-//      else {
-//        console.log('WRONG QUERY PARAMETERS');
-//      }
-//    }
-//
-//  }
+  submit() {
+    if (this.selectedCategories.length !== 0) {
+      if (this.query !== '') {
+        this.ebayService.getItemsByKeyWordAndCategory(this.query, this.selectedCategories[this.selectedCategories.length - 1].categoryID)
+          .subscribe(data => {
+              this.itemList = data
+            },
+            error2 => console.log('ERROR'));
+      }
+      else {
+        console.log('WRONG QUERY PARAMETERS');
+      }
+    }
+    else {
+      if (this.query !== '') {
+        this.ebayService.getItemsByKeyWord(this.query)
+          .subscribe(data => this.itemList = data,
+            error2 => console.log('ERROR'));
+      }
+      else {
+        console.log('WRONG QUERY PARAMETERS');
+      }
+    }
+
+  }
 
   addProperties = (type,value) => {
     this.selectedProperties[type] = value;
@@ -90,6 +90,8 @@ export class OrdersComponent implements OnInit {
 
     this.selectedCategories = [];
     this.selectedCategories.push(newSelected);
+
+    console.log(newSelected);
 
     this.ebayService.getSbsCategoriesByParentId(newSelected.categoryID)
       .subscribe(data => this.selectedCategories[this.selectedCategories.length - 1].childrenCategories = data.map(elem => CategoryType.copy(elem)),

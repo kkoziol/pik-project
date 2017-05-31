@@ -68,7 +68,7 @@ export class EBayComponent implements OnInit {
   getData(){
      if (this.selectedCategories.length !== 0) {
       if (this.query !== '') {
-        this.ebayService.getItemsByKeyWordAndCategory(this.query, this.selectedCategories[this.selectedCategories.length - 1].categoryID,this.pageCounter)
+        this.ebayService.getItemsByKeyWordAndCategory(this.query + '/'+this.pageCounter, this.selectedCategories[this.selectedCategories.length - 1].categoryID)
           .subscribe(data => {
               if(!data){
                   console.log('nothing else');
@@ -88,7 +88,7 @@ export class EBayComponent implements OnInit {
     }
     else {
       if (this.query !== '') {
-        this.ebayService.getItemsByKeyWord(this.query,this.pageCounter)
+        this.ebayService.getItemsByKeyWord(this.query+ '/'+this.pageCounter)
           .subscribe(data => {
            if(!data){
                   console.log('nothing else');
