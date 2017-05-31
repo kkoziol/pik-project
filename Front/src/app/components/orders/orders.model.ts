@@ -9,5 +9,21 @@ export class UserPreference {
   categorySpecifics: {};
   keyword: string;
   dateAndTime: string;
-  
 }
+
+
+export class FoundResult {
+  url: string;
+}
+
+export class Orders {
+  date: Date;
+  minPrice: number;
+  maxPrice: number;
+  condition: string;
+  deliveryOptions: string;
+  properties: {};
+  keyword: string;
+
+}
+

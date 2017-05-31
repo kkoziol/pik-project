@@ -14,7 +14,8 @@ import {SettingsComponent}    from "./components/settings/settings.component";
 import {AuthorizationHttp}    from "./services/authorizationHttp/authorizationHttp";
 import {EBayService} from "./services/eBayApi/eBayApi.service";
 import {HttpModule, JsonpModule} from "@angular/http";
-import {FoundResult} from "./services/foundResult/foundResult.service";
+import {FoundResultService} from "./services/foundResult/foundResult.service";
+import {ResultComponent} from "./components/results/result.component";
 
 @NgModule({
   imports: [
@@ -30,12 +31,13 @@ import {FoundResult} from "./services/foundResult/foundResult.service";
     OrdersComponent,
     HistoryComponent,
     SettingsComponent,
-    LoginComponent
+    LoginComponent,
+    ResultComponent
   ],
   providers: [
+    FoundResultService,
     AuthorizationService,
-    AuthorizationHttp,
-    FoundResult
+    AuthorizationHttp
   ],
   bootstrap: [AppComponent]
 })
