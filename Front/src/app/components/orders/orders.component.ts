@@ -58,34 +58,10 @@ export class OrdersComponent implements OnInit {
 
   }
 
-  submit() {
-    if (this.selectedCategories.length !== 0) {
-      if (this.query !== '') {
-        this.ebayService.getItemsByKeyWordAndCategory(this.query, this.selectedCategories[this.selectedCategories.length - 1].categoryID)
-          .subscribe(data => {
-              this.itemList = data
-            },
-            error2 => console.log('ERROR'));
-      }
-      else {
-        console.log('WRONG QUERY PARAMETERS');
-      }
-    }
-    else {
-      if (this.query !== '') {
-        this.ebayService.getItemsByKeyWord(this.query)
-          .subscribe(data => this.itemList = data,
-            error2 => console.log('ERROR'));
-      }
-      else {
-        console.log('WRONG QUERY PARAMETERS');
-      }
-    }
-
-  }
+ 
 
   addProperties = (type,value) => {
-    this.selectedProperties[type] = value;
+    this.selectedProperties[type] = [value];
     console.log(this.selectedProperties);
   };
 
@@ -180,7 +156,7 @@ export class OrdersComponent implements OnInit {
       preference.categoryID = this.selectedCategories[this.selectedCategories.length - 1].categoryID;
       preference.priceMin = this.minCost;
       preference.priceMax = this.maxCost;
-      preference.condition = this.selectedCondition;
+      preference.conditions = [this.selectedCondition];
       preference.categorySpecifics = this.selectedProperties;
       preference.deliveryOptions = 'Free International shipping';
       preference.keyword = this.query;
