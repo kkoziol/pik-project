@@ -29,9 +29,6 @@ public class Order {
 	@JoinColumn(name = "USER_ID", nullable = false)
 	private User user;
 	
-	@Column(name = "SUBMIT_DATE", nullable = false)
-	private Date date;
-	
 	@Column(name = "IS_HIRTORY_LOG", nullable = false)
 	private boolean isHistoryLog;
 	
@@ -55,14 +52,6 @@ public class Order {
 
 	public void setUser(User user) {
 		this.user = user;
-	}
-
-	public Date getDate() {
-		return date;
-	}
-
-	public void setDate(Date date) {
-		this.date = date;
 	}
 
 	public boolean isHistoryLog() {
