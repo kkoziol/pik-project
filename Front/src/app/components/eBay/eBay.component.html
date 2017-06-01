@@ -1,5 +1,6 @@
 <div class="form-inline ebayContainer">
   <div class="left">
+    <div class="searchComponent">
     <label class="form-group">Write search query</label>
     <input type="text"
            class="form-group form-control"
@@ -9,6 +10,31 @@
            [(ngModel)]=query>
 
     <button class="btn btn-primary btn-general form-group" (click)="submit()">Search</button>
+    </div>
+    <div *ngIf="someData">
+      <table class="gh-tbl">
+        <thead>
+        <th></th>
+        <th>Title</th>
+        <th>Item URL</th>
+        <th>Price</th>
+        </thead>
+        <tr *ngFor="let item of itemList">
+          <td><img src="{{item.galleryURL}}" style="width:128px;height:128px;"></td>
+          <td>{{item.title}}</td>
+          <td><a href="{{item.viewItemURL}}">{{item.viewItemURL}}</a></td>
+          <td>{{item.sellingStatus['currentPrice']['value']}} {{item.sellingStatus['currentPrice']['currencyId']}}</td>
+        </tr>
+      </table>
+      <br>
+      <button class="btn btn-primary btn-general" (click)="previousPage()" *ngIf="pageCounter > 1 && someData">Previous
+        page
+      </button>
+      <button class="btn btn-primary btn-general" (click)="nextPage()" *ngIf="!nothingElse">Next page</button>
+    </div>
+    <div *ngIf="!someData">
+      <p>Nothing to show</p>
+    </div>
   </div>
 
   <div class="right">
@@ -45,24 +71,4 @@
     </div>
   </div>
   <br>
-<div *ngIf="someData">
-<table class="gh-tbl" >
-      <thead>
-      <th></th>
-      <th>Title</th>
-      <th>Item URL</th>
-      </thead>
-      <tr *ngFor="let item of itemList">
-        <td><img src="{{item.galleryURL}}" style="width:128px;height:128px;"></td>
-        <td>{{item.title}}</td>
-        <td><a href="{{item.viewItemURL}}">{{item.viewItemURL}}</a></td>
-      </tr>
-    </table>
-    <br>
-    <button class="btn btn-primary btn-general" (click)="previousPage()" *ngIf="pageCounter > 1 && someData">Previous page</button>
-    <button class="btn btn-primary btn-general" (click)="nextPage()" *ngIf="!nothingElse">Next page</button>
-    </div>
-  <div *ngIf="!someData">
-  <p>Nothing to show</p>
-  </div>
 </div>

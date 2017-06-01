@@ -1,28 +1,52 @@
 <div class="form-inline ebayContainer">
 
   <div class="left">
-   <input type="text"
-           class="form-group form-control"
-           size="50"
-           maxlength="300"
-           placeholder="Search..."
-           [(ngModel)]=query>
-           <br>
-		  <div>
-		  <label>choose condition:</label>
-		 <select #c class="selectBlock" [(ngModel)]="selectedCondition">
-		  <option *ngFor="let con of conditions" [ngValue]="con">{{con}}</option>
-		</select>
 
-		  </div>
+    <div *ngIf="someData">
+
+      <div class="orderTitle bigLabel">Your orders</div>
+
+      <table class="gh-tbl searchComponent">
+        <thead>
+        <th>Date and time</th>
+        <th>Price range</th>
+        <th>Category</th>
+        <th>Condition</th>
+        <th>Delivery type</th>
+        <th>Keyword</th>
+        </thead>
+        <tr *ngFor="let preference of userPreferences">
+          <td>{{preference.dateAndTime}}</td>
+          <td>{{preference.priceMin}}-{{preference.priceMax}}</td>
+          <td>{{matchCategory(preference.categoryId)}}</td>
+          <td *ngFor = "let condition of preference.conditions">{{condition}}</td>
+          <td>{{preference.deliveryOptions}}</td>
+          <td>{{preference.keyword}}</td>
+        </tr>
+      </table>
+      <br>
+      <!--     <button class="btn btn-primary btn-general" (click)="previousPage()" *ngIf="pageCounter > 1 && someData">Previous page</button>
+          <button class="btn btn-primary btn-general" (click)="nextPage()" *ngIf="!nothingElse">Next page</button>-->
+    </div>
+    <br>
+    <div *ngIf="!someData">
+      <p>Nothing to show</p>
+    </div>
 
   </div>
 
   <div class="right">
+    <div class="orderTitle">Add new orders</div>
+    <input type="text"
+           class="form-group form-control searchInput"
+           size="50"
+           maxlength="300"
+           placeholder="Search..."
+           [(ngModel)]=query>
     <div class="myListElem">
       <div>
         <label>
-          <select #c class="selectBlock" (change)="chooseMainCategory(c.value)">
+          <select #cs class="selectBlock" (change)="chooseMainCategory(cs.value)">
             <option>choose category...</option>
             <option *ngFor="let category of categoryList" [ngValue]="category">{{category.categoryName}}</option>
           </select>
@@ -40,11 +64,16 @@
       </div>
       <label class="themeProperties">Properties</label>
       <div class="propertiesContainer">
-      <div>
-        <input class="form-control propertiesControlForm" type="text" placeholder="MinCost" [(ngModel)]=minCost
-               name="minCost" (change)="addProperties('MinCost',minCost)">
-        <input class="form-control propertiesControlForm" type="text" placeholder="MaxCost" [(ngModel)]=maxCost
-               name="maxCost" (change)="addProperties('MaxCost',maxCost)">
+        <div>
+          <input class="form-control propertiesControlForm" type="text" placeholder="MinCost" [(ngModel)]=minCost
+                 name="minCost">
+          <input class="form-control propertiesControlForm" type="text" placeholder="MaxCost" [(ngModel)]=maxCost
+                 name="maxCost">
+        </div>
+        <label class="labelProperties">condition:</label>
+        <select #c class="selectBlockProperties" [(ngModel)]="selectedCondition">
+          <option *ngFor="let con of conditions" [ngValue]="con">{{con}}</option>
+        </select>
       </div>
       <div class="propertiesContainer" *ngFor="let item of properties">
         <label class="labelProperties">{{item.type}}</label>
@@ -59,34 +88,7 @@
                  (change)="addProperties(item.type,item[i])">
         </label>
       </div>
-      </div>
     </div>
-      <button class="confirmButton" (click)="findOffers()" >Find offers</button>
-  </div>
-  <div *ngIf="someData">
-<table class="gh-tbl" >
-      <thead>
-      <th>Date and time</th>
-      <th>Price range</th>
-      <th>Category</th>
-      <th>Condition</th>
-      <th>Delivery type</th>
-      <th>Keyword</th>
-      </thead>
-      <tr *ngFor="let preference of userPreferences">
-        <td>{{preference.dateAndTime}}</td>
-        <td>{{preference.priceMin}}-{{preference.priceMax}}</td>
-        <td>{{matchCategory(preference.categoryID)}}</td>
-        <td>{{preference.condition}}</td>
-        <td>{{preference.deliveryOptions}}</td>
-        <td>{{preference.keyword}}</td>
-      </tr>
-    </table>
-    <br>
-<!--     <button class="btn btn-primary btn-general" (click)="previousPage()" *ngIf="pageCounter > 1 && someData">Previous page</button>
-    <button class="btn btn-primary btn-general" (click)="nextPage()" *ngIf="!nothingElse">Next page</button>--> 
-    </div>
-  <div *ngIf="!someData">
-  <p>Nothing to show</p>
+    <button class="confirmButton" (click)="findOffers()">Find offers</button>
   </div>
 </div>

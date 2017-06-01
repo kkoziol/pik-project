@@ -21,6 +21,7 @@ export class AppComponent {
     localStorage.clear();
     this.authorizationService.authorize.active = false;
     this.router.navigate(['./']);
+    this.found.listening.active = false;
   }
 
 }
