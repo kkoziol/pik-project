@@ -18,8 +18,8 @@
         <tr *ngFor="let preference of userPreferences">
           <td>{{preference.dateAndTime}}</td>
           <td>{{preference.priceMin}}-{{preference.priceMax}}</td>
-          <td>{{matchCategory(preference.categoryID)}}</td>
-          <td>{{preference.condition}}</td>
+          <td>{{matchCategory(preference.categoryId)}}</td>
+          <td *ngFor = "let condition of preference.conditions">{{condition}}</td>
           <td>{{preference.deliveryOptions}}</td>
           <td>{{preference.keyword}}</td>
         </tr>

@@ -50,7 +50,7 @@ export class OrdersComponent implements OnInit {
   }
 
   ngOnInit() {
-   // this.getUserOrders();
+    this.getUserOrders();
     this.ebayService.getMainCategories()
       .subscribe(data => this.categoryList = data.map(elem => CategoryType.copy(elem)),
         error2 => console.log("Zly request"));
@@ -153,7 +153,7 @@ export class OrdersComponent implements OnInit {
   findOffers(){
       let preference: UserPreference;
       preference = new UserPreference();
-      preference.categoryID = this.selectedCategories[this.selectedCategories.length - 1].categoryID;
+      preference.categoryId = this.selectedCategories[this.selectedCategories.length - 1].categoryID;
       preference.priceMin = this.minCost;
       preference.priceMax = this.maxCost;
       preference.conditions = [this.selectedCondition];
@@ -190,13 +190,15 @@ export class OrdersComponent implements OnInit {
   }
 
   matchCategory(categoryID: string): string{
-    if(this.categoryList !== undefined)
+    if(this.categoryList !== undefined){
       for(let category of this.categoryList){
+          console.log(category);
           if(categoryID === category.categoryID)
             return category.categoryName;
           else
               return 'Category not found';
       }
   }
+      }
 }
 
