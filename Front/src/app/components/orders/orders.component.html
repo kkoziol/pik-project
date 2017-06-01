@@ -19,8 +19,7 @@
           <td>{{preference.dateAndTime}}</td>
           <td>{{preference.priceMin}}-{{preference.priceMax}}</td>
           <td>{{matchCategory(preference.categoryID)}}</td>
-          <td *ngFor = "let condition of preference.conditions">
-          {{condition}}</td>
+          <td>{{preference.condition}}</td>
           <td>{{preference.deliveryOptions}}</td>
           <td>{{preference.keyword}}</td>
         </tr>
@@ -67,9 +66,9 @@
       <div class="propertiesContainer">
         <div>
           <input class="form-control propertiesControlForm" type="text" placeholder="MinCost" [(ngModel)]=minCost
-                 name="minCost" (change)="addProperties('MinCost',minCost)">
+                 name="minCost">
           <input class="form-control propertiesControlForm" type="text" placeholder="MaxCost" [(ngModel)]=maxCost
-                 name="maxCost" (change)="addProperties('MaxCost',maxCost)">
+                 name="maxCost">
         </div>
         <label class="labelProperties">condition:</label>
         <select #c class="selectBlockProperties" [(ngModel)]="selectedCondition">
