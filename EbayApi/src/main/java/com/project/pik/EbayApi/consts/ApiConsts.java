@@ -12,4 +12,11 @@ public class ApiConsts {
 	public static final String MAIL_PROPERTIES_FILE_NAME = "/email.properties";
 	public static final String SEARCHING_CURRENCY = "EUR";
 	public static final SiteCodeType SITE_CODING = SiteCodeType.US;
+	
+	/** Path variables in REST EbayController*/
+	public static final String MAX_PRICE_NAME = "maxPrice";
+	public static final String MIN_PRICE_NAME = "minPrice";
+	public static final String CATEGORY_ID_NAME = "categoryId";
+	public static final String KEYWORD_NAME = "keyword";
+	public static final String PAGE_NUMBER_NAME = "pageNumber";
 }

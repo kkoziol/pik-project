@@ -34,7 +34,7 @@ public class ApplicationConfig {
 	}
 
 	@Bean
-	public ApiContext eBaySoapApi() {
+	public ApiContext eBaySoapApi() throws IOException {
 		Properties keys = new Properties();
 		try {
 			InputStream in = ApplicationConfig.class.getResourceAsStream(PROPERTIES_FILE_NAME);
@@ -42,6 +42,7 @@ public class ApplicationConfig {
 		} catch (IOException e) {
 			logger.error("Could not load ebay properties file");
 			logger.error(e.getMessage());
+			throw e;
 		}
 		/** Set ApiAccount and token in ApiCredential */
 		ApiCredential credential = new ApiCredential();
@@ -60,7 +61,7 @@ public class ApplicationConfig {
 	}
 
 	@Bean
-	public ClientConfig eBayClientConfig() {
+	public ClientConfig eBayClientConfig() throws IOException {
 		Properties keys = new Properties();
 		try {
 			InputStream in = ApplicationConfig.class.getResourceAsStream(PROPERTIES_FILE_NAME);
@@ -68,6 +69,7 @@ public class ApplicationConfig {
 		} catch (IOException e) {
 			logger.error("Could not load ebay properties file");
 			logger.error(e.getMessage());
+			throw e;
 		}
 		/** Set ClientConfig for finding API */
 		ClientConfig config = new ClientConfig();

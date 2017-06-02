@@ -47,4 +47,10 @@ public class FoundResultController {
 		SearchEbayOffersDaemon.getInstance().registerListener(username, deferredResult);
 		return deferredResult;
 	}
+	
+	@RequestMapping("/delete/{foundResultId}")
+	public ResponseEntity<Long> findByUser(@PathVariable Long foundResultId) {
+		Long deletedId = foundResultRepository.deleteByFoundResultId(foundResultId);
+		return new ResponseEntity<>(deletedId, HttpStatus.OK);
+	}
 }

@@ -103,6 +103,7 @@ public class SearchEbayOffersDaemon extends Thread {
 	private void consumeFoundUrls(Order order, List<String> urls) {
 		if (urls.isEmpty())
 			return;
+		
 		String urlsInClause = "(" + urls.stream().map(u -> "'" + u + "'").collect(Collectors.joining(",")) + ")";
 		@SuppressWarnings("unchecked")
 		List<String> urlsInDb = (List<String>) entityManager
@@ -112,6 +113,7 @@ public class SearchEbayOffersDaemon extends Thread {
 		if (urls.isEmpty()) {
 			return;
 		}
+		logger.error(urls.stream().collect(Collectors.joining(" <---- URL \n")));
 		User user = order.getUser();
 		String login = user.getLogin();
 		asyncCallbackToUser(login, foundResultRepository.findByOrderUserLogin(login));

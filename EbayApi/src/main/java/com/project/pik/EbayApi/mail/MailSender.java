@@ -67,7 +67,6 @@ public class MailSender {
 			transport.close();
 
 		} catch (AddressException e) {
-			// TODO - add info to user about incorrect mail address
 			logger.error("Wrong mail address");
 			logger.error(e.getMessage());
 		} catch (MessagingException e) {

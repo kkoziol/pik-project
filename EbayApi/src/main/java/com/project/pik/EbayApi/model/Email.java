@@ -59,7 +59,4 @@ public class Email {
 	public void setAuthorized(boolean isAuthorized) {
 		this.isAuthorized = isAuthorized;
 	}
-	
-	
-	
 }

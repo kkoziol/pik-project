@@ -82,4 +82,10 @@ public class OrderController {
 		
 		return new ResponseEntity<>(order, HttpStatus.OK);
 	}
+	
+	@RequestMapping("/delete/{orderId}")
+	public ResponseEntity<Long> findByUser(@PathVariable Long orderId) {
+		Long deletedId = orderRepository.deleteByOrderId(orderId);
+		return new ResponseEntity<>(deletedId, HttpStatus.OK);
+	}
 }
