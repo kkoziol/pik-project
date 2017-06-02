@@ -1,16 +1,16 @@
 <div class="header">
   <div class="title">
-    SNAJPER
+    EBAY CEBULA DEALS!
   </div>
   <nav class="tapTopPanel" *ngIf="logged.active">
-    <a routerLink="/eBay" routerLinkActive="active">EBay</a>
-    <a routerLink="/history" routerLinkActive="active">History</a>
+    <a routerLink="/eBay" routerLinkActive="active">eBay</a>
+    <a routerLink="/history" routerLinkActive="active" *ngIf=false>History</a>
     <a routerLink="/orders" routerLinkActive="active">Orders</a>
-    <a routerLink="/settings" routerLinkActive="active">Settings</a>
+    <a routerLink="/settings" routerLinkActive="active" *ngIf=false>Settings</a>
     <a routerLink="/result" routerLinkActive="active">Result</a>
     <a (click)="logout()">Logout</a>
   </nav>
 </div>
 <div class="mainContainer">
-  <router-outlet></router-outlet>
+  <router-outlet>Loading...</router-outlet>
 </div>
