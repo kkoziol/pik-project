@@ -165,7 +165,7 @@ export class OrdersComponent implements OnInit {
        .map(res => res.json())
       .subscribe(response => {
           console.log(response.body);
-          this.getUserOrders()
+          this.getUserOrders();
         },
         error2 => {
           console.log("Wrong post order");
@@ -198,7 +198,18 @@ export class OrdersComponent implements OnInit {
           else
               return 'Category not found';
       }
+     }
   }
-      }
+   
+    deleteOrder(){  
+    console.log('Deleting order!');
+//    this.ebayService.deleteUserOrder()
+//     .map(res => res.json())
+//     .subscribe(data => {
+//                console.log('Delete successful');
+//                this.getUserOrders();
+//            },
+//            error2 => console.log('ERROR while deleting'));
+    }
 }
 
