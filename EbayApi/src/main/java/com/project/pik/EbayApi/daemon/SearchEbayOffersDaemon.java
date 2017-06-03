@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -113,7 +114,7 @@ public class SearchEbayOffersDaemon extends Thread {
 		if (urls.isEmpty()) {
 			return;
 		}
-		logger.error(urls.stream().collect(Collectors.joining(" <---- URL \n")));
+		logger.info(urls.stream().collect(Collectors.joining(" <---- URL \n")));
 		User user = order.getUser();
 		String login = user.getLogin();
 		asyncCallbackToUser(login, foundResultRepository.findByOrderUserLogin(login));
@@ -121,6 +122,12 @@ public class SearchEbayOffersDaemon extends Thread {
 		for (Email email : order.getUser().getEmails()) {
 			sender.sendFoundOffer(email, order, urls);
 		}
+		urls.stream().forEach(u -> {
+			FoundResult result = new FoundResult();
+			result.setOrder(order);
+			result.setUrl(u);
+			foundResultRepository.save(result);
+		});
 	}
 
 	private void asyncCallbackToUser(String login, List<FoundResult> results) {
@@ -162,7 +169,7 @@ public class SearchEbayOffersDaemon extends Thread {
 		if (preference.getConditions() != null && !preference.getConditions().isEmpty()) {
 			ItemFilter filter = new ItemFilter();
 			filter.setName(ItemFilterType.CONDITION);
-			filter.getValue().addAll(preference.getConditions().stream().map(UserPreference::mapMnemonicToCode)
+			filter.getValue().addAll(preference.getConditions().stream().filter(Objects::nonNull).map(UserPreference::mapMnemonicToCode)
 					.collect(Collectors.toList()));
 			fiAdvRequest.getItemFilter().add(filter);
 		}

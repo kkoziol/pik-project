@@ -27,7 +27,7 @@ public class FoundResultController {
 	@Autowired
 	private FoundResultRepository foundResultRepository;
 
-	@RequestMapping("/list/{username}")
+	@RequestMapping(value ="/list/{username}", method = RequestMethod.GET)
 	public ResponseEntity<List<FoundResult>> findByUser(@PathVariable String username) {
 		List<FoundResult> results = foundResultRepository.findByOrderUserLogin(username);
 
