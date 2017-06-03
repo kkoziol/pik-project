@@ -16,14 +16,14 @@
         <th>Keyword</th>
         <th>Action</th>
         </thead>
-        <tr *ngFor="let preference of userPreferences">
-          <td>{{preference.dateAndTime}}</td>
-          <td>{{preference.priceMin}}-{{preference.priceMax}}</td>
-          <td>{{matchCategory(preference.categoryId)}}</td>
-          <td *ngFor = "let condition of preference.conditions">{{condition}}</td>
-          <td>{{preference.deliveryOptions}}</td>
-          <td>{{preference.keyword}}</td>
-          <td><button class="btn btn-danger btn-general" on-click="deleteOrder()">Delete</button></td>
+        <tr *ngFor="let order of userOrders">
+          <td>{{order.userPreference.dateAndTime}}</td>
+          <td>{{order.userPreference.priceMin}}-{{order.userPreference.priceMax}}</td>
+          <td>{{matchCategory(order.userPreference.categoryId)}}</td>
+          <td *ngFor = "let condition of order.userPreference.conditions">{{condition}}</td>
+          <td>{{order.userPreference.deliveryOptions}}</td>
+          <td>{{order.userPreference.keyword}}</td>
+          <td><button class="btn btn-danger btn-general" on-click="deleteOrder(order.orderId)">Delete</button></td>
         </tr>
       </table>
       <br>

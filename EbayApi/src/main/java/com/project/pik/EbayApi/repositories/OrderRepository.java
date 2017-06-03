@@ -15,5 +15,5 @@ public interface OrderRepository extends JpaRepository<Order, Long>{
 	List<Order> findByIsHistoryLog(boolean isHistoryLog);
 	
 	@Transactional
-    Long deleteByOrderId(Long firstName);
+    Integer deleteByOrderId(int orderId);
 }

@@ -1,6 +1,7 @@
 package com.project.pik.EbayApi.controller;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
@@ -38,19 +39,21 @@ public class OrderController {
 	
 	@ResponseBody 
 	@RequestMapping(value = "/list/{username}", method = RequestMethod.GET, produces = "application/json")
-	public ResponseEntity<Map<Integer,UserPreference>> getOrdersPerUser(@PathVariable String username){
+	public ResponseEntity<List<Map<String,Object>>> getOrdersPerUser(@PathVariable String username){
 		List<Order> orders = orderRepository.findByUserLogin(username);
 		
 		if (orders == null || orders.isEmpty()) {
 			logger.error("Cannot receive orders for user " + username);
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 		}
-		
-		Map<Integer,UserPreference> result = new HashMap<>();
+		List<Map<String,Object>> result = new ArrayList<>();
 		ObjectMapper jsonMapper = new ObjectMapper();
 		for(Order o : orders) {
 			try {
-				result.put(o.getOrderId(), jsonMapper.readValue(o.getPreferencesAsJson(), UserPreference.class));
+				Map<String,Object> map = new HashMap<>();
+				map.put("orderId",o.getOrderId());
+				map.put("userPreference", jsonMapper.readValue(o.getPreferencesAsJson(), UserPreference.class));
+				result.add(map);
 			} catch (IOException e) {
 				logger.error(e.getMessage());
 			}
@@ -85,9 +88,9 @@ public class OrderController {
 		return new ResponseEntity<>(order, HttpStatus.OK);
 	}
 	
-	@RequestMapping("/delete/{orderId}")
-	public ResponseEntity<Long> findByUser(@PathVariable Long orderId) {
-		Long deletedId = orderRepository.deleteByOrderId(orderId);
-		return new ResponseEntity<>(deletedId, HttpStatus.OK);
+	@RequestMapping(value="/delete/{orderId}",method = RequestMethod.GET,produces = "application/json")
+	public ResponseEntity<String> findByUser(@PathVariable int orderId) {
+		Integer deletedId = orderRepository.deleteByOrderId(orderId);
+		return new ResponseEntity<>("{\"deletedOrderId\":"+deletedId+"}", HttpStatus.OK);
 	}
 }

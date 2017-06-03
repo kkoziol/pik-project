@@ -11,19 +11,15 @@ export class UserPreference {
   dateAndTime: Date;
 }
 
+export class Order {
+   orderId: number;
+   userPreference: UserPreference; 
+}
+
 
 export class FoundResult {
   url: string;
 }
 
-export class Orders {
-  date: Date;
-  minPrice: number;
-  maxPrice: number;
-  condition: string;
-  deliveryOptions: string;
-  properties: {};
-  keyword: string;
 
-}
 
