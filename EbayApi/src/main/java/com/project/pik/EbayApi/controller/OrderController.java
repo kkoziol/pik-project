@@ -2,8 +2,9 @@ package com.project.pik.EbayApi.controller;
 
 import java.io.IOException;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.Map;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,7 +38,7 @@ public class OrderController {
 	
 	@ResponseBody 
 	@RequestMapping(value = "/list/{username}", method = RequestMethod.GET, produces = "application/json")
-	public ResponseEntity<List<UserPreference>> getOrdersPerUser(@PathVariable String username){
+	public ResponseEntity<Map<Integer,UserPreference>> getOrdersPerUser(@PathVariable String username){
 		List<Order> orders = orderRepository.findByUserLogin(username);
 		
 		if (orders == null || orders.isEmpty()) {
@@ -45,16 +46,17 @@ public class OrderController {
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 		}
 		
+		Map<Integer,UserPreference> result = new HashMap<>();
 		ObjectMapper jsonMapper = new ObjectMapper();
-		List<UserPreference> prefs = orders.stream().map(o -> {
+		for(Order o : orders) {
 			try {
-				return jsonMapper.readValue(o.getPreferencesAsJson(), UserPreference.class);
+				result.put(o.getOrderId(), jsonMapper.readValue(o.getPreferencesAsJson(), UserPreference.class));
 			} catch (IOException e) {
 				logger.error(e.getMessage());
 			}
-			return new UserPreference();
-		}).collect(Collectors.toList());
-		return new ResponseEntity<>(prefs, HttpStatus.OK);
+		}
+		
+		return new ResponseEntity<>(result, HttpStatus.OK);
 	}
 	
 	@RequestMapping(value = "/add/{username}", method = RequestMethod.POST)
