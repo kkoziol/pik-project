@@ -58,7 +58,7 @@ export class EBayService {
      return this.authorizationHttp.get("/orders/list/" + username);
   }
 
-  deleteUserOrder(){
-  
+  deleteUserOrder(orderId: number){
+    return this.authorizationHttp.get("/orders/delete/" + orderId);
   }
 }
