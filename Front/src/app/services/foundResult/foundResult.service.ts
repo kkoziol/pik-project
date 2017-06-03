@@ -30,7 +30,7 @@ export class FoundResultService {
   liste() {
     if(this.listening)
     this.authorizationHttp.get("/foundresults/async/" + this.authotrizationService.username).map(res => res.json()).subscribe(data => {
-      this.notifyMe(); this.liste();},error2 => {if(error2 === 504)this.liste()})
+      this.notifyMe(); console.log(data);this.liste();},error2 => {if(error2 === 504)this.liste()})
   }
 
 
