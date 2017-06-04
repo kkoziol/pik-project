@@ -14,13 +14,13 @@ export interface Listening {
 @Injectable()
 export class FoundResultService {
 
-  //foundOrders: Order[];
   listening: Listening;
   constructor(private authorizationHttp: AuthorizationHttp, private authotrizationService: AuthorizationService) {
-    this.startListening();
     this.listening =  {active: false};
     if(authotrizationService.authorize.active)
       this.listening.active = true;
+
+    this.startListening();
   }
 
   startListening() {
