@@ -1,138 +1,18 @@
 @import "../../app.component";
 
-.ebayContainer {
+.resultContainer {
   padding: 1rem;
   text-align: center;
   height: 100%;
-  margin-top: 5rem;
+  left: 0;
+  right: 0;
+  margin-top: 8rem;
+  display: table;
+  margin-left: auto;
+  margin-right: auto;
 
-  .orderTitle {
-    font-size: 1.5rem;
-    color: $main_text_color;
-    margin: 1rem;
-  }
-
-  .bigLabel {
-    font-size: 2.5rem;
-    margin-bottom: 2rem;
-  }
-
-  .confirmButton {
-    position: fixed;
-    bottom: 2rem;
-    right: 5rem;
-    border-radius: 5rem;
-    width: 8rem;
-    height: 8rem;
-    border: 4px dashed red;
-    background: inherit;
-    color: red;
-  }
-
-  .left {
-    float: left;
-    width: calc(100% - 35rem);
-
-    .searchComponent {
-      margin: 0 auto;
-      margin-top: 1rem;
-    }
-
-    th {
-      padding: 1rem;
-      background-color: #CFD8DC;
-      border: 1px solid black;
-    }
-
-    td {
-      padding: 0.5rem;
-      border: 1px solid black;
-    }
-  }
-
-  .themeProperties {
-    margin-top: 1rem;
-    margin-bottom: 1rem;
-  }
-
-  .right {
-
-    position: absolute;
-    right: 0;
-    top: 5rem;
-    width: 40rem;
-    height: calc(100% - 5rem);
-    background-color: $main_background_color;
-    border-left: 1px solid $main_font_color;
-
-    .searchInput {
-      margin-top: 2rem;
-      width: 35rem;
-    }
-
-    .propertiesContainer {
-
-      display: table-row;
-
-      .labelProperties {
-        display: inline-block;
-        float: left;
-        width: 15rem;
-        text-overflow: ellipsis;
-        white-space: nowrap;
-        margin-right: 1rem;
-        overflow: hidden
-      }
-
-      .selectBlockProperties {
-        display: inline-block;
-        width: 20rem;
-        height: 2rem;
-        padding: 3px 6px;
-        font-size: 1rem;
-        line-height: 1.42857143;
-        color: #555;
-        background-color: #fff;
-        border: 1px solid #ccc;
-        border-radius: 4px;
-      }
-
-      .propertiesControlForm {
-        width: 20rem;
-        height: 2rem;
-        padding: 3px 6px;
-        font-size: 1rem;
-      }
-    }
-
-    .myListElem {
-      margin-top: 5rem;
-    }
-  }
-
-  .myInput {
-    display: block;
-    width: 25rem;
-    height: 1rem;
-    padding: 6px 12px;
-    font-size: 14px;
-    line-height: 1.42857143;
-    color: #555;
-    background-color: #fff;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-  }
-
-  .selectBlock {
-    display: block;
-    width: 25rem;
-    height: 34px;
-    padding: 6px 12px;
-    font-size: 14px;
-    line-height: 1.42857143;
-    color: #555;
-    background-color: #fff;
-    border: 1px solid #ccc;
-    border-radius: 4px;
+  .scrollResult {
+    width: 91rem;
   }
 }
+

@@ -3,13 +3,13 @@ import {AuthorizationService} from '../../services/authorization/authorization.s
 import {Router} from '@angular/router';
 import {EmailValidator} from "../../controlers/EmailValidator";
 
-
 @Component({
   selector: 'my-login',
   templateUrl: './login.component.html',
   styleUrls: [ './login.component.scss' ]
 })
 export class LoginComponent implements OnInit {
+
 
   password: string;
   username: string;

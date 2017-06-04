@@ -4,11 +4,21 @@
   padding: 1rem;
   text-align: center;
   height: 100%;
-  margin-top: 5rem;
+  left: 0;
+  right: 0;
+  position: absolute;
+  margin-left: auto;
+  margin-right: auto;
 
   .left {
     float: left;
+
+    margin-top: 5rem;
     width: calc(100% - 40rem);
+
+    tbody {
+      background-color: $main_background_color;
+    }
 
     th {
       padding: 1rem;

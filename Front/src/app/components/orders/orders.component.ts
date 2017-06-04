@@ -58,7 +58,7 @@ export class OrdersComponent implements OnInit {
 
   }
 
- 
+
 
   addProperties = (type,value) => {
     this.selectedProperties[type] = [value];
@@ -152,7 +152,7 @@ export class OrdersComponent implements OnInit {
 
   findOffers(){
       let preference: UserPreference;
-      preference = new UserPreference();
+      preference = new UserPreference(null,null,null,null,null,null,null,null);
       preference.categoryId = this.selectedCategories[this.selectedCategories.length - 1].categoryID;
       preference.priceMin = this.minCost;
       preference.priceMax = this.maxCost;
@@ -184,20 +184,22 @@ export class OrdersComponent implements OnInit {
                 this.someData = true;
                 this.userOrders = [];
                 this.userOrders = data;
+                console.log(this.userOrders)
               }
             },
             error2 => console.log('ERROR'));
   }
 
   matchCategory(categoryToMatch: string): string{
+    if(this.categoryList !== undefined)
       for(let category of this.categoryList){
           if(category.categoryID === categoryToMatch)
             return category.categoryName;
       }
       return 'Category not found';
   }
-   
-    deleteOrder(orderId){  
+
+    deleteOrder(orderId){
     console.log('Deleting order!' + orderId);
     this.ebayService.deleteUserOrder(orderId)
      .map(res => res.json())

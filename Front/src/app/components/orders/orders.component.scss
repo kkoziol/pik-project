@@ -4,7 +4,11 @@
   padding: 1rem;
   text-align: center;
   height: 100%;
-  margin-top: 5rem;
+  left: 0;
+  right: 0;
+  position: absolute;
+  margin-left: auto;
+  margin-right: auto;
 
   .orderTitle {
     font-size: 1.5rem;
@@ -38,6 +42,11 @@
       margin-top: 1rem;
     }
 
+    tbody {
+      background-color: $main_background_color;
+    }
+
+
     th {
       padding: 1rem;
       background-color: #CFD8DC;
@@ -57,7 +66,7 @@
 
   .right {
 
-    position: absolute;
+    position: fixed;
     right: 0;
     top: 5rem;
     width: 40rem;
