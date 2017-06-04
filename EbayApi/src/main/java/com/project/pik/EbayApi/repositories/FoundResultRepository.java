@@ -16,5 +16,5 @@ public interface FoundResultRepository extends JpaRepository<FoundResult,Long>{
 	public List<FoundResult> findByOrder(Order order);
 	
 	@Transactional
-    Long deleteByFoundResultId(Long firstName);
+    Long deleteByFoundResultId(Integer firstName);
 }
