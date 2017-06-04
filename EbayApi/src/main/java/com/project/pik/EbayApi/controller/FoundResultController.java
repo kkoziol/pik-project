@@ -27,7 +27,7 @@ public class FoundResultController {
 	@Autowired
 	private FoundResultRepository foundResultRepository;
 
-	@RequestMapping("/list/{username}")
+	@RequestMapping(value ="/list/{username}", method = RequestMethod.GET)
 	public ResponseEntity<List<FoundResult>> findByUser(@PathVariable String username) {
 		List<FoundResult> results = foundResultRepository.findByOrderUserLogin(username);
 
@@ -46,5 +46,11 @@ public class FoundResultController {
 		DeferredResult<List<FoundResult>> deferredResult = new DeferredResult<>(5000000L, new ArrayList<>());
 		SearchEbayOffersDaemon.getInstance().registerListener(username, deferredResult);
 		return deferredResult;
+	}
+	
+	@RequestMapping("/delete/{foundResultId}")
+	public ResponseEntity<Long> findByUser(@PathVariable Long foundResultId) {
+		Long deletedId = foundResultRepository.deleteByFoundResultId(foundResultId);
+		return new ResponseEntity<>(deletedId, HttpStatus.OK);
 	}
 }

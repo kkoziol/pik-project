@@ -3,6 +3,7 @@ package com.project.pik.EbayApi.model;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -36,7 +37,7 @@ public class Order {
 	private boolean isHistoryLog;
 	
 	@JsonBackReference
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "order")
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "order",cascade=CascadeType.REMOVE)
 	private Set<FoundResult> foundResults = new HashSet<>();
 	
 	@Column(name = "PREFERENCES",length=2000)
@@ -82,7 +83,4 @@ public class Order {
 	public void setPreferencesAsJson(String preferencesAsJson) {
 		this.preferencesAsJson = preferencesAsJson;
 	}
-	
-	
-	
 }

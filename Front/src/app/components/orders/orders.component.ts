@@ -3,7 +3,7 @@ import {EBayService} from '../../services/eBayApi/eBayApi.service';
 import {AuthorizationService} from "../../services/authorization/authorization.service";
 import {Observable} from 'rxjs/Observable';
 import {Subject} from 'rxjs/Subject';
-import {UserPreference} from './orders.model';
+import {UserPreference, Order} from './orders.model';
 
 import 'rxjs/add/operator/debounceTime';
 import 'rxjs/add/operator/distinctUntilChanged';
@@ -30,7 +30,7 @@ export class OrdersComponent implements OnInit {
   selectedProperties: {};
   conditions: string[];
   selectedCondition: string;
-  userPreferences: UserPreference[];
+  userOrders: Order[];
   //pageCounter: number;
   someData: boolean;
 
@@ -39,7 +39,7 @@ export class OrdersComponent implements OnInit {
     this.properties = [];
     this.selectedProperties = {};
     this.conditions = [];
-    this.userPreferences = [];
+    this.userOrders = [];
     this.someData = false;
   }
 
@@ -165,7 +165,7 @@ export class OrdersComponent implements OnInit {
        .map(res => res.json())
       .subscribe(response => {
           console.log(response.body);
-          this.getUserOrders()
+          this.getUserOrders();
         },
         error2 => {
           console.log("Wrong post order");
@@ -182,23 +182,30 @@ export class OrdersComponent implements OnInit {
                   console.log('nothing else');
               }else{
                 this.someData = true;
-                this.userPreferences = [];
-                this.userPreferences = data;
+                this.userOrders = [];
+                this.userOrders = data;
               }
             },
             error2 => console.log('ERROR'));
   }
 
-  matchCategory(categoryID: string): string{
-    if(this.categoryList !== undefined){
+  matchCategory(categoryToMatch: string): string{
       for(let category of this.categoryList){
-          console.log(category);
-          if(categoryID === category.categoryID)
+          if(category.categoryID === categoryToMatch)
             return category.categoryName;
-          else
-              return 'Category not found';
       }
+      return 'Category not found';
   }
-      }
+   
+    deleteOrder(orderId){  
+    console.log('Deleting order!' + orderId);
+    this.ebayService.deleteUserOrder(orderId)
+     .map(res => res.json())
+     .subscribe(data => {
+                console.log(data.deletedOrderId);
+                this.getUserOrders();
+            },
+            error2 => console.log('ERROR while deleting'));
+    }
 }
 

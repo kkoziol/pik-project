@@ -1,5 +1,11 @@
 package com.project.pik.EbayApi.controller;
 
+import static com.project.pik.EbayApi.consts.ApiConsts.CATEGORY_ID_NAME;
+import static com.project.pik.EbayApi.consts.ApiConsts.KEYWORD_NAME;
+import static com.project.pik.EbayApi.consts.ApiConsts.MAX_PRICE_NAME;
+import static com.project.pik.EbayApi.consts.ApiConsts.MIN_PRICE_NAME;
+import static com.project.pik.EbayApi.consts.ApiConsts.PAGE_NUMBER_NAME;
+
 import java.util.List;
 import java.util.Map;
 
@@ -78,10 +84,10 @@ public class EbayController {
 	public ResponseEntity<List<SearchItem>> searchItemsByKeywordCategoryAndPrice(
 			@PathVariable Map<String, String> pathVariables) {
 		List<SearchItem> items;
-		if (pathVariables.containsKey("minPrice") && pathVariables.containsKey("maxPrice")) {
-			items = ebayItemsService.getItemsByKeywordCategoryAndPrice(pathVariables.get("keyword"),
-					pathVariables.get("categoryId"), Integer.parseInt(pathVariables.get("minPrice")),
-					Integer.parseInt(pathVariables.get("maxPrice")), Integer.parseInt(pathVariables.get("pageNumber")));
+		if (pathVariables.containsKey(MIN_PRICE_NAME) && pathVariables.containsKey(MAX_PRICE_NAME)) {
+			items = ebayItemsService.getItemsByKeywordCategoryAndPrice(pathVariables.get(KEYWORD_NAME),
+					pathVariables.get(CATEGORY_ID_NAME), Integer.parseInt(pathVariables.get(MIN_PRICE_NAME)),
+					Integer.parseInt(pathVariables.get(MAX_PRICE_NAME)), Integer.parseInt(pathVariables.get(PAGE_NUMBER_NAME)));
 		} else if (pathVariables.containsKey("categoryId")) {
 			items = ebayItemsService.getItemsByKeywordCategory(pathVariables.get("keyword"),
 					pathVariables.get("categoryId"), Integer.parseInt(pathVariables.get("pageNumber")));
@@ -91,11 +97,13 @@ public class EbayController {
 		}
 		if (items == null || items.isEmpty()) {
 			StringBuilder msg = new StringBuilder("Cannot receive search result of ");
-			msg.append("/" + pathVariables.get("keyword"));
-			if (pathVariables.containsKey("categoryId"))
-				msg.append("/" + pathVariables.get("categoryId"));
-			if (pathVariables.containsKey("minPrice") && pathVariables.containsKey("maxPrice"))
-				msg.append("/" + pathVariables.get("minPrice") + "/" + pathVariables.get("maxPrice"));
+			msg.append("/" + pathVariables.get(KEYWORD_NAME));
+			if (pathVariables.containsKey(CATEGORY_ID_NAME))
+				msg.append("/" + pathVariables.get(CATEGORY_ID_NAME));
+			if (pathVariables.containsKey(MIN_PRICE_NAME) && pathVariables.containsKey(MAX_PRICE_NAME))
+				msg.append("/" + pathVariables.get(MIN_PRICE_NAME) + "/" + pathVariables.get(MAX_PRICE_NAME));
+			if (pathVariables.containsKey(PAGE_NUMBER_NAME))
+				msg.append("/" + pathVariables.get(PAGE_NUMBER_NAME));
 			logger.error(msg.toString());
 
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
