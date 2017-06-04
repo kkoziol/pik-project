@@ -88,12 +88,12 @@ public class EbayController {
 			items = ebayItemsService.getItemsByKeywordCategoryAndPrice(pathVariables.get(KEYWORD_NAME),
 					pathVariables.get(CATEGORY_ID_NAME), Integer.parseInt(pathVariables.get(MIN_PRICE_NAME)),
 					Integer.parseInt(pathVariables.get(MAX_PRICE_NAME)), Integer.parseInt(pathVariables.get(PAGE_NUMBER_NAME)));
-		} else if (pathVariables.containsKey("categoryId")) {
-			items = ebayItemsService.getItemsByKeywordCategory(pathVariables.get("keyword"),
-					pathVariables.get("categoryId"), Integer.parseInt(pathVariables.get("pageNumber")));
+		} else if (pathVariables.containsKey(CATEGORY_ID_NAME)) {
+			items = ebayItemsService.getItemsByKeywordCategory(pathVariables.get(KEYWORD_NAME),
+					pathVariables.get(CATEGORY_ID_NAME), Integer.parseInt(pathVariables.get(PAGE_NUMBER_NAME)));
 		} else {
-			items = ebayItemsService.getItemsByKeyword(pathVariables.get("keyword"),
-					Integer.parseInt(pathVariables.get("pageNumber")));
+			items = ebayItemsService.getItemsByKeyword(pathVariables.get(KEYWORD_NAME),
+					Integer.parseInt(pathVariables.get(PAGE_NUMBER_NAME)));
 		}
 		if (items == null || items.isEmpty()) {
 			StringBuilder msg = new StringBuilder("Cannot receive search result of ");

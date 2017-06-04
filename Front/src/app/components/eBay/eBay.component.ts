@@ -71,9 +71,15 @@ export class EBayComponent implements OnInit {
         this.ebayService.getItemsByKeyWordAndCategory(this.query, this.selectedCategories[this.selectedCategories.length - 1].categoryID, this.pageCounter)
           .subscribe(data => {
               if(!data){
+                  if(this.pageCounter === 1){
+                       this.someData = false;
+                       this.itemList = [];
+                       this.query = "";
+                  }else{
                   console.log('nothing else');
                   this.pageCounter = this.pageCounter - 1;
                   this.nothingElse = true;
+                      }
               }else{
                 this.someData = true;
                 this.itemList = [];
@@ -91,10 +97,16 @@ export class EBayComponent implements OnInit {
         this.ebayService.getItemsByKeyWord(this.query,this.pageCounter)
           .subscribe(data => {
            if(!data){
+                  if(this.pageCounter === 1){
+                       this.someData = false;
+                       this.itemList = [];
+                       this.query = "";
+                  }else{
                   console.log('nothing else');
                   this.pageCounter = this.pageCounter - 1;
                   this.nothingElse = true;
-              }else{
+                      }
+               }else{
                this.someData = true;
                this.itemList = [];
                this.itemList = data
