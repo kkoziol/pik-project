@@ -9,8 +9,6 @@ import java.util.Properties;
 import org.apache.log4j.Logger;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.task.SimpleAsyncTaskExecutor;
-import org.springframework.core.task.TaskExecutor;
 
 import com.ebay.sdk.ApiContext;
 import com.ebay.sdk.ApiCredential;
@@ -27,11 +25,6 @@ public class ApplicationConfig {
 
 	private static final Logger logger = Logger.getLogger(ApplicationConfig.class);
 
-	@Bean
-	public TaskExecutor taskExecutor() {
-		return new SimpleAsyncTaskExecutor(); // Or use another one of your
-												// liking
-	}
 
 	@Bean
 	public ApiContext eBaySoapApi() throws IOException {
@@ -80,7 +73,8 @@ public class ApplicationConfig {
 		return config;
 	}
 
-	@Bean(initMethod = "start")
+	
+	@Bean
 	public SearchEbayOffersDaemon searchEbayOffersDaemon() {
 		return SearchEbayOffersDaemon.getInstance();
 	}

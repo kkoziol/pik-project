@@ -26,8 +26,6 @@ import org.springframework.boot.context.embedded.EmbeddedServletContainerFactory
 import org.springframework.boot.context.embedded.tomcat.TomcatEmbeddedServletContainerFactory;
 import org.springframework.context.annotation.Bean;
 
-import com.project.pik.EbayApi.daemon.SearchEbayOffersDaemon;
-
 @SpringBootApplication
 public class EbayDataRestApplication {
 
