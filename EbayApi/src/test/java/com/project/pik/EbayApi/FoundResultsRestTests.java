@@ -39,6 +39,11 @@ public class FoundResultsRestTests {
 
 	@Before
 	public void setup() {
+		entityManager
+		.createNativeQuery(
+				"DELETE FROM found_results where order_id in (select order_id from orders "
+				+ "where user_id in (select user_id from users where login='test'))")
+		.executeUpdate();
 		this.mvc = MockMvcBuilders.webAppContextSetup(this.context).build();
 	}
 

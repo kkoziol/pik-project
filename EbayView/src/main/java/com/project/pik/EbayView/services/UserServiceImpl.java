@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.project.pik.EbayView.models.UserRepository;
+import com.project.pik.EbayView.models.entities.Email;
 import com.project.pik.EbayView.models.entities.User;
 
 @Service
@@ -29,6 +30,10 @@ public class UserServiceImpl implements UserService {
 			userToAdd.setPassword(user.getPassword());
 			userToAdd.setSex(user.getGender());
 			userToAdd.setSurname(user.getLastName());
+			Email mail = new Email();
+			mail.setAuthorized(true);
+			mail.setUser(userToAdd);
+			mail.setValue(user.geteMail());
 			// userToAdd.setUserId(3);
 			userRepo.save(userToAdd);
 			System.out.println("USER ADDED");
