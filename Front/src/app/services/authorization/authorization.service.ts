@@ -23,7 +23,7 @@ export class AuthorizationService {
     }
   }
 
-  login(username: string, password: string) {
+  login(username: string, password: string) : boolean {
     const url = AppConfigConsts.serwerUrl + '/oauth/token';
 
     const paramsT: URLSearchParams = new URLSearchParams('grant_type=password&username=' + username + '&password=' + password);
@@ -47,8 +47,10 @@ export class AuthorizationService {
           localStorage.setItem('currentUser', JSON.stringify({token: this.token}));
           localStorage.setItem('currentUserName', JSON.stringify({username: username}));
         },
-        error2 => console.log("Zle haslo"));
-
+        error2 => {
+        console.log("Wrong credentials");
+        });
+      return false; 
   }
 
   register(username: string,password: string,firstName: string, lastName: string,eMail: string,gender: string,birthDate: string,confirmPassword: string) : boolean {

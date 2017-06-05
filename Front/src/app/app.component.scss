@@ -34,6 +34,22 @@ nav a.active {
   color: $main_active_color;
 }
 
+tbody {
+  background-color: $main_background_color;
+}
+
+
+th {
+  padding: 1rem;
+  background-color: #CFD8DC;
+  border: 1px solid black;
+}
+
+td {
+  padding: 0.5rem;
+  border: 1px solid black;
+}
+
 .btn-general {
   background-color: #CFD8DC;
   border-color: #607D8B;
@@ -66,10 +82,13 @@ nav a.active {
   background-color: $main_background_color;
   position: fixed;
   top: 0;
+  z-index: 100;
 }
 
 .mainContainer {
-  margin-top: 3rem;
+  background-color: $main_text_color;
+  height: 100%;
+  z-index: 10;
 }
 
 

@@ -1,12 +1,28 @@
-<div class="form-inline ebayContainer">
-  <div class="left">
-    <div class="orderTitle bigLabel">Founded Orders</div>
-    <table class="gh-tbl">
+<div class="form-inline resultContainer">
+  <div class="scrollResult">
+    <table class="resultTable" *ngFor="let list of itemListByCategory">
       <thead>
+      <th>Date and time</th>
+      <th>Price range</th>
+      <th>Condition</th>
+      <th>Delivery type</th>
+      <th>Keyword</th>
       </thead>
-      <tr *ngFor="let item of itemList">
-        <td><a href="{{item.url}}">{{item.url}}</a></td>
+      <tr>
+        <td>{{list.value[0].order.userPreference.dateAndTime}}</td>
+        <td>{{list.value[0].order.userPreference.priceMin}}-{{list.value[0].order.userPreference.priceMax}}</td>
+        <!--<td>{{matchCategory(item.order.userPreference.categoryId)}}</td>-->
+        <td *ngFor="let condition of list.value[0].order.userPreference.conditions">{{condition}}</td>
+        <td>{{list.value[0].order.userPreference.deliveryOptions}}</td>
+        <td>{{list.value[0].order.userPreference.keyword}}</td>
       </tr>
+      <tr *ngFor="let item of list.value">
+        <td colspan="4"><a href="{{item.url}}">{{item.url}}</a></td>
+        <td>
+          <button class="btn btn-danger btn-general" (click)="deleteResult(item.foundResultId)">Delete</button>
+        </td>
+      </tr>
+
     </table>
   </div>
 </div>

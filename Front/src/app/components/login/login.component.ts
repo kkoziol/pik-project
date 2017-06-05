@@ -3,7 +3,6 @@ import {AuthorizationService} from '../../services/authorization/authorization.s
 import {Router} from '@angular/router';
 import {EmailValidator} from "../../controlers/EmailValidator";
 
-
 @Component({
   selector: 'my-login',
   templateUrl: './login.component.html',
@@ -11,13 +10,15 @@ import {EmailValidator} from "../../controlers/EmailValidator";
 })
 export class LoginComponent implements OnInit {
 
+
   password: string;
   username: string;
   register: boolean;
   success: boolean;
   error: boolean;
   error2: boolean;
-
+  error3: boolean;
+  error4: boolean;
   firstName: string;
   lastName: string;
   eMail: string;
@@ -35,6 +36,8 @@ export class LoginComponent implements OnInit {
     this.success = false;
     this.error = false;
     this.error2 = false;
+    this.error3 = false;
+    this.error4 = false;
     this.firstName = '';
     this.lastName = '';
     this.eMail = '';
@@ -50,7 +53,18 @@ export class LoginComponent implements OnInit {
   }
 
   loginUser() {
-    this.authorizationService.login(this.username, this.password);
+    if(this.username === "" || this.password === ""){
+        this.error4 = true;
+    }else{   
+    this.error4 = false; 
+    if(this.authorizationService.login(this.username, this.password)){
+       this.error3 = false;
+     }else{
+       this.error3 = true;
+       this.username = "";
+       this.password = ""; 
+    }
+        }
   }
 
   registerUser() {

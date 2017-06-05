@@ -5,7 +5,7 @@ import {Subject} from 'rxjs/Subject';
 import 'rxjs/add/operator/debounceTime';
 import 'rxjs/add/operator/distinctUntilChanged';
 import 'rxjs/add/operator/switchMap';
-import {CategoryType, Item, Properties} from './eBay.model';
+import {CategoryType, ItemByCategory} from './result.model';
 import {until} from 'selenium-webdriver';
 import elementIsNotSelected = until.elementIsNotSelected;
 import {FoundResultService} from "../../services/foundResult/foundResult.service";
@@ -25,19 +25,17 @@ export class ResultComponent implements OnInit {
   categoryList: CategoryType[];
   selectedCategories: CategoryType[];
   itemList: FoundResult[];
-  properties: Properties[];
-  selectedProperties: {};
+  itemListByCategory: ItemByCategory[];
   pageCounter: number;
   someData: boolean;
   nothingElse: boolean;
 
-  constructor(private foundResult: FoundResultService,private authorcationHttp:  AuthorizationHttp,private authotrizationService: AuthorizationService) {
+  constructor(private foundResult: FoundResultService, private authorcationHttp: AuthorizationHttp, private authotrizationService: AuthorizationService) {
     this.selectedCategories = [];
-    this.properties = [];
-    this.selectedProperties = {};
     this.pageCounter = 1;
     this.someData = false;
     this.nothingElse = false;
+    this.itemListByCategory = [];
   }
 
   private searchTermStream = new Subject<string>();
@@ -48,7 +46,27 @@ export class ResultComponent implements OnInit {
 
   ngOnInit() {
     this.authorcationHttp.get("/foundresults/list/" + this.authotrizationService.username).map(res => res.json()).subscribe(data => {
-      this.itemList = data;console.log(data)},error2 => {})
+      console.log(data);
+      this.itemList = data.map(one => FoundResult.copy(one));
+      this.itemList.forEach(item => {
+        if (this.itemListByCategory.find(elem => elem.name === item.order.userPreference.categoryId)) {
+          this.itemListByCategory.find(elem => elem.name === item.order.userPreference.categoryId).value.push(item);
+        } else {
+          this.itemListByCategory.push(new ItemByCategory(item.order.userPreference.categoryId, [item]));
+        }
+      });
+    }, error2 => {
+    })
+  }
+
+  deleteResult(id) {
+    this.authorcationHttp.get("/foundresults/delete/" + id).map(res => res.json()).subscribe(data => {
+      this.itemList = this.itemList.filter(item => item.foundResultId = id);
+      this.itemListByCategory.forEach(item => {
+        item.value = item.value.filter(item => item.foundResultId = id);
+      });
+    }, error2 => {
+    })
   }
 
 }

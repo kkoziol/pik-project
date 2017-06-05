@@ -72,6 +72,9 @@ public class EbayItemsServiceImpl implements EbayItemsService {
 		
 		
 		FindItemsAdvancedResponse fiAdvResponse = serviceClient.findItemsAdvanced(fiAdvRequest);
+		int totalPages = fiAdvResponse.getPaginationOutput().getTotalPages();
+		if(pageNumber > totalPages)
+			return new ArrayList<>();
 		PaginationOutput pages = new PaginationOutput();
 		pages.setPageNumber(pageNumber);
 		fiAdvResponse.setPaginationOutput(pages);

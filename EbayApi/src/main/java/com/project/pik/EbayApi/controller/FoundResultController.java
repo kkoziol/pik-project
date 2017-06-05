@@ -49,7 +49,7 @@ public class FoundResultController {
 	}
 	
 	@RequestMapping("/delete/{foundResultId}")
-	public ResponseEntity<Long> findByUser(@PathVariable Long foundResultId) {
+	public ResponseEntity<Long> findByUser(@PathVariable Integer foundResultId) {
 		Long deletedId = foundResultRepository.deleteByFoundResultId(foundResultId);
 		return new ResponseEntity<>(deletedId, HttpStatus.OK);
 	}

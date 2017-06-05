@@ -1,8 +1,10 @@
 <div class="loginContainer" *ngIf="!register">
-  <div class="alert alert-danger" *ngIf="error">
-    Problem logging in
+  <div class="alert alert-danger" *ngIf="error3">
+    Problem logging in. Please try again.
   </div>
-
+<div class="alert alert-danger" *ngIf="error4">
+    <p>Please fill all the fields.</p>
+</div>
   <form role="form" (submit)="loginUser()">
     <div class="form-group">
       <label class="inputLabel">Username:</label>
