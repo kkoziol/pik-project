@@ -21,7 +21,6 @@ import javax.mail.internet.MimeMultipart;
 
 import org.apache.log4j.Logger;
 
-import com.project.pik.EbayApi.model.Email;
 import com.project.pik.EbayApi.model.Order;
 
 public class MailSender {
@@ -75,8 +74,12 @@ public class MailSender {
 		} 
 	}
 
-	public void sendFoundOffer(Email email, Order order, List<String> urls) {
-		sendSimpleMail(email.getValue(), "Ebay Search Engine - We found something interesting", 
+	public void sendFoundOffer(String email, Order order, List<String> urls) {
+		if(email == null) {
+			logger.error("EMAIL EMPTY!");
+			return;
+		}
+		sendSimpleMail(email, "Ebay Search Engine - We found something interesting", 
 		          String.format("<html><h1>Hello %s</h1><p>Look at this:<br></br>%s</p></html>", 
 		              order.getUser().getName(), urls.stream().collect(Collectors.joining("<br></br>")))); 
 	}

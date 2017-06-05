@@ -58,7 +58,6 @@ public class FoundResult {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((foundResultId == null) ? 0 : foundResultId.hashCode());
-		result = prime * result + ((order == null) ? 0 : order.hashCode());
 		result = prime * result + ((url == null) ? 0 : url.hashCode());
 		return result;
 	}
@@ -76,11 +75,6 @@ public class FoundResult {
 			if (other.foundResultId != null)
 				return false;
 		} else if (!foundResultId.equals(other.foundResultId))
-			return false;
-		if (order == null) {
-			if (other.order != null)
-				return false;
-		} else if (!order.equals(other.order))
 			return false;
 		if (url == null) {
 			if (other.url != null)

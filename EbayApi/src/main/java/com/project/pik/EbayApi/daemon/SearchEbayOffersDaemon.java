@@ -31,7 +31,6 @@ import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.project.pik.EbayApi.mail.MailSender;
-import com.project.pik.EbayApi.model.Email;
 import com.project.pik.EbayApi.model.FoundResult;
 import com.project.pik.EbayApi.model.Order;
 import com.project.pik.EbayApi.model.User;
@@ -119,9 +118,7 @@ public class SearchEbayOffersDaemon extends Thread {
 		String login = user.getLogin();
 		asyncCallbackToUser(login, foundResultRepository.findByOrderUserLogin(login));
 		MailSender sender = new MailSender();
-		for (Email email : order.getUser().getEmails()) {
-			sender.sendFoundOffer(email, order, urls);
-		}
+		sender.sendFoundOffer(user.getEmail(), order, urls);
 		urls.stream().forEach(u -> {
 			FoundResult result = new FoundResult();
 			result.setOrder(order);

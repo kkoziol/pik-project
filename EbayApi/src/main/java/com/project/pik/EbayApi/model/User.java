@@ -42,20 +42,18 @@ public class User {
 	private String sex;
 	@Column(name = "AUTHORITIES", nullable = true, length = 20)
 	private String authorities = "ROLE_USER";
-	@JsonBackReference
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
-	private Set<Email> emails = new HashSet<>();
+	@Column(name = "EMAIL", nullable = true, length = 40)
+	private String email;
 	@JsonBackReference
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
 	private Set<Order> orders = new HashSet<>();
-	
-	
-	public Set<Email> getEmails() {
-		return emails;
+
+	public String getEmail() {
+		return email;
 	}
 
-	public void setEmails(Set<Email> emails) {
-		this.emails = emails;
+	public void setEmail(String email) {
+		this.email = email;
 	}
 
 	public Set<Order> getOrders() {
@@ -141,8 +139,8 @@ public class User {
 
 	@Override
 	public String toString() {
-		return "User [user_id=" + userId + ", name=" + name + ", surname=" + surname + ", login="
-				+ login + ", password=" + password + ", dateOfBirth=" + dateOfBirth + ", dateOfRegistration="
+		return "User [user_id=" + userId + ", name=" + name + ", surname=" + surname + ", login=" + login
+				+ ", password=" + password + ", dateOfBirth=" + dateOfBirth + ", dateOfRegistration="
 				+ dateOfRegistration + ", sex=" + sex + ", authorities=" + authorities + "]";
 	}
 
@@ -153,7 +151,7 @@ public class User {
 		result = prime * result + ((authorities == null) ? 0 : authorities.hashCode());
 		result = prime * result + ((dateOfBirth == null) ? 0 : dateOfBirth.hashCode());
 		result = prime * result + ((dateOfRegistration == null) ? 0 : dateOfRegistration.hashCode());
-		result = prime * result + ((emails == null) ? 0 : emails.hashCode());
+		result = prime * result + ((email == null) ? 0 : email.hashCode());
 		result = prime * result + ((login == null) ? 0 : login.hashCode());
 		result = prime * result + ((name == null) ? 0 : name.hashCode());
 		result = prime * result + ((orders == null) ? 0 : orders.hashCode());
@@ -188,10 +186,10 @@ public class User {
 				return false;
 		} else if (!dateOfRegistration.equals(other.dateOfRegistration))
 			return false;
-		if (emails == null) {
-			if (other.emails != null)
+		if (email == null) {
+			if (other.email != null)
 				return false;
-		} else if (!emails.equals(other.emails))
+		} else if (!email.equals(other.email))
 			return false;
 		if (login == null) {
 			if (other.login != null)
@@ -230,6 +228,5 @@ public class User {
 			return false;
 		return true;
 	}
-	
-	
+
 }

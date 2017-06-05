@@ -80,9 +80,7 @@ public class ApplicationConfig {
 		return config;
 	}
 
-
-
-	@Bean(initMethod="start")
+	@Bean(initMethod = "start")
 	public SearchEbayOffersDaemon searchEbayOffersDaemon() {
 		return SearchEbayOffersDaemon.getInstance();
 	}
@@ -91,7 +89,7 @@ public class ApplicationConfig {
 	public EbayCategoriesService getEbayCategoriesService() {
 		return new EbayCategoriesServiceImpl();
 	}
-	
+
 	@Bean
 	public EbayItemsService getEbayItemsService() {
 		return new EbayItemsServiceImpl();
