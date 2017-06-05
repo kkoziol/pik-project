@@ -74,8 +74,8 @@ public class OAuth2ServerConfiguration {
 					.withClient("pik-webapp-client")
 					.authorizedGrantTypes("password", "authorization_code", "refresh_token", "implicit")
 					.authorities("ROLE_CLIENT", "ROLE_TRUSTED_CLIENT").scopes("read", "write", "trust")
-					.resourceIds(RESOURCE_ID).secret("secret").accessTokenValiditySeconds(60 * 60) // 1h
-					.refreshTokenValiditySeconds(60 * 90); // 1.5h
+					.resourceIds(RESOURCE_ID).secret("secret").accessTokenValiditySeconds(60 * 60 * 6) // 6h
+					.refreshTokenValiditySeconds(60 * 90 * 6); // 9h
 		}
 
 		@Override
