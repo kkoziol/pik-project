@@ -16,104 +16,14 @@
     margin-top: 5rem;
     width: calc(100% - 40rem);
 
-    tbody {
-      background-color: $main_background_color;
-    }
-
-    th {
-      padding: 1rem;
-      background-color: #CFD8DC;
-      border: 1px solid black;
-    }
-
-    td {
-      padding: 0.5rem;
-      border: 1px solid black;
-    }
-
     .searchComponent {
       margin: 1rem auto;
     }
   }
 
-  .themeProperties{
-    margin-top: 1rem;
-    margin-bottom: 1rem;
-  }
-
-  .right {
-
-    position: fixed;
-    right: 0;
-    top: 5rem;
-    width: 40rem;
-    height: calc(100% - 5rem);
-    background-color: $main_background_color;
-    border-left: 1px solid $main_font_color;
-
-    .propertiesContainer {
-
-      display: table-row;
-
-      .labelProperties {
-        display: inline-block;
-        float: left;
-        width: 15rem;
-        text-overflow: ellipsis;
-        white-space: nowrap;
-        margin-right: 1rem;
-        overflow: hidden
-      }
-
-      .selectBlockProperties {
-        display: inline-block;
-        width: 20rem;
-        height: 2rem;
-        padding: 3px 6px;
-        font-size: 1rem;
-        line-height: 1.42857143;
-        color: #555;
-        background-color: #fff;
-        border: 1px solid #ccc;
-        border-radius: 4px;
-      }
-
-      .propertiesControlForm {
-        width: 20rem;
-        height: 2rem;
-        padding: 3px 6px;
-        font-size: 1rem;
-      }
+  .right{
+    .selectBlock {
+      margin-top: 8rem;
     }
-
-    .myListElem {
-      margin-top: 5rem;
-    }
-  }
-
-  .myInput {
-    display: block;
-    width: 25rem;
-    height: 1rem;
-    padding: 6px 12px;
-    font-size: 14px;
-    line-height: 1.42857143;
-    color: #555;
-    background-color: #fff;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-  }
-
-  .selectBlock{
-    display: block;
-    width: 25rem;
-    height: 34px;
-    padding: 6px 12px;
-    font-size: 14px;
-    line-height: 1.42857143;
-    color: #555;
-    background-color: #fff;
-    border: 1px solid #ccc;
-    border-radius: 4px;
   }
 }

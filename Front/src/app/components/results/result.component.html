@@ -1,4 +1,4 @@
-<div class="form-inline resultContainer">
+<div class="form-inline resultContainer" #resultContainer>
   <div class="scrollResult">
     <table class="resultTable" *ngFor="let list of itemListByCategory">
       <thead>
@@ -17,10 +17,7 @@
         <td>{{list.value[0].order.userPreference.keyword}}</td>
       </tr>
       <tr *ngFor="let item of list.value">
-        <td colspan="4"><a href="{{item.url}}">{{item.url}}</a></td>
-        <td>
-          <button class="btn btn-danger btn-general" (click)="deleteResult(item.foundResultId)">Delete</button>
-        </td>
+        <td colspan="5"><a href="{{item.url}}">{{item.url}}</a></td>
       </tr>
 
     </table>

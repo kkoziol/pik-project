@@ -1,4 +1,3 @@
-import {Properties} from '../eBay/eBay.model';
 
 export class UserPreference {
   categoryId: string;
@@ -40,7 +39,6 @@ export class FoundResult {
   url: string;
   foundResultId: number;
   order:Order;
-
 
   constructor(url: string, foundResultId: number, order: Order) {
     this.url = url;

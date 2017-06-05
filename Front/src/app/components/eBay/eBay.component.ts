@@ -38,10 +38,6 @@ export class EBayComponent implements OnInit {
 
   private searchTermStream = new Subject<string>();
 
-  search(term: string) {
-    this.searchTermStream.next(term);
-  }
-
   ngOnInit() {
     this.ebayService.getMainCategories()
       .subscribe(data => this.categoryList = data.map(elem => CategoryType.copy(elem)),
@@ -55,32 +51,32 @@ export class EBayComponent implements OnInit {
 
   }
 
-  nextPage(){
-      this.pageCounter = this.pageCounter + 1;
-      this.getData();
+  nextPage() {
+    this.pageCounter = this.pageCounter + 1;
+    this.getData();
   }
 
-  previousPage(){
-      this.pageCounter = this.pageCounter - 1;
-      this.getData();
+  previousPage() {
+    this.pageCounter = this.pageCounter - 1;
+    this.getData();
   }
 
-  getData(){
-     if (this.selectedCategories.length !== 0) {
+  getData() {
+    if (this.selectedCategories.length !== 0) {
       if (this.query !== '') {
         this.ebayService.getItemsByKeyWordAndCategory(this.query, this.selectedCategories[this.selectedCategories.length - 1].categoryID, this.pageCounter)
           .subscribe(data => {
-              if(!data){
-                  if(this.pageCounter === 1){
-                       this.someData = false;
-                       this.itemList = [];
-                       this.query = "";
-                  }else{
+              if (!data) {
+                if (this.pageCounter === 1) {
+                  this.someData = false;
+                  this.itemList = [];
+                  this.query = "";
+                } else {
                   console.log('nothing else');
                   this.pageCounter = this.pageCounter - 1;
                   this.nothingElse = true;
-                      }
-              }else{
+                }
+              } else {
                 this.someData = true;
                 this.itemList = [];
                 this.itemList = data
@@ -94,24 +90,23 @@ export class EBayComponent implements OnInit {
     }
     else {
       if (this.query !== '') {
-        this.ebayService.getItemsByKeyWord(this.query,this.pageCounter)
+        this.ebayService.getItemsByKeyWord(this.query, this.pageCounter)
           .subscribe(data => {
-           if(!data){
-                  if(this.pageCounter === 1){
-                       this.someData = false;
-                       this.itemList = [];
-                       this.query = "";
-                  }else{
-                  console.log('nothing else');
+              if (!data) {
+                if (this.pageCounter === 1) {
+                  this.someData = false;
+                  this.itemList = [];
+                  this.query = "";
+                } else {
                   this.pageCounter = this.pageCounter - 1;
                   this.nothingElse = true;
-                      }
-               }else{
-               this.someData = true;
-               this.itemList = [];
-               this.itemList = data
+                }
+              } else {
+                this.someData = true;
+                this.itemList = [];
+                this.itemList = data
               }
-          },
+            },
             error2 => console.log('ERROR'));
       }
       else {
@@ -120,9 +115,8 @@ export class EBayComponent implements OnInit {
     }
   }
 
-  addProperties = (type,value) => {
+  addProperties = (type, value) => {
     this.selectedProperties[type] = value;
-    console.log(this.selectedProperties);
   };
 
   chooseMainCategory = (categoryName: string) => {
@@ -136,25 +130,21 @@ export class EBayComponent implements OnInit {
       .subscribe(data => this.selectedCategories[this.selectedCategories.length - 1].childrenCategories = data.map(elem => CategoryType.copy(elem)),
         error2 => console.log("Zly request"),
         () => {
-          console.log(this.selectedCategories)
         });
 
     this.ebayService.getSpecificsCategoriesById(newSelected.categoryID)
       .subscribe(data => {
-        let item: Properties;
-        this.properties = [];
+          let item: Properties;
+          this.properties = [];
           for (let type in data) {
             item = new Properties();
             item.type = type;
             item.value = data[type];
-            console.log(item);
             this.properties.push(item);
           }
-          console.log(this.properties)
         },
         error2 => console.log("Zly request"),
         () => {
-          console.log(this.selectedCategories)
         });
   };
 

@@ -55,14 +55,14 @@ export class LoginComponent implements OnInit {
   loginUser() {
     if(this.username === "" || this.password === ""){
         this.error4 = true;
-    }else{   
-    this.error4 = false; 
+    }else{
+    this.error4 = false;
     if(this.authorizationService.login(this.username, this.password)){
        this.error3 = false;
      }else{
        this.error3 = true;
        this.username = "";
-       this.password = ""; 
+       this.password = "";
     }
         }
   }

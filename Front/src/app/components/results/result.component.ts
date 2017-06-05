@@ -21,8 +21,6 @@ import {AuthorizationService} from "../../services/authorization/authorization.s
 })
 
 export class ResultComponent implements OnInit {
-  query: string;
-  categoryList: CategoryType[];
   selectedCategories: CategoryType[];
   itemList: FoundResult[];
   itemListByCategory: ItemByCategory[];
@@ -30,7 +28,7 @@ export class ResultComponent implements OnInit {
   someData: boolean;
   nothingElse: boolean;
 
-  constructor(private foundResult: FoundResultService, private authorcationHttp: AuthorizationHttp, private authotrizationService: AuthorizationService) {
+  constructor(private authorcationHttp: AuthorizationHttp, private authotrizationService: AuthorizationService) {
     this.selectedCategories = [];
     this.pageCounter = 1;
     this.someData = false;
@@ -39,10 +37,6 @@ export class ResultComponent implements OnInit {
   }
 
   private searchTermStream = new Subject<string>();
-
-  search(term: string) {
-    this.searchTermStream.next(term);
-  }
 
   ngOnInit() {
     this.authorcationHttp.get("/foundresults/list/" + this.authotrizationService.username).map(res => res.json()).subscribe(data => {
@@ -54,16 +48,6 @@ export class ResultComponent implements OnInit {
         } else {
           this.itemListByCategory.push(new ItemByCategory(item.order.userPreference.categoryId, [item]));
         }
-      });
-    }, error2 => {
-    })
-  }
-
-  deleteResult(id) {
-    this.authorcationHttp.get("/foundresults/delete/" + id).map(res => res.json()).subscribe(data => {
-      this.itemList = this.itemList.filter(item => item.foundResultId = id);
-      this.itemListByCategory.forEach(item => {
-        item.value = item.value.filter(item => item.foundResultId = id);
       });
     }, error2 => {
     })
