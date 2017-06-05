@@ -1,0 +1,96 @@
+<div class="form-inline ebayContainer">
+
+  <div class="left">
+
+    <div *ngIf="someData">
+
+      <div class="orderTitle bigLabel">Your orders</div>
+
+      <table class="gh-tbl searchComponent">
+        <thead>
+        <th>Date and time</th>
+        <th>Price range</th>
+        <th>Category</th>
+        <th>Condition</th>
+        <th>Delivery type</th>
+        <th>Keyword</th>
+        <th>Action</th>
+        </thead>
+        <tr *ngFor="let order of userOrders">
+          <td>{{order.userPreference.dateAndTime}}</td>
+          <td>{{order.userPreference.priceMin}}-{{order.userPreference.priceMax}}</td>
+          <td>{{matchCategory(order.userPreference.categoryId)}}</td>
+          <td *ngFor = "let condition of order.userPreference.conditions">{{condition}}</td>
+          <td>{{order.userPreference.deliveryOptions}}</td>
+          <td>{{order.userPreference.keyword}}</td>
+          <td><button class="btn btn-danger btn-general" on-click="deleteOrder(order.orderId)">Delete</button></td>
+        </tr>
+      </table>
+      <br>
+      <!--     <button class="btn btn-primary btn-general" (click)="previousPage()" *ngIf="pageCounter > 1 && someData">Previous page</button>
+          <button class="btn btn-primary btn-general" (click)="nextPage()" *ngIf="!nothingElse">Next page</button>-->
+    </div>
+    <br>
+    <div *ngIf="!someData">
+      <p>Nothing to show</p>
+    </div>
+
+  </div>
+
+  <div class="right">
+    <div class="orderTitle">Add new orders</div>
+    <input type="text"
+           class="form-group form-control searchInput"
+           size="50"
+           maxlength="300"
+           placeholder="Search..."
+           [(ngModel)]=query>
+    <div class="myListElem">
+      <div>
+        <label>
+          <select #cs class="selectBlock" (change)="chooseMainCategory(cs.value)">
+            <option>choose category...</option>
+            <option *ngFor="let category of categoryList" [ngValue]="category">{{category.categoryName}}</option>
+          </select>
+        </label>
+      </div>
+      <div *ngFor="let selectedCategory of selectedCategories">
+        <label *ngIf="selectedCategory.childrenCategories.length > 0">
+          <select #d class="selectBlock" (change)="chooseCategory(d.value)">
+            <option>choose category...</option>
+            <option *ngFor="let category of selectedCategory.childrenCategories" [ngValue]="category">
+              {{category.categoryName}}
+            </option>
+          </select>
+        </label>
+      </div>
+      <label class="themeProperties">Properties</label>
+      <div class="propertiesContainer">
+        <div>
+          <input class="form-control propertiesControlForm" type="text" placeholder="MinCost" [(ngModel)]=minCost
+                 name="minCost">
+          <input class="form-control propertiesControlForm" type="text" placeholder="MaxCost" [(ngModel)]=maxCost
+                 name="maxCost">
+        </div>
+        <label class="labelProperties">condition:</label>
+        <select #c class="selectBlockProperties" [(ngModel)]="selectedCondition">
+          <option *ngFor="let con of conditions" [ngValue]="con">{{con}}</option>
+        </select>
+      </div>
+      <div class="propertiesContainer" *ngFor="let item of properties">
+        <label class="labelProperties">{{item.type}}</label>
+        <label>
+          <select #e class="selectBlockProperties" *ngIf="item.value.length > 0"
+                  (change)="addProperties(item.type,e.value)">
+            <option>choose category...</option>
+            <option *ngFor="let value of item.value; let i = index" [ngValue]="value">{{value}}</option>
+          </select>
+          <input *ngIf="item.value.length === 0" class="form-control propertiesControlForm" type="text"
+                 placeholder="{{item.type}}" [(ngModel)]=item[i] name="value"
+                 (change)="addProperties(item.type,item[i])">
+        </label>
+      </div>
+    </div>
+    <button class="confirmButton" (click)="findOffers()">Find offers</button>
+  </div>
+</div>

@@ -1,0 +1,90 @@
+<div class="loginContainer" *ngIf="!register">
+  <div class="alert alert-danger" *ngIf="error3">
+    Problem logging in. Please try again.
+  </div>
+<div class="alert alert-danger" *ngIf="error4">
+    <p>Please fill all the fields.</p>
+</div>
+  <form role="form" (submit)="loginUser()">
+    <div class="form-group">
+      <label class="inputLabel">Username:</label>
+      <input class="form-control" type="text" placeholder="Your username" [(ngModel)]=username name="username">
+    </div>
+    <div class="form-group">
+      <label class="inputLabel">Password:</label>
+      <input class="form-control" type="password" placeholder="Your password" [(ngModel)]=password name="password">
+    </div>
+    <div class="center">
+      <button type="submit" class="btn btn-primary btn-general">Log in</button>
+    </div>
+    <div class="center">
+      <label class="register-link" (click)="register = !register">Register</label>
+    </div>
+  </form>
+</div>
+
+
+<div *ngIf="register">
+
+<div class="loginContainer register" >
+  <!-- Defaut -->
+  <div class="alert-success" *ngIf="success">
+    <p>Registration successfull, redirecting to login page...</p>
+  </div>
+
+  <!-- Defaut -->
+  <div class="alert-error" *ngIf="error">
+    <p>Unsuccessfull registration, please try again.</p>
+  </div>
+
+  <!-- Defaut -->
+  <div class="alert-error" *ngIf="error2">
+    <p>Please fill all the fields.</p>
+  </div>
+
+  <form role="form" (submit)="registerUser()">
+    <div class="form-group">
+      <label class="inputLabel">Username:</label>
+      <input class="form-control" type="text" placeholder="UserName" [(ngModel)]=username name="username">
+    </div>
+    <div class="form-group">
+      <label class="inputLabel">Email:</label>
+      <input class="form-control" type="email" placeholder="Email" [(ngModel)]=eMail name="eMail" (change)="validateEmail()"
+             [ngClass]="{error : !emailValidate}">
+    </div>
+    <div class="form-group">
+      <label class="inputLabel">Password:</label>
+      <input class="form-control" type="password" placeholder="Your password" [(ngModel)]=password name="password">
+    </div>
+    <div class="form-group">
+      <label class="inputLabel">Confirm Password:</label>
+      <input class="form-control" type="password" placeholder="Confirm password" [(ngModel)]=confirmPassword
+             name="Confirmpassword" (change)="validatePassword()"  [ngClass]="{error : !passwordValidate}">
+    </div>
+    <div class="form-group">
+      <label class="inputLabel">First Name:</label>
+      <input class="form-control" type="text" placeholder="First name" [(ngModel)]=firstName name="firstName">
+    </div>
+    <div class="form-group">
+      <label class="inputLabel">Last Name:</label>
+      <input class="form-control" type="text" placeholder="Last name" [(ngModel)]=lastName name="lastName">
+    </div>
+    <div class="form-group">
+      <label class="inputLabel">Gender:</label>
+      <div class="genderButtons">
+        <input type="radio" name="gender" value="male" [(ngModel)]=gender checked> Male<br>
+        <input type="radio" name="gender" value="female" [(ngModel)]=gender> Female<br>
+        <input type="radio" name="gender" value="other" [(ngModel)]=gender> Other
+      </div>
+    </div>
+    <div class="center">
+      <button type="submit" class="btn btn-primary btn-general">Register</button>
+    </div>
+    <div class="center">
+      <label class="register-link" (click)="register = !register">Login</label>
+    </div>
+  </form>
+
+
+</div>
+</div>

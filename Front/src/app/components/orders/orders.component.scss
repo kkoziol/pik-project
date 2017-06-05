@@ -1,0 +1,56 @@
+@import "../../app.component";
+
+.ebayContainer {
+  padding: 1rem;
+  text-align: center;
+  height: 100%;
+  left: 0;
+  right: 0;
+  position: absolute;
+  margin-left: auto;
+  margin-right: auto;
+
+  .orderTitle {
+    font-size: 1.5rem;
+    color: $main_text_color;
+    margin: 1rem;
+  }
+
+  .bigLabel {
+    font-size: 2.5rem;
+    margin-bottom: 2rem;
+  }
+
+  .confirmButton {
+    position: fixed;
+    bottom: 2rem;
+    right: 5rem;
+    border-radius: 5rem;
+    width: 8rem;
+    height: 8rem;
+    border: 4px dashed red;
+    background: inherit;
+    color: red;
+  }
+
+  .left {
+    float: left;
+    width: calc(100% - 35rem);
+
+    .searchComponent {
+      margin: 0 auto;
+      margin-top: 1rem;
+    }
+
+  }
+
+  .themeProperties {
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+  }
+
+  .myListElem {
+    margin-top: 5rem;
+  }
+}
+

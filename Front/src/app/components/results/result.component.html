@@ -1,0 +1,25 @@
+<div class="form-inline resultContainer" #resultContainer>
+  <div class="scrollResult">
+    <table class="resultTable" *ngFor="let list of itemListByCategory">
+      <thead>
+      <th>Date and time</th>
+      <th>Price range</th>
+      <th>Condition</th>
+      <th>Delivery type</th>
+      <th>Keyword</th>
+      </thead>
+      <tr>
+        <td>{{list.value[0].order.userPreference.dateAndTime}}</td>
+        <td>{{list.value[0].order.userPreference.priceMin}}-{{list.value[0].order.userPreference.priceMax}}</td>
+        <!--<td>{{matchCategory(item.order.userPreference.categoryId)}}</td>-->
+        <td *ngFor="let condition of list.value[0].order.userPreference.conditions">{{condition}}</td>
+        <td>{{list.value[0].order.userPreference.deliveryOptions}}</td>
+        <td>{{list.value[0].order.userPreference.keyword}}</td>
+      </tr>
+      <tr *ngFor="let item of list.value">
+        <td colspan="5"><a href="{{item.url}}">{{item.url}}</a></td>
+      </tr>
+
+    </table>
+  </div>
+</div>

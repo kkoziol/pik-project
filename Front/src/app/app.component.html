@@ -1,0 +1,18 @@
+<div class="header">
+  <div class="title">
+    EBAY
+    <img src="../assets/onion.png" width="35" height="35"/>
+    DEALS!
+  </div>
+  <nav class="tapTopPanel" *ngIf="logged.active">
+    <a routerLink="/eBay" routerLinkActive="active">eBay</a>
+    <a routerLink="/history" routerLinkActive="active" *ngIf=false>History</a>
+    <a routerLink="/orders" routerLinkActive="active">Orders</a>
+    <a routerLink="/settings" routerLinkActive="active" *ngIf=false>Settings</a>
+    <a routerLink="/result" routerLinkActive="active">Result</a>
+    <a (click)="logout()">Logout</a>
+  </nav>
+</div>
+<div class="mainContainer" id="particles-js">
+  <router-outlet>Loading...</router-outlet>
+</div>
