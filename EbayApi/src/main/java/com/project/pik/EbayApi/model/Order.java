@@ -92,7 +92,6 @@ public class Order {
 		result = prime * result + (isHistoryLog ? 1231 : 1237);
 		result = prime * result + ((orderId == null) ? 0 : orderId.hashCode());
 		result = prime * result + ((preferencesAsJson == null) ? 0 : preferencesAsJson.hashCode());
-		result = prime * result + ((user == null) ? 0 : user.hashCode());
 		return result;
 	}
 
@@ -121,11 +120,6 @@ public class Order {
 			if (other.preferencesAsJson != null)
 				return false;
 		} else if (!preferencesAsJson.equals(other.preferencesAsJson))
-			return false;
-		if (user == null) {
-			if (other.user != null)
-				return false;
-		} else if (!user.equals(other.user))
 			return false;
 		return true;
 	}

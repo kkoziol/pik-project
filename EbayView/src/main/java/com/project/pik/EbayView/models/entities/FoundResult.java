@@ -1,4 +1,4 @@
-package com.project.pik.EbayApi.model;
+package com.project.pik.EbayView.models.entities;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;

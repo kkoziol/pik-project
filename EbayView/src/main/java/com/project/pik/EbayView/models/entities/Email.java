@@ -1,4 +1,4 @@
-package com.project.pik.EbayApi.model;
+package com.project.pik.EbayView.models.entities;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -72,7 +72,6 @@ public class Email implements Comparable{
 		int result = 1;
 		result = prime * result + ((emailId == null) ? 0 : emailId.hashCode());
 		result = prime * result + (isAuthorized ? 1231 : 1237);
-		result = prime * result + ((user == null) ? 0 : user.hashCode());
 		result = prime * result + ((value == null) ? 0 : value.hashCode());
 		return result;
 	}
@@ -92,11 +91,6 @@ public class Email implements Comparable{
 		} else if (!emailId.equals(other.emailId))
 			return false;
 		if (isAuthorized != other.isAuthorized)
-			return false;
-		if (user == null) {
-			if (other.user != null)
-				return false;
-		} else if (!user.equals(other.user))
 			return false;
 		if (value == null) {
 			if (other.value != null)

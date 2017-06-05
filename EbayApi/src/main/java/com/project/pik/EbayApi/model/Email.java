@@ -12,7 +12,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name="EMAILS")
-public class Email {
+public class Email implements Comparable{
 	@Id
 	@Column(name = "EMAIL_ID", nullable = false, unique = true, length = 11)
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -61,12 +61,17 @@ public class Email {
 	}
 
 	@Override
+	public int compareTo(Object o) {
+		Email other = (Email)o;
+		return this.value.compareTo(other.getValue());
+	}
+
+	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((emailId == null) ? 0 : emailId.hashCode());
 		result = prime * result + (isAuthorized ? 1231 : 1237);
-		result = prime * result + ((user == null) ? 0 : user.hashCode());
 		result = prime * result + ((value == null) ? 0 : value.hashCode());
 		return result;
 	}
@@ -86,11 +91,6 @@ public class Email {
 		} else if (!emailId.equals(other.emailId))
 			return false;
 		if (isAuthorized != other.isAuthorized)
-			return false;
-		if (user == null) {
-			if (other.user != null)
-				return false;
-		} else if (!user.equals(other.user))
 			return false;
 		if (value == null) {
 			if (other.value != null)
