@@ -1,6 +1,8 @@
 package com.project.pik.EbayView.services;
 
 import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -24,7 +26,6 @@ public class UserServiceImpl implements UserService {
 		if (users.isEmpty() && (user.getPassword().equals(user.getConfirmPassword()))) {
 			User userToAdd = new User();
 			userToAdd.setAuthorities("ROLE_USER");
-			// userToAdd.setDateOfBirth(user.getBirthDate()); TO_DO
 			userToAdd.setLogin(user.getUsername());
 			userToAdd.setName(user.getFirstName());
 			userToAdd.setPassword(user.getPassword());
@@ -34,7 +35,9 @@ public class UserServiceImpl implements UserService {
 			mail.setAuthorized(true);
 			mail.setUser(userToAdd);
 			mail.setValue(user.geteMail());
-			// userToAdd.setUserId(3);
+			Set<Email> mails = new TreeSet<>();
+			mails.add(mail);
+			userToAdd.setEmails(mails);
 			userRepo.save(userToAdd);
 			System.out.println("USER ADDED");
 			return true;

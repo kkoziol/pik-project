@@ -12,7 +12,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name="EMAILS")
-public class Email {
+public class Email implements Comparable{
 	@Id
 	@Column(name = "EMAIL_ID", nullable = false, unique = true, length = 11)
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -58,6 +58,12 @@ public class Email {
 
 	public void setAuthorized(boolean isAuthorized) {
 		this.isAuthorized = isAuthorized;
+	}
+
+	@Override
+	public int compareTo(Object o) {
+		Email other = (Email)o;
+		return this.value.compareTo(other.getValue());
 	}
 	
 	
