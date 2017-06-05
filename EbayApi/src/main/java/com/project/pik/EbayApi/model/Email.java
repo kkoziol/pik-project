@@ -59,4 +59,46 @@ public class Email {
 	public void setAuthorized(boolean isAuthorized) {
 		this.isAuthorized = isAuthorized;
 	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((emailId == null) ? 0 : emailId.hashCode());
+		result = prime * result + (isAuthorized ? 1231 : 1237);
+		result = prime * result + ((user == null) ? 0 : user.hashCode());
+		result = prime * result + ((value == null) ? 0 : value.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Email other = (Email) obj;
+		if (emailId == null) {
+			if (other.emailId != null)
+				return false;
+		} else if (!emailId.equals(other.emailId))
+			return false;
+		if (isAuthorized != other.isAuthorized)
+			return false;
+		if (user == null) {
+			if (other.user != null)
+				return false;
+		} else if (!user.equals(other.user))
+			return false;
+		if (value == null) {
+			if (other.value != null)
+				return false;
+		} else if (!value.equals(other.value))
+			return false;
+		return true;
+	}
+	
+	
 }

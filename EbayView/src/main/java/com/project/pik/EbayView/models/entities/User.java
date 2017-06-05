@@ -1,4 +1,4 @@
-package com.project.pik.EbayView.models.entities;
+package com.project.pik.EbayApi.model;
 
 import java.sql.Date;
 import java.util.Calendar;
@@ -16,6 +16,8 @@ import javax.persistence.Table;
 
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
 
 @Entity
 @Table(name = "Users")
@@ -40,8 +42,10 @@ public class User {
 	private String sex;
 	@Column(name = "AUTHORITIES", nullable = true, length = 20)
 	private String authorities = "ROLE_USER";
+	@JsonBackReference
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
 	private Set<Email> emails = new HashSet<>();
+	@JsonBackReference
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
 	private Set<Order> orders = new HashSet<>();
 	
@@ -141,4 +145,91 @@ public class User {
 				+ login + ", password=" + password + ", dateOfBirth=" + dateOfBirth + ", dateOfRegistration="
 				+ dateOfRegistration + ", sex=" + sex + ", authorities=" + authorities + "]";
 	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((authorities == null) ? 0 : authorities.hashCode());
+		result = prime * result + ((dateOfBirth == null) ? 0 : dateOfBirth.hashCode());
+		result = prime * result + ((dateOfRegistration == null) ? 0 : dateOfRegistration.hashCode());
+		result = prime * result + ((emails == null) ? 0 : emails.hashCode());
+		result = prime * result + ((login == null) ? 0 : login.hashCode());
+		result = prime * result + ((name == null) ? 0 : name.hashCode());
+		result = prime * result + ((orders == null) ? 0 : orders.hashCode());
+		result = prime * result + ((password == null) ? 0 : password.hashCode());
+		result = prime * result + ((sex == null) ? 0 : sex.hashCode());
+		result = prime * result + ((surname == null) ? 0 : surname.hashCode());
+		result = prime * result + ((userId == null) ? 0 : userId.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		User other = (User) obj;
+		if (authorities == null) {
+			if (other.authorities != null)
+				return false;
+		} else if (!authorities.equals(other.authorities))
+			return false;
+		if (dateOfBirth == null) {
+			if (other.dateOfBirth != null)
+				return false;
+		} else if (!dateOfBirth.equals(other.dateOfBirth))
+			return false;
+		if (dateOfRegistration == null) {
+			if (other.dateOfRegistration != null)
+				return false;
+		} else if (!dateOfRegistration.equals(other.dateOfRegistration))
+			return false;
+		if (emails == null) {
+			if (other.emails != null)
+				return false;
+		} else if (!emails.equals(other.emails))
+			return false;
+		if (login == null) {
+			if (other.login != null)
+				return false;
+		} else if (!login.equals(other.login))
+			return false;
+		if (name == null) {
+			if (other.name != null)
+				return false;
+		} else if (!name.equals(other.name))
+			return false;
+		if (orders == null) {
+			if (other.orders != null)
+				return false;
+		} else if (!orders.equals(other.orders))
+			return false;
+		if (password == null) {
+			if (other.password != null)
+				return false;
+		} else if (!password.equals(other.password))
+			return false;
+		if (sex == null) {
+			if (other.sex != null)
+				return false;
+		} else if (!sex.equals(other.sex))
+			return false;
+		if (surname == null) {
+			if (other.surname != null)
+				return false;
+		} else if (!surname.equals(other.surname))
+			return false;
+		if (userId == null) {
+			if (other.userId != null)
+				return false;
+		} else if (!userId.equals(other.userId))
+			return false;
+		return true;
+	}
+	
+	
 }

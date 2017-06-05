@@ -1,9 +1,9 @@
-package com.project.pik.EbayView.models.entities;
+package com.project.pik.EbayApi.model;
 
-import java.sql.Date;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -15,6 +15,9 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 
 
 @Entity
@@ -25,6 +28,7 @@ public class Order {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer orderId;
 	
+	@JsonManagedReference
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "USER_ID", nullable = false)
 	private User user;
@@ -32,10 +36,11 @@ public class Order {
 	@Column(name = "IS_HIRTORY_LOG", nullable = false)
 	private boolean isHistoryLog;
 	
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "order")
-	private Set<FoundResult> offers = new HashSet<>();
+	@JsonBackReference
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "order",cascade=CascadeType.REMOVE)
+	private Set<FoundResult> foundResults = new HashSet<>();
 	
-	@Column(name = "PREFERENCES")
+	@Column(name = "PREFERENCES",length=2000)
 	private String preferencesAsJson;
 
 	public Integer getOrderId() {
@@ -62,12 +67,13 @@ public class Order {
 		this.isHistoryLog = isHistoryLog;
 	}
 
-	public Set<FoundResult> getOffers() {
-		return offers;
+
+	public Set<FoundResult> getFoundResults() {
+		return foundResults;
 	}
 
-	public void setOffers(Set<FoundResult> offers) {
-		this.offers = offers;
+	public void setFoundResults(Set<FoundResult> foundResults) {
+		this.foundResults = foundResults;
 	}
 
 	public String getPreferencesAsJson() {
@@ -77,7 +83,52 @@ public class Order {
 	public void setPreferencesAsJson(String preferencesAsJson) {
 		this.preferencesAsJson = preferencesAsJson;
 	}
-	
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((foundResults == null) ? 0 : foundResults.hashCode());
+		result = prime * result + (isHistoryLog ? 1231 : 1237);
+		result = prime * result + ((orderId == null) ? 0 : orderId.hashCode());
+		result = prime * result + ((preferencesAsJson == null) ? 0 : preferencesAsJson.hashCode());
+		result = prime * result + ((user == null) ? 0 : user.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Order other = (Order) obj;
+		if (foundResults == null) {
+			if (other.foundResults != null)
+				return false;
+		} else if (!foundResults.equals(other.foundResults))
+			return false;
+		if (isHistoryLog != other.isHistoryLog)
+			return false;
+		if (orderId == null) {
+			if (other.orderId != null)
+				return false;
+		} else if (!orderId.equals(other.orderId))
+			return false;
+		if (preferencesAsJson == null) {
+			if (other.preferencesAsJson != null)
+				return false;
+		} else if (!preferencesAsJson.equals(other.preferencesAsJson))
+			return false;
+		if (user == null) {
+			if (other.user != null)
+				return false;
+		} else if (!user.equals(other.user))
+			return false;
+		return true;
+	}
 	
 	
 }
