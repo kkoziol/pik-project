@@ -63,6 +63,9 @@ public class SearchEbayOffersDaemon extends Thread {
     	threadWorking = false;
         this.interrupt();
     }
+    
+    private SearchEbayOffersDaemon() {
+	}
 
 	@Override
 	public void run() {
@@ -93,7 +96,6 @@ public class SearchEbayOffersDaemon extends Thread {
 	}
 
 	public synchronized void unregisterListener(String userLogin) {
-		// TODO - when user logs out, remove its listener
 		registeredListeners.remove(userLogin);
 	}
 
