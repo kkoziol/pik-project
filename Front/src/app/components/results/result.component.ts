@@ -43,10 +43,10 @@ export class ResultComponent implements OnInit {
       console.log(data);
       this.itemList = data.map(one => FoundResult.copy(one));
       this.itemList.forEach(item => {
-        if (this.itemListByCategory.find(elem => elem.name === item.order.userPreference.categoryId)) {
-          this.itemListByCategory.find(elem => elem.name === item.order.userPreference.categoryId).value.push(item);
+        if (this.itemListByCategory.find(elem => elem.name === item.order.userPreference.keyword + item.order.userPreference.dateAndTime)) {
+          this.itemListByCategory.find(elem => elem.name === item.order.userPreference.keyword + item.order.userPreference.dateAndTime).value.push(item);
         } else {
-          this.itemListByCategory.push(new ItemByCategory(item.order.userPreference.categoryId, [item]));
+          this.itemListByCategory.push(new ItemByCategory(item.order.userPreference.keyword + item.order.userPreference.dateAndTime, [item]));
         }
       });
     }, error2 => {
