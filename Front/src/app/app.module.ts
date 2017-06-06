@@ -8,9 +8,7 @@ import {AppRoutingModule}     from './app-routing.module';
 import {AuthorizationService} from "./services/authorization/authorization.service";
 import {EBayComponent}        from "./components/eBay/eBay.component";
 import {OrdersComponent}      from "./components/orders/orders.component";
-import {HistoryComponent}     from "./components/history/history.component";
 import {LoginComponent}       from "./components/login/login.component";
-import {SettingsComponent}    from "./components/settings/settings.component";
 import {AuthorizationHttp}    from "./services/authorizationHttp/authorizationHttp";
 import {EBayService} from "./services/eBayApi/eBayApi.service";
 import {HttpModule, JsonpModule} from "@angular/http";
@@ -29,8 +27,6 @@ import {ResultComponent} from "./components/results/result.component";
     AppComponent,
     EBayComponent,
     OrdersComponent,
-    HistoryComponent,
-    SettingsComponent,
     LoginComponent,
     ResultComponent
   ],

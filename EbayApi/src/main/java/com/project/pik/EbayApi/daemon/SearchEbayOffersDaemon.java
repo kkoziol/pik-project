@@ -38,7 +38,6 @@ import com.project.pik.EbayApi.model.UserPreference;
 import com.project.pik.EbayApi.repositories.FoundResultRepository;
 import com.project.pik.EbayApi.repositories.OrderRepository;
 
-@Component
 public class SearchEbayOffersDaemon extends Thread {
 	private static SearchEbayOffersDaemon instance = null;
 	private static final String SEARCHING_CURRENCY = "EUR";
@@ -61,7 +60,6 @@ public class SearchEbayOffersDaemon extends Thread {
     @Override
     public void destroy() {
     	threadWorking = false;
-        this.interrupt();
     }
     
     private SearchEbayOffersDaemon() {
@@ -69,7 +67,7 @@ public class SearchEbayOffersDaemon extends Thread {
 
 	@Override
 	public void run() {
-		threadWorking = true;
+		threadWorking  = true;
 		while (threadWorking) {
 			logger.debug("Running search");
 			Map<Order, UserPreference> preferences = preparePreferences();
@@ -80,7 +78,7 @@ public class SearchEbayOffersDaemon extends Thread {
 				logger.error("Thread interruped");
 				logger.error(e.getMessage());
 			}
-			logger.error("Searching...");
+			logger.info("Searching...");
 		}
 	}
 

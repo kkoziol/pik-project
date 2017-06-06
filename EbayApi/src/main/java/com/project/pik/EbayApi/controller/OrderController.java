@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.project.pik.EbayApi.daemon.SearchEbayOffersDaemon;
 import com.project.pik.EbayApi.model.Order;
 import com.project.pik.EbayApi.model.User;
 import com.project.pik.EbayApi.model.UserPreference;

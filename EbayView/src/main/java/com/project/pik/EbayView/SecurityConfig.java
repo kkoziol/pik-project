@@ -23,10 +23,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	protected void configure(HttpSecurity http) throws Exception {
 		http.authorizeRequests()
 				.anyRequest().permitAll()
-				.and().formLogin().loginPage("/index.html#/login").permitAll()
 				.and()
 				.addFilterAfter(new CsrfHeaderFilter(), CsrfFilter.class)
 				.csrf().csrfTokenRepository(csrfTokenRepository())
+				.and().httpBasic().disable()
 				;
 
 	}

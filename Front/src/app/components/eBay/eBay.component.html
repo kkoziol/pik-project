@@ -23,7 +23,7 @@
         <tr *ngFor="let item of itemList">
           <td><img src="{{item.galleryURL}}" style="width:128px;height:128px;"></td>
           <td>{{item.title}}</td>
-          <td><a href="{{item.viewItemURL}}">{{item.viewItemURL}}</a></td>
+          <td><a target="_blank" href="{{item.viewItemURL}}">{{item.viewItemURL}}</a></td>
           <td>{{item.sellingStatus['currentPrice']['value']}} {{item.sellingStatus['currentPrice']['currencyId']}}</td>
         </tr>
       </table>

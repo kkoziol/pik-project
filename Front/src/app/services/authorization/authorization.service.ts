@@ -50,7 +50,10 @@ export class AuthorizationService {
         error2 => {
         console.log("Wrong credentials");
         });
-      return false; 
+      if(this.authorize.active)
+        return true;
+      else
+          return false;
   }
 
   register(username: string,password: string,firstName: string, lastName: string,eMail: string,gender: string,birthDate: string,confirmPassword: string) : boolean {
