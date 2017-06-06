@@ -6,6 +6,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 
+import javax.annotation.PostConstruct;
+
 import org.apache.log4j.Logger;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -74,7 +76,7 @@ public class ApplicationConfig {
 	}
 
 	
-	@Bean
+	@Bean(initMethod = "start")
 	public SearchEbayOffersDaemon searchEbayOffersDaemon() {
 		return SearchEbayOffersDaemon.getInstance();
 	}
