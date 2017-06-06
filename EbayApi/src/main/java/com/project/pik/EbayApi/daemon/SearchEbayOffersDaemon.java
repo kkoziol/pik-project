@@ -104,11 +104,14 @@ public class SearchEbayOffersDaemon extends Thread {
 	private void consumeFoundUrls(Order order, List<String> urls) {
 		if (urls.isEmpty())
 			return;
-		
+		List<Order> orders = orderRepository.findByOrderId(order.getOrderId());
+		if(orders == null || orders.isEmpty()){
+			return;
+		}
 		String urlsInClause = "(" + urls.stream().map(u -> "'" + u + "'").collect(Collectors.joining(",")) + ")";
 		@SuppressWarnings("unchecked")
 		List<String> urlsInDb = (List<String>) entityManager
-				.createNativeQuery("SELECT url FROM FOUND_RESULTS WHERE url in " + urlsInClause)
+				.createNativeQuery("select url from found_results f where f.order_id = " + order.getOrderId() + " and f.url in " + urlsInClause)
 				.getResultList();
 		urls.removeAll(urlsInDb);
 		if (urls.isEmpty()) {
@@ -132,6 +135,10 @@ public class SearchEbayOffersDaemon extends Thread {
 		if (registeredListeners.containsKey(login)) {
 			registeredListeners.get(login).setResult(results);
 		}
+	}
+	
+	public void registerOrderToBeDeleted(String orderId){
+		
 	}
 
 	private List<String> searchForSinglePreference(UserPreference preference) {

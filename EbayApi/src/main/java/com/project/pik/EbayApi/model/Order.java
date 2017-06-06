@@ -37,7 +37,7 @@ public class Order {
 	private boolean isHistoryLog;
 	
 	@JsonBackReference
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "order",cascade=CascadeType.REMOVE)
+	@OneToMany(fetch = FetchType.EAGER, mappedBy = "order",cascade=CascadeType.REMOVE)
 	private Set<FoundResult> foundResults = new HashSet<>();
 	
 	@Column(name = "PREFERENCES",length=2000)

@@ -16,4 +16,6 @@ public interface OrderRepository extends JpaRepository<Order, Long>{
 	
 	@Transactional
     Integer deleteByOrderId(int orderId);
+
+	List<Order> findByOrderId(Integer orderId);
 }
