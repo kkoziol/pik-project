@@ -75,12 +75,6 @@ public class ApplicationConfig {
 		return config;
 	}
 
-	
-	@Bean(initMethod = "start")
-	public SearchEbayOffersDaemon searchEbayOffersDaemon() {
-		return SearchEbayOffersDaemon.getInstance();
-	}
-
 	@Bean
 	public EbayCategoriesService getEbayCategoriesService() {
 		return new EbayCategoriesServiceImpl();
