@@ -78,7 +78,7 @@ public class SearchEbayOffersDaemon extends Thread {
 				logger.error("Thread interruped");
 				logger.error(e.getMessage());
 			}
-			logger.error("Searching...");
+			logger.info("Searching...");
 		}
 	}
 
